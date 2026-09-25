@@ -1,4 +1,4 @@
-package common
+﻿package common
 
 import (
 	"crypto/tls"
@@ -14,9 +14,9 @@ import (
 
 var StartTime = time.Now().Unix() // unit: second
 var Version = "v0.0.0"            // this hard coding will be replaced automatically when building, no need to manually change
-var SystemName = "New API"
+var SystemName = "星溯(StarTrace) 开放平台"
 var Footer = ""
-var Logo = ""
+var Logo = "/logo.png"
 var TopUpLink = ""
 
 var themeValue atomic.Value // stores string; safe for concurrent read/write
@@ -60,7 +60,7 @@ func ThemeAwarePath(suffix string) string {
 // var ChatLink = ""
 // var ChatLink2 = ""
 var QuotaPerUnit = 500 * 1000.0 // $0.002 / 1K tokens
-// 保留旧变量以兼容历史逻辑，实际展示由 general_setting.quota_display_type 控制
+// 淇濈暀鏃у彉閲忎互鍏煎鍘嗗彶閫昏緫锛屽疄闄呭睍绀虹敱 general_setting.quota_display_type 鎺у埗
 var DisplayInCurrencyEnabled = true
 var DisplayTokenStatEnabled = true
 var DrawingEnabled = true
@@ -91,8 +91,8 @@ var TelegramOAuthEnabled = false
 var TurnstileCheckEnabled = false
 var RegisterEnabled = true
 
-var EmailDomainRestrictionEnabled = false // 是否启用邮箱域名限制
-var EmailAliasRestrictionEnabled = false  // 是否启用邮箱别名限制
+var EmailDomainRestrictionEnabled = false // 鏄惁鍚敤閭鍩熷悕闄愬埗
+var EmailAliasRestrictionEnabled = false  // 鏄惁鍚敤閭鍒悕闄愬埗
 var EmailDomainWhitelist = []string{
 	"gmail.com",
 	"163.com",
@@ -163,8 +163,8 @@ const (
 	NodeNameSourceHostname = "hostname"
 )
 
-// NodeName 节点名称，优先从 NODE_NAME 环境变量读取，未配置时回退主机名。
-// 用于审计日志和后台任务中标识节点身份；多实例部署时建议显式配置稳定 NODE_NAME。
+// NodeName identifies the current node in audit logs and background tasks.
+// It prefers the NODE_NAME environment variable and falls back to hostname.
 var NodeName = ""
 
 // NodeNameSource records how NodeName was chosen so future instance-management
@@ -275,3 +275,4 @@ const (
 	TopUpStatusFailed  = "failed"
 	TopUpStatusExpired = "expired"
 )
+

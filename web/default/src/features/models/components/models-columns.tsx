@@ -45,6 +45,10 @@ import { DataTableRowActions } from './data-table-row-actions'
 import { DescriptionCell } from './description-cell'
 
 function getCompactModelIcon(iconKey: string) {
+  if (/^(https?:\/\/|\/|\.\/|\.\.\/|data:image\/)/i.test(iconKey)) {
+    return getLobeIcon(iconKey, 20)
+  }
+
   const baseIconKey = iconKey.split('.')[0]
 
   return getLobeIcon(`${baseIconKey}.Avatar.type={'platform'}`, 20)

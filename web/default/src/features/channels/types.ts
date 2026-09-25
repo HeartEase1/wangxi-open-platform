@@ -90,6 +90,14 @@ export interface ChannelSettings {
 
 export interface ChannelOtherSettings {
   azure_responses_version?: string
+  astrbot_config_id?: string
+  astrbot_config_name?: string
+  astrbot_selected_provider?: string
+  astrbot_selected_model?: string
+  astrbot_context_mode?: 'caller' | 'startrace' | string
+  astrbot_reuse_caller_conversation_id?: boolean
+  astrbot_require_conversation_id?: boolean
+  astrbot_disable_prompt_filter?: boolean
   vertex_key_type?: 'json' | 'api_key'
   openrouter_enterprise?: boolean
   aws_key_type?: 'ak_sk' | 'api_key'
@@ -98,6 +106,8 @@ export interface ChannelOtherSettings {
   allow_safety_identifier?: boolean
   allow_include_obfuscation?: boolean
   allow_inference_geo?: boolean
+  strip_caller_prompts_enabled?: boolean
+  openai_prompt_filter_enabled?: boolean
   allow_speed?: boolean
   claude_beta_query?: boolean
   disable_task_polling_sleep?: boolean
@@ -357,6 +367,12 @@ export interface ChannelFormData {
   header_override?: string
   settings?: string
   other?: string
+  astrbot_config_id?: string
+  astrbot_config_name?: string
+  astrbot_selected_provider?: string
+  astrbot_selected_model?: string
+  astrbot_reuse_caller_conversation_id?: boolean
+  astrbot_require_conversation_id?: boolean
   // Multi-key specific
   multi_key_mode?: 'single' | 'batch' | 'multi_to_single'
   multi_key_type?: 'random' | 'polling'

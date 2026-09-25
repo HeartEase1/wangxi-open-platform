@@ -1,4 +1,4 @@
-/*
+﻿/*
 Copyright (C) 2025 QuantumNous
 
 This program is free software: you can redistribute it and/or modify
@@ -48,7 +48,7 @@ export function isRoot() {
 
 export function getSystemName() {
   let system_name = localStorage.getItem('system_name');
-  if (!system_name) return 'New API';
+  if (!system_name) return '星溯(StarTrace) 开放平台';
   return system_name;
 }
 
@@ -75,7 +75,7 @@ export async function copy(text) {
     await navigator.clipboard.writeText(text);
   } catch (e) {
     try {
-      // 构建 textarea 执行复制命令，保留多行文本格式
+      // Fallback to a hidden textarea for browsers without clipboard API support.
       const textarea = window.document.createElement('textarea');
       textarea.value = text;
       textarea.setAttribute('readonly', '');
@@ -94,7 +94,7 @@ export async function copy(text) {
   return okay;
 }
 
-// isMobile 函数已移除，请改用 useIsMobile Hook
+// isMobile 鍑芥暟宸茬Щ闄わ紝璇锋敼鐢?useIsMobile Hook
 
 let showErrorOptions = { autoClose: toastConstants.ERROR_TIMEOUT };
 let showWarningOptions = { autoClose: toastConstants.WARNING_TIMEOUT };
@@ -125,28 +125,27 @@ export function showError(error) {
     if (error.name === 'AxiosError') {
       switch (error.response?.status) {
         case 401:
-          // 清除用户状态
           localStorage.removeItem('user');
-          // toast.error('错误：未登录或登录已过期，请重新登录！', showErrorOptions);
+          // toast.error('閿欒锛氭湭鐧诲綍鎴栫櫥褰曞凡杩囨湡锛岃閲嶆柊鐧诲綍锛?, showErrorOptions);
           window.location.href = '/login?expired=true';
           break;
         case 429:
-          Toast.error('错误：请求次数过多，请稍后再试！');
+          Toast.error('閿欒锛氳姹傛鏁拌繃澶氾紝璇风◢鍚庡啀璇曪紒');
           break;
         case 500:
-          Toast.error('错误：服务器内部错误，请联系管理员！');
+          Toast.error('閿欒锛氭湇鍔″櫒鍐呴儴閿欒锛岃鑱旂郴绠＄悊鍛橈紒');
           break;
         case 405:
-          Toast.info('本站仅作演示之用，无服务端！');
+          Toast.info('鏈珯浠呬綔婕旂ず涔嬬敤锛屾棤鏈嶅姟绔紒');
           break;
         default:
-          Toast.error('错误：' + error.message);
+          Toast.error('Error: ' + error.message);
       }
       return;
     }
-    Toast.error('错误：' + error.message);
+    Toast.error('Error: ' + error.message);
   } else {
-    Toast.error('错误：' + error);
+    Toast.error('Error: ' + error);
   }
 }
 
@@ -236,7 +235,6 @@ export function timestamp2string1(
   if (hour.length === 1) {
     hour = '0' + hour;
   }
-  // 仅在跨年时显示年份
   let str = showYear ? year + '-' + month + '-' + day : month + '-' + day;
   if (dataExportDefaultTime === 'hour') {
     str += ' ' + hour + ':00';
@@ -251,7 +249,6 @@ export function timestamp2string1(
     if (nextDay.length === 1) {
       nextDay = '0' + nextDay;
     }
-    // 周视图结束日期也仅在跨年时显示年份
     let nextStr = showYear
       ? nextWeekYear + '-' + nextMonth + '-' + nextDay
       : nextMonth + '-' + nextDay;
@@ -260,7 +257,7 @@ export function timestamp2string1(
   return str;
 }
 
-// 检查时间戳数组是否跨年
+// 妫€鏌ユ椂闂存埑鏁扮粍鏄惁璺ㄥ勾
 export function isDataCrossYear(timestamps) {
   if (!timestamps || timestamps.length === 0) return false;
   const years = new Set(
@@ -292,7 +289,7 @@ export function verifyJSONPromise(value) {
     JSON.parse(value);
     return Promise.resolve();
   } catch (e) {
-    return Promise.reject('不是合法的 JSON 字符串');
+    return Promise.reject('Invalid JSON string');
   }
 }
 
@@ -306,15 +303,12 @@ export function setPromptShown(id) {
 }
 
 /**
- * 比较两个对象的属性，找出有变化的属性，并返回包含变化属性信息的数组
- * @param {Object} oldObject - 旧对象
- * @param {Object} newObject - 新对象
- * @return {Array} 包含变化属性信息的数组，每个元素是一个对象，包含 key, oldValue 和 newValue
+ * 姣旇緝涓や釜瀵硅薄鐨勫睘鎬э紝鎵惧嚭鏈夊彉鍖栫殑灞炴€э紝骞惰繑鍥炲寘鍚彉鍖栧睘鎬т俊鎭殑鏁扮粍
+ * @param {Object} oldObject - 鏃у璞? * @param {Object} newObject - 鏂板璞? * @return {Array} 鍖呭惈鍙樺寲灞炴€т俊鎭殑鏁扮粍锛屾瘡涓厓绱犳槸涓€涓璞★紝鍖呭惈 key, oldValue 鍜?newValue
  */
 export function compareObjects(oldObject, newObject) {
   const changedProperties = [];
 
-  // 比较两个对象的属性
   for (const key in oldObject) {
     if (oldObject.hasOwnProperty(key) && newObject.hasOwnProperty(key)) {
       if (oldObject[key] !== newObject[key]) {
@@ -332,11 +326,11 @@ export function compareObjects(oldObject, newObject) {
 
 // playground message
 
-// 生成唯一ID
+// 鐢熸垚鍞竴ID
 let messageId = 4;
 export const generateMessageId = () => `${messageId++}`;
 
-// 提取消息中的文本内容
+// 鎻愬彇娑堟伅涓殑鏂囨湰鍐呭
 export const getTextContent = (message) => {
   if (!message || !message.content) return '';
 
@@ -347,7 +341,7 @@ export const getTextContent = (message) => {
   return typeof message.content === 'string' ? message.content : '';
 };
 
-// 处理 think 标签
+// 澶勭悊 think 鏍囩
 export const processThinkTags = (content, reasoningContent = '') => {
   if (!content || !content.includes('<think>')) {
     return { content, reasoningContent };
@@ -382,7 +376,7 @@ export const processThinkTags = (content, reasoningContent = '') => {
   };
 };
 
-// 处理未完成的 think 标签
+// 澶勭悊鏈畬鎴愮殑 think 鏍囩
 export const processIncompleteThinkTags = (content, reasoningContent = '') => {
   if (!content) return { content: '', reasoningContent };
 
@@ -409,7 +403,7 @@ export const processIncompleteThinkTags = (content, reasoningContent = '') => {
   return processThinkTags(content, reasoningContent);
 };
 
-// 构建消息内容（包含图片）
+// 鏋勫缓娑堟伅鍐呭锛堝寘鍚浘鐗囷級
 export const buildMessageContent = (
   textContent,
   imageUrls = [],
@@ -434,7 +428,6 @@ export const buildMessageContent = (
   return textContent || '';
 };
 
-// 创建新消息
 export const createMessage = (role, content, options = {}) => ({
   role,
   content,
@@ -443,7 +436,7 @@ export const createMessage = (role, content, options = {}) => ({
   ...options,
 });
 
-// 创建加载中的助手消息
+// 鍒涘缓鍔犺浇涓殑鍔╂墜娑堟伅
 export const createLoadingAssistantMessage = () =>
   createMessage(MESSAGE_ROLES.ASSISTANT, '', {
     reasoningContent: '',
@@ -453,7 +446,6 @@ export const createLoadingAssistantMessage = () =>
     status: 'loading',
   });
 
-// 检查消息是否包含图片
 export const hasImageContent = (message) => {
   return (
     message &&
@@ -462,7 +454,7 @@ export const hasImageContent = (message) => {
   );
 };
 
-// 格式化消息用于API请求
+// 鏍煎紡鍖栨秷鎭敤浜嶢PI璇锋眰
 export const formatMessageForAPI = (message) => {
   if (!message) return null;
 
@@ -472,12 +464,11 @@ export const formatMessageForAPI = (message) => {
   };
 };
 
-// 验证消息是否有效
+// 楠岃瘉娑堟伅鏄惁鏈夋晥
 export const isValidMessage = (message) => {
   return message && message.role && (message.content || message.content === '');
 };
 
-// 获取最后一条用户消息
 export const getLastUserMessage = (messages) => {
   if (!Array.isArray(messages)) return null;
 
@@ -489,7 +480,6 @@ export const getLastUserMessage = (messages) => {
   return null;
 };
 
-// 获取最后一条助手消息
 export const getLastAssistantMessage = (messages) => {
   if (!Array.isArray(messages)) return null;
 
@@ -501,14 +491,13 @@ export const getLastAssistantMessage = (messages) => {
   return null;
 };
 
-// 计算相对时间（几天前、几小时前等）
 export const getRelativeTime = (publishDate) => {
   if (!publishDate) return '';
 
   const now = new Date();
   const pubDate = new Date(publishDate);
 
-  // 如果日期无效，返回原始字符串
+  // 濡傛灉鏃ユ湡鏃犳晥锛岃繑鍥炲師濮嬪瓧绗︿覆
   if (isNaN(pubDate.getTime())) return publishDate;
 
   const diffMs = now.getTime() - pubDate.getTime();
@@ -520,33 +509,32 @@ export const getRelativeTime = (publishDate) => {
   const diffMonths = Math.floor(diffDays / 30);
   const diffYears = Math.floor(diffDays / 365);
 
-  // 如果是未来时间，显示具体日期
+  // 濡傛灉鏄湭鏉ユ椂闂达紝鏄剧ず鍏蜂綋鏃ユ湡
   if (diffMs < 0) {
     return formatDateString(pubDate);
   }
 
-  // 根据时间差返回相应的描述
+  // 鏍规嵁鏃堕棿宸繑鍥炵浉搴旂殑鎻忚堪
   if (diffSeconds < 60) {
-    return '刚刚';
+    return '鍒氬垰';
   } else if (diffMinutes < 60) {
-    return `${diffMinutes} 分钟前`;
+    return `${diffMinutes} minutes ago`;
   } else if (diffHours < 24) {
-    return `${diffHours} 小时前`;
+    return `${diffHours} hours ago`;
   } else if (diffDays < 7) {
-    return `${diffDays} 天前`;
+    return `${diffDays} 澶╁墠`;
   } else if (diffWeeks < 4) {
-    return `${diffWeeks} 周前`;
+    return `${diffWeeks} 鍛ㄥ墠`;
   } else if (diffMonths < 12) {
-    return `${diffMonths} 个月前`;
+    return `${diffMonths} months ago`;
   } else if (diffYears < 2) {
-    return '1 年前';
+    return '1 骞村墠';
   } else {
-    // 超过2年显示具体日期
     return formatDateString(pubDate);
   }
 };
 
-// 格式化日期字符串
+// 鏍煎紡鍖栨棩鏈熷瓧绗︿覆
 export const formatDateString = (date) => {
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -554,7 +542,7 @@ export const formatDateString = (date) => {
   return `${year}-${month}-${day}`;
 };
 
-// 格式化日期时间字符串（包含时间）
+// 鏍煎紡鍖栨棩鏈熸椂闂村瓧绗︿覆锛堝寘鍚椂闂达級
 export const formatDateTimeString = (date) => {
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -593,9 +581,9 @@ export function setTableCompactMode(compact, tableKey = 'global') {
 }
 
 // -------------------------------
-// Select 组件统一过滤逻辑
-// 使用方式： <Select filter={selectFilter} ... />
-// 统一的 Select 搜索过滤逻辑 -- 支持同时匹配 option.value 与 option.label
+// Select 缁勪欢缁熶竴杩囨护閫昏緫
+// 浣跨敤鏂瑰紡锛?<Select filter={selectFilter} ... />
+// 缁熶竴鐨?Select 鎼滅储杩囨护閫昏緫 -- 鏀寔鍚屾椂鍖归厤 option.value 涓?option.label
 export const selectFilter = (input, option) => {
   if (!input) return true;
 
@@ -607,7 +595,7 @@ export const selectFilter = (input, option) => {
 };
 
 // -------------------------------
-// 模型定价计算工具函数
+// 妯″瀷瀹氫环璁＄畻宸ュ叿鍑芥暟
 export const calculateModelPrice = ({
   record,
   selectedGroup,
@@ -618,12 +606,11 @@ export const calculateModelPrice = ({
   quotaDisplayType = 'USD',
   precision = 4,
 }) => {
-  // 1. 选择实际使用的分组
   let usedGroup = selectedGroup;
   let usedGroupRatio = groupRatio[selectedGroup];
 
   if (selectedGroup === 'all' || usedGroupRatio === undefined) {
-    // 在模型可用分组中选择倍率最小的分组，若无则使用 1
+    // 鍦ㄦā鍨嬪彲鐢ㄥ垎缁勪腑閫夋嫨鍊嶇巼鏈€灏忕殑鍒嗙粍锛岃嫢鏃犲垯浣跨敤 1
     let minRatio = Number.POSITIVE_INFINITY;
     if (
       Array.isArray(record.enable_groups) &&
@@ -639,13 +626,12 @@ export const calculateModelPrice = ({
       });
     }
 
-    // 如果找不到合适分组倍率，回退为 1
+    // 濡傛灉鎵句笉鍒板悎閫傚垎缁勫€嶇巼锛屽洖閫€涓?1
     if (usedGroupRatio === undefined) {
       usedGroupRatio = 1;
     }
   }
 
-  // 2. 动态计费（tiered_expr）
   if (record.billing_mode === 'tiered_expr' && record.billing_expr) {
     return {
       isDynamicPricing: true,
@@ -655,9 +641,9 @@ export const calculateModelPrice = ({
     };
   }
 
-  // 3. 根据计费类型计算价格
+  // 3. 鏍规嵁璁¤垂绫诲瀷璁＄畻浠锋牸
   if (record.quota_type === 0) {
-    // 按量计费
+    // 鎸夐噺璁¤垂
     const isTokensDisplay = quotaDisplayType === 'TOKENS';
     const inputRatioPriceUSD = record.model_ratio * 2 * usedGroupRatio;
     const unitDivisor = tokenUnit === 'K' ? 1000 : 1;
@@ -689,18 +675,18 @@ export const calculateModelPrice = ({
 
     let symbol = '$';
     if (currency === 'CNY') {
-      symbol = '¥';
+      symbol = '楼';
     } else if (currency === 'CUSTOM') {
       try {
         const statusStr = localStorage.getItem('status');
         if (statusStr) {
           const s = JSON.parse(statusStr);
-          symbol = s?.custom_currency_symbol || '¤';
+          symbol = s?.custom_currency_symbol || '陇';
         } else {
-          symbol = '¤';
+          symbol = '陇';
         }
       } catch (e) {
-        symbol = '¤';
+        symbol = '陇';
       }
     }
 
@@ -748,7 +734,7 @@ export const calculateModelPrice = ({
   }
 
   if (record.quota_type === 1) {
-    // 按次计费
+    // 鎸夋璁¤垂
     const priceUSD = parseFloat(record.model_price) * usedGroupRatio;
     const displayVal = displayPrice(priceUSD);
 
@@ -761,7 +747,6 @@ export const calculateModelPrice = ({
     };
   }
 
-  // 未知计费类型，返回占位信息
   return {
     price: '-',
     isPerToken: false,
@@ -780,7 +765,7 @@ export const getModelPriceItems = (
     return [
       {
         key: 'dynamic',
-        label: t('动态计费'),
+        label: t('Dynamic pricing'),
         value: '',
         suffix: '',
         isDynamic: true,
@@ -793,43 +778,43 @@ export const getModelPriceItems = (
       return [
         {
           key: 'input-ratio',
-          label: t('输入倍率'),
+          label: t('杈撳叆鍊嶇巼'),
           value: priceData.inputRatio,
           suffix: 'x',
         },
         {
           key: 'completion-ratio',
-          label: t('补全倍率'),
+          label: t('琛ュ叏鍊嶇巼'),
           value: priceData.completionRatio,
           suffix: 'x',
         },
         {
           key: 'cache-ratio',
-          label: t('缓存读取倍率'),
+          label: t('缂撳瓨璇诲彇鍊嶇巼'),
           value: priceData.cacheRatio,
           suffix: 'x',
         },
         {
           key: 'create-cache-ratio',
-          label: t('缓存创建倍率'),
+          label: t('缂撳瓨鍒涘缓鍊嶇巼'),
           value: priceData.createCacheRatio,
           suffix: 'x',
         },
         {
           key: 'image-ratio',
-          label: t('图片输入倍率'),
+          label: t('鍥剧墖杈撳叆鍊嶇巼'),
           value: priceData.imageRatio,
           suffix: 'x',
         },
         {
           key: 'audio-input-ratio',
-          label: t('音频输入倍率'),
+          label: t('闊抽杈撳叆鍊嶇巼'),
           value: priceData.audioInputRatio,
           suffix: 'x',
         },
         {
           key: 'audio-output-ratio',
-          label: t('音频补全倍率'),
+          label: t('闊抽琛ュ叏鍊嶇巼'),
           value: priceData.audioOutputRatio,
           suffix: 'x',
         },
@@ -843,43 +828,43 @@ export const getModelPriceItems = (
     return [
       {
         key: 'input',
-        label: t('输入价格'),
+        label: t('杈撳叆浠锋牸'),
         value: priceData.inputPrice,
         suffix: unitSuffix,
       },
       {
         key: 'completion',
-        label: t('补全价格'),
+        label: t('琛ュ叏浠锋牸'),
         value: priceData.completionPrice,
         suffix: unitSuffix,
       },
       {
         key: 'cache',
-        label: t('缓存读取价格'),
+        label: t('缂撳瓨璇诲彇浠锋牸'),
         value: priceData.cachePrice,
         suffix: unitSuffix,
       },
       {
         key: 'create-cache',
-        label: t('缓存创建价格'),
+        label: t('缂撳瓨鍒涘缓浠锋牸'),
         value: priceData.createCachePrice,
         suffix: unitSuffix,
       },
       {
         key: 'image',
-        label: t('图片输入价格'),
+        label: t('鍥剧墖杈撳叆浠锋牸'),
         value: priceData.imagePrice,
         suffix: unitSuffix,
       },
       {
         key: 'audio-input',
-        label: t('音频输入价格'),
+        label: t('闊抽杈撳叆浠锋牸'),
         value: priceData.audioInputPrice,
         suffix: unitSuffix,
       },
       {
         key: 'audio-output',
-        label: t('音频补全价格'),
+        label: t('闊抽琛ュ叏浠锋牸'),
         value: priceData.audioOutputPrice,
         suffix: unitSuffix,
       },
@@ -889,16 +874,21 @@ export const getModelPriceItems = (
   return [
     {
       key: 'fixed',
-      label: t('模型价格'),
+      label: t('妯″瀷浠锋牸'),
       value: priceData.price,
-      suffix: ` / ${t('次')}`,
+      suffix: ` / ${t('times')}`,
     },
   ].filter((item) => item.value !== null && item.value !== undefined && item.value !== '');
 };
 
-// 格式化动态计费摘要（用于卡片视图，与 formatPriceInfo 风格统一）
 export const formatDynamicPriceSummary = (billingExpr, t, groupRatio = 1) => {
-  if (!billingExpr) return <span style={{ color: 'var(--semi-color-text-1)' }}>{t('动态计费')}</span>;
+  if (!billingExpr) {
+    return (
+      <span style={{ color: 'var(--semi-color-text-1)' }}>
+        {t('Dynamic pricing')}
+      </span>
+    );
+  }
 
   const quotaDisplayType = localStorage.getItem('quota_display_type') || 'USD';
   let symbol = '$';
@@ -906,10 +896,10 @@ export const formatDynamicPriceSummary = (billingExpr, t, groupRatio = 1) => {
   try {
     const s = JSON.parse(localStorage.getItem('status') || '{}');
     if (quotaDisplayType === 'CNY') {
-      symbol = '¥';
+      symbol = '楼';
       rate = s?.usd_exchange_rate || 7;
     } else if (quotaDisplayType === 'CUSTOM') {
-      symbol = s?.custom_currency_symbol || '¤';
+      symbol = s?.custom_currency_symbol || '陇';
       rate = s?.custom_currency_exchange_rate || 1;
     }
   } catch (e) {}
@@ -933,9 +923,9 @@ export const formatDynamicPriceSummary = (billingExpr, t, groupRatio = 1) => {
   const hasRequestCondition = /\b(?:param|header)\(/.test(exprBody);
 
   const tags = [];
-  if (tierCount > 1) tags.push(`${tierCount}${t('档')}`);
-  if (hasTimeCondition) tags.push(t('含时间条件'));
-  if (hasRequestCondition) tags.push(t('含请求条件'));
+  if (tierCount > 1) tags.push(`${tierCount} ${t('tiers')}`);
+  if (hasTimeCondition) tags.push(t('contains time condition'));
+  if (hasRequestCondition) tags.push(t('contains request condition'));
 
   const unitSuffix = ' / 1M Tokens';
   const lineStyle = { color: 'var(--semi-color-text-1)' };
@@ -965,7 +955,7 @@ export const formatDynamicPriceSummary = (billingExpr, t, groupRatio = 1) => {
             color: 'var(--semi-color-warning)',
           }}
         >
-          {t('动态计费')}
+          {t('Dynamic pricing')}
         </span>
         {tags.map((tag) => (
           <span
@@ -988,7 +978,6 @@ export const formatDynamicPriceSummary = (billingExpr, t, groupRatio = 1) => {
   );
 };
 
-// 格式化价格信息（用于卡片视图）
 export const formatPriceInfo = (priceData, t, quotaDisplayType = 'USD') => {
   const items = getModelPriceItems(priceData, t, quotaDisplayType);
   return (
@@ -1004,8 +993,8 @@ export const formatPriceInfo = (priceData, t, quotaDisplayType = 'USD') => {
 };
 
 // -------------------------------
-// CardPro 分页配置函数
-// 用于创建 CardPro 的 paginationArea 配置
+// CardPro 鍒嗛〉閰嶇疆鍑芥暟
+// 鐢ㄤ簬鍒涘缓 CardPro 鐨?paginationArea 閰嶇疆
 export const createCardProPagination = ({
   currentPage,
   pageSize,
@@ -1021,11 +1010,11 @@ export const createCardProPagination = ({
 
   const start = (currentPage - 1) * pageSize + 1;
   const end = Math.min(currentPage * pageSize, total);
-  const totalText = `${t('显示第')} ${start} ${t('条 - 第')} ${end} ${t('条，共')} ${total} ${t('条')}`;
+  const totalText = `${t('Showing')} ${start} ${t('to')} ${end} ${t('of')} ${total} ${t('items')}`;
 
   return (
     <>
-      {/* 桌面端左侧总数信息 */}
+      {/* 妗岄潰绔乏渚ф€绘暟淇℃伅 */}
       {!isMobile && (
         <span
           className='text-sm select-none'
@@ -1035,7 +1024,7 @@ export const createCardProPagination = ({
         </span>
       )}
 
-      {/* 右侧分页控件 */}
+      {/* 鍙充晶鍒嗛〉鎺т欢 */}
       <Pagination
         currentPage={currentPage}
         pageSize={pageSize}
@@ -1052,7 +1041,6 @@ export const createCardProPagination = ({
   );
 };
 
-// 模型定价筛选条件默认值
 const DEFAULT_PRICING_FILTERS = {
   search: '',
   showWithRecharge: false,
@@ -1068,7 +1056,6 @@ const DEFAULT_PRICING_FILTERS = {
   currentPage: 1,
 };
 
-// 重置模型定价筛选条件
 export const resetPricingFilters = ({
   handleChange,
   setShowWithRecharge,
@@ -1096,3 +1083,4 @@ export const resetPricingFilters = ({
   setFilterTag?.(DEFAULT_PRICING_FILTERS.filterTag);
   setCurrentPage?.(DEFAULT_PRICING_FILTERS.currentPage);
 };
+

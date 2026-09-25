@@ -41,7 +41,7 @@ func (user *UserBase) GetSetting() dto.UserSetting {
 			common.SysLog("failed to unmarshal setting: " + err.Error())
 		}
 	}
-	return setting
+	return normalizeUserSetting(setting)
 }
 
 // getUserCacheKey returns the key for user cache

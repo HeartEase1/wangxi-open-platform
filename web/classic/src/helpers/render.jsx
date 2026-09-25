@@ -55,6 +55,7 @@ import {
   OpenRouter,
   Dify,
   Coze,
+  AgentIcon,
   SiliconCloud,
   FastGPT,
   Kling,
@@ -397,6 +398,8 @@ export function getChannelIcon(channelType) {
       return <XAI size={iconSize} />;
     case 49: // Coze
       return <Coze size={iconSize} />;
+    case 59: // AstrBot
+      return <AgentIcon size={iconSize} />;
     case 50: // 可灵 Kling
       return <Kling.Color size={iconSize} />;
     case 51: // 即梦 Jimeng
@@ -430,6 +433,19 @@ export function getLobeHubIcon(iconName, size = 14) {
   // 如果没有图标名称，返回 Avatar
   if (!iconName) {
     return <Avatar size='extra-extra-small'>?</Avatar>;
+  }
+
+  if (/^(https?:\/\/|\/|\.\/|\.\.\/|data:image\/)/i.test(String(iconName))) {
+    return (
+      <img
+        src={String(iconName)}
+        alt={String(iconName)}
+        width={size}
+        height={size}
+        className='rounded-full object-contain'
+        style={{ width: size, height: size }}
+      />
+    );
   }
 
   // 解析组件路径与点号链式属性

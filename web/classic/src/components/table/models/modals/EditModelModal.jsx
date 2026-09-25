@@ -59,6 +59,32 @@ const nameRuleOptions = [
   { label: '后缀名称匹配', value: 3 },
 ];
 
+const STARTRACE_VENDOR_NAME = '\u661f\u6eaf';
+const STARTRACE_VENDOR_ICON = '/logo.png';
+
+const resolveVendorIcon = (vendorInfo) => {
+  if (!vendorInfo) {
+    return '';
+  }
+
+  const configuredIcon = String(vendorInfo.icon || '').trim();
+  if (configuredIcon) {
+    return configuredIcon;
+  }
+
+  const normalizedVendorName = String(vendorInfo.name || '')
+    .trim()
+    .toLowerCase();
+  if (
+    normalizedVendorName === STARTRACE_VENDOR_NAME ||
+    normalizedVendorName === 'startrace'
+  ) {
+    return STARTRACE_VENDOR_ICON;
+  }
+
+  return '';
+};
+
 const EditModelModal = (props) => {
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
@@ -334,11 +360,11 @@ const EditModelModal = (props) => {
                     <Form.Input
                       field='icon'
                       label={t('模型图标')}
-                      placeholder={t('请输入图标名称')}
+                      placeholder={t('请输入图标名称或本地路径，如：/logo.png')}
                       extraText={
                         <span>
                           {t(
-                            "图标使用@lobehub/icons库，如：OpenAI、Claude.Color，支持链式参数：OpenAI.Avatar.type={'platform'}、OpenRouter.Avatar.shape={'square'}，查询所有可用图标请 ",
+                            "图标使用@lobehub/icons库或本地图片路径，如：OpenAI、Claude.Color、/logo.png，支持链式参数：OpenAI.Avatar.type={'platform'}、OpenRouter.Avatar.shape={'square'}，查询所有可用图标请 ",
                           )}
                           <Typography.Text
                             link={{
@@ -441,6 +467,14 @@ const EditModelModal = (props) => {
                             'vendor',
                             vendorInfo.name,
                           );
+
+                          const nextIcon = resolveVendorIcon(vendorInfo);
+                          const currentIcon = String(
+                            formApiRef.current.getValue('icon') || '',
+                          ).trim();
+                          if (nextIcon && !currentIcon) {
+                            formApiRef.current.setValue('icon', nextIcon);
+                          }
                         }
                       }}
                       style={{ width: '100%' }}

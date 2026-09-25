@@ -88,16 +88,23 @@ func (user *User) GetSetting() dto.UserSetting {
 			common.SysLog("failed to unmarshal setting: " + err.Error())
 		}
 	}
-	return setting
+	return normalizeUserSetting(setting)
 }
 
 func (user *User) SetSetting(setting dto.UserSetting) {
+	setting = normalizeUserSetting(setting)
 	settingBytes, err := json.Marshal(setting)
 	if err != nil {
 		common.SysLog("failed to marshal setting: " + err.Error())
 		return
 	}
 	user.Setting = string(settingBytes)
+}
+
+func normalizeUserSetting(setting dto.UserSetting) dto.UserSetting {
+	// Request/error log IP recording is enforced platform-wide.
+	setting.RecordIpLog = true
+	return setting
 }
 
 // 根据用户角色生成默认的边栏配置

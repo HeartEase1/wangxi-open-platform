@@ -79,7 +79,7 @@ export function NotificationTab({ profile, onUpdate }: NotificationTabProps) {
     gotify_token: '',
     gotify_priority: 5,
     accept_unset_model_ratio_model: false,
-    record_ip_log: false,
+    record_ip_log: true,
     upstream_model_update_notify_enabled: false,
   })
 
@@ -381,15 +381,14 @@ export function NotificationTab({ profile, onUpdate }: NotificationTabProps) {
           <div className='space-y-0.5'>
             <Label htmlFor='recordIp'>{t('Record IP Address')}</Label>
             <p className='text-muted-foreground text-xs sm:text-sm'>
-              {t('Log IP address for usage and error logs')}
+              {t(
+                'Usage and error logs always record the client IP address and this setting cannot be turned off.'
+              )}
             </p>
           </div>
-          <Switch
-            id='recordIp'
-            className='shrink-0'
-            checked={settings.record_ip_log}
-            onCheckedChange={(checked) => updateField('record_ip_log', checked)}
-          />
+          <div className='bg-muted text-foreground inline-flex h-9 items-center rounded-md border px-3 text-xs font-medium'>
+            {t('Always On')}
+          </div>
         </div>
       </div>
 

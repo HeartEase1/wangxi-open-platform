@@ -37,3 +37,27 @@ export interface HomePageContentResult {
   isLoaded: boolean
   isUrl: boolean
 }
+
+export interface HomeStatsLeaderboardItem {
+  username: string
+  tokens: number
+  requests: number
+}
+
+export interface HomeStatsPeriod {
+  tokens: number
+  requests: number
+  top_users: HomeStatsLeaderboardItem[]
+}
+
+export interface HomeStatsData {
+  today: HomeStatsPeriod
+  last_30_days: HomeStatsPeriod
+  total_registered_users: number
+}
+
+export interface HomeStatsResponse {
+  success: boolean
+  message?: string
+  data?: HomeStatsData
+}

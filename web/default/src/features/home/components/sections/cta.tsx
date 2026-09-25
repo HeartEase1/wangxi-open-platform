@@ -22,6 +22,7 @@ import { useTranslation } from 'react-i18next'
 
 import { AnimateInView } from '@/components/animate-in-view'
 import { Button } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
 
 interface CTAProps {
   className?: string
@@ -29,53 +30,38 @@ interface CTAProps {
 }
 
 export function CTA(props: CTAProps) {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
+  const text = (zh: string, en: string) =>
+    i18n.language.startsWith('zh') ? zh : t(en)
 
   if (props.isAuthenticated) {
     return null
   }
 
   return (
-    <section className='relative z-10 overflow-hidden px-6 py-24 md:py-32'>
-      {/* Gradient mesh background */}
-      <div
-        aria-hidden
-        className='absolute inset-0 -z-10 opacity-20 dark:opacity-[0.08]'
-        style={{
-          background: [
-            'radial-gradient(ellipse 50% 50% at 30% 50%, oklch(0.7 0.15 250 / 70%) 0%, transparent 70%)',
-            'radial-gradient(ellipse 40% 40% at 70% 40%, oklch(0.65 0.12 200 / 50%) 0%, transparent 70%)',
-          ].join(', '),
-        }}
-      />
-
-      <AnimateInView
-        className='mx-auto max-w-2xl text-center'
-        animation='scale-in'
-      >
-        <h2 className='text-2xl leading-tight font-bold tracking-tight md:text-4xl'>
-          {t('Ready to simplify')}
-          <br />
-          <span className='bg-gradient-to-r from-blue-400 via-violet-400 to-purple-500 bg-clip-text text-transparent'>
-            {t('your AI integration?')}
-          </span>
+    <section
+      className={cn(
+        'border-border/40 relative z-10 border-t px-6 py-20 md:py-24',
+        props.className
+      )}
+    >
+      <AnimateInView className='mx-auto flex max-w-3xl flex-col items-center text-center'>
+        <h2 className='text-2xl leading-tight font-semibold md:text-4xl'>
+          {text(
+            '\u5f00\u59cb\u63a5\u5165\u661f\u6eaf\u5927\u6a21\u578b',
+            'Start building with StarTrace LLM'
+          )}
         </h2>
-        <p className='text-muted-foreground/80 mx-auto mt-5 max-w-md text-sm leading-relaxed md:text-base'>
-          {t(
-            'Deploy your own gateway and start routing requests through your configured upstream services.'
+        <p className='text-muted-foreground/80 mx-auto mt-5 max-w-xl text-sm leading-relaxed md:text-base'>
+          {text(
+            '\u521b\u5efa API Key \u540e\uff0c\u5373\u53ef\u901a\u8fc7\u517c\u5bb9\u63a5\u53e3\u8bf7\u6c42 StarTrace-[\u89d2\u8272\u4ee3\u53f7]-[\u7248\u672c\u53f7] \u6a21\u578b\u3002',
+            'Create an API key, then request StarTrace-[RoleCode]-[Version] models through the compatible API.'
           )}
         </p>
-        <div className='mt-8 flex items-center justify-center gap-3'>
+        <div className='mt-8 flex items-center justify-center'>
           <Button className='group rounded-lg' render={<Link to='/sign-up' />}>
             {t('Get Started')}
             <ArrowRight className='ml-1 size-3.5 transition-transform duration-200 group-hover:translate-x-0.5' />
-          </Button>
-          <Button
-            variant='outline'
-            className='border-border/50 hover:border-border hover:bg-muted/50 rounded-lg'
-            render={<Link to='/pricing' />}
-          >
-            {t('View Pricing')}
           </Button>
         </div>
       </AnimateInView>

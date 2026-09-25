@@ -4,7 +4,21 @@ WORKDIR /build/web
 COPY web/package.json web/bun.lock ./
 COPY web/default/package.json ./default/package.json
 COPY web/classic/package.json ./classic/package.json
-RUN bun install --frozen-lockfile
+RUN set -eux; \
+    attempts=0; \
+    until [ "$attempts" -ge 3 ]; do \
+      if bun install --filter ./default --frozen-lockfile; then \
+        break; \
+      fi; \
+      attempts=$((attempts + 1)); \
+      echo "bun install for default failed, retrying ($attempts/3)..." >&2; \
+      rm -rf /root/.bun/install/cache/*; \
+      sleep 3; \
+    done; \
+    if [ "$attempts" -ge 3 ]; then \
+      echo "bun install for default failed after 3 attempts" >&2; \
+      exit 1; \
+    fi
 COPY ./web/default ./default
 COPY ./VERSION /build/VERSION
 RUN cd default && DISABLE_ESLINT_PLUGIN='true' VITE_REACT_APP_VERSION=$(cat /build/VERSION) bun run build
@@ -15,7 +29,21 @@ WORKDIR /build/web
 COPY web/package.json web/bun.lock ./
 COPY web/default/package.json ./default/package.json
 COPY web/classic/package.json ./classic/package.json
-RUN bun install --filter ./classic --frozen-lockfile
+RUN set -eux; \
+    attempts=0; \
+    until [ "$attempts" -ge 3 ]; do \
+      if bun install --filter ./classic --frozen-lockfile; then \
+        break; \
+      fi; \
+      attempts=$((attempts + 1)); \
+      echo "bun install for classic failed, retrying ($attempts/3)..." >&2; \
+      rm -rf /root/.bun/install/cache/*; \
+      sleep 3; \
+    done; \
+    if [ "$attempts" -ge 3 ]; then \
+      echo "bun install for classic failed after 3 attempts" >&2; \
+      exit 1; \
+    fi
 COPY ./web/classic ./classic
 COPY ./VERSION /build/VERSION
 RUN cd classic && VITE_REACT_APP_VERSION=$(cat /build/VERSION) bun run build

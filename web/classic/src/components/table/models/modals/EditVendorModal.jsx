@@ -25,6 +25,9 @@ import { IconLink } from '@douyinfe/semi-icons';
 import { useTranslation } from 'react-i18next';
 import { useIsMobile } from '../../../../hooks/common/useIsMobile';
 
+const STARTRACE_VENDOR_NAME = '\u661f\u6eaf';
+const STARTRACE_VENDOR_ICON = '/logo.png';
+
 const EditVendorModal = ({ visible, handleClose, refresh, editingVendor }) => {
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
@@ -43,6 +46,21 @@ const EditVendorModal = ({ visible, handleClose, refresh, editingVendor }) => {
   const handleCancel = () => {
     handleClose();
     formApiRef.current?.reset();
+  };
+
+  const applyStarTraceVendorPreset = (name) => {
+    const normalized = String(name || '').trim().toLowerCase();
+    const isStarTrace =
+      normalized === STARTRACE_VENDOR_NAME || normalized === 'startrace';
+
+    if (!isStarTrace || !formApiRef.current) {
+      return;
+    }
+
+    const currentIcon = String(formApiRef.current.getValue('icon') || '').trim();
+    if (!currentIcon || currentIcon === STARTRACE_VENDOR_ICON) {
+      formApiRef.current.setValue('icon', STARTRACE_VENDOR_ICON);
+    }
   };
 
   const loadVendor = async () => {
@@ -135,8 +153,9 @@ const EditVendorModal = ({ visible, handleClose, refresh, editingVendor }) => {
             <Form.Input
               field='name'
               label={t('供应商名称')}
-              placeholder={t('请输入供应商名称，如：OpenAI')}
+              placeholder={t('请输入供应商名称，如：OpenAI / 星溯')}
               rules={[{ required: true, message: t('请输入供应商名称') }]}
+              onChange={(value) => applyStarTraceVendorPreset(value)}
               showClear
             />
           </Col>
@@ -153,11 +172,11 @@ const EditVendorModal = ({ visible, handleClose, refresh, editingVendor }) => {
             <Form.Input
               field='icon'
               label={t('供应商图标')}
-              placeholder={t('请输入图标名称')}
+              placeholder={t('请输入图标名称或本地路径，如：/logo.png')}
               extraText={
                 <span>
                   {t(
-                    "图标使用@lobehub/icons库，如：OpenAI、Claude.Color，支持链式参数：OpenAI.Avatar.type={'platform'}、OpenRouter.Avatar.shape={'square'}，查询所有可用图标请 ",
+                    "图标使用@lobehub/icons库或本地图片路径，如：OpenAI、Claude.Color、/logo.png，支持链式参数：OpenAI.Avatar.type={'platform'}、OpenRouter.Avatar.shape={'square'}，查询所有可用图标请 ",
                   )}
                   <Typography.Text
                     link={{

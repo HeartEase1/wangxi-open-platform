@@ -18,20 +18,22 @@ For commercial licensing, please contact support@quantumnous.com
 */
 
 import React, { useEffect, useState } from 'react';
-import { API, showError } from '../../helpers';
-import { marked } from 'marked';
 import { Empty } from '@douyinfe/semi-ui';
 import {
   IllustrationConstruction,
   IllustrationConstructionDark,
 } from '@douyinfe/semi-illustrations';
+import { marked } from 'marked';
 import { useTranslation } from 'react-i18next';
+
+import { API, getSystemName, showError } from '../../helpers';
 
 const About = () => {
   const { t } = useTranslation();
   const [about, setAbout] = useState('');
   const [aboutLoaded, setAboutLoaded] = useState(false);
   const currentYear = new Date().getFullYear();
+  const systemName = getSystemName();
 
   const displayAbout = async () => {
     setAbout(localStorage.getItem('about') || '');
@@ -46,7 +48,7 @@ const About = () => {
       localStorage.setItem('about', aboutContent);
     } else {
       showError(message);
-      setAbout(t('加载关于内容失败...'));
+      setAbout(t('\u52a0\u8f7d\u5173\u4e8e\u5185\u5bb9\u5931\u8d25...'));
     }
     setAboutLoaded(true);
   };
@@ -61,16 +63,23 @@ const About = () => {
 
   const customDescription = (
     <div style={{ textAlign: 'center' }}>
-      <p>{t('可在设置页面设置关于内容，支持 HTML & Markdown')}</p>
-      {t('New API项目仓库地址：')}
-      <a
-        href='https://github.com/QuantumNous/new-api'
-        target='_blank'
-        rel='noopener noreferrer'
-        className='!text-semi-color-primary'
-      >
-        https://github.com/QuantumNous/new-api
-      </a>
+      <p>
+        {t(
+          '\u53ef\u5728\u8bbe\u7f6e\u9875\u9762\u8bbe\u7f6e\u5173\u4e8e\u5185\u5bb9\uff0c\u652f\u6301 HTML \u0026 Markdown',
+        )}
+      </p>
+      <p>
+        <span>{systemName}</span>{' '}
+        {t('|\u0020\u57fa\u4e8e\u4e0a\u6e38')}{' '}
+        <a
+          href='https://github.com/QuantumNous/new-api'
+          target='_blank'
+          rel='noopener noreferrer'
+          className='!text-semi-color-primary'
+        >
+          New API
+        </a>
+      </p>
       <p>
         <a
           href='https://github.com/QuantumNous/new-api'
@@ -78,9 +87,9 @@ const About = () => {
           rel='noopener noreferrer'
           className='!text-semi-color-primary'
         >
-          NewAPI
+          New API
         </a>{' '}
-        {t('© {{currentYear}}', { currentYear })}{' '}
+        (c) {currentYear}{' '}
         <a
           href='https://github.com/QuantumNous'
           target='_blank'
@@ -89,7 +98,7 @@ const About = () => {
         >
           QuantumNous
         </a>{' '}
-        {t('| 基于')}{' '}
+        {t('|\u0020\u57fa\u4e8e')}{' '}
         <a
           href='https://github.com/songquanpeng/one-api/releases/tag/v0.5.4'
           target='_blank'
@@ -98,7 +107,7 @@ const About = () => {
         >
           One API v0.5.4
         </a>{' '}
-        © 2023{' '}
+        (c) 2023{' '}
         <a
           href='https://github.com/songquanpeng'
           target='_blank'
@@ -109,25 +118,18 @@ const About = () => {
         </a>
       </p>
       <p>
-        {t('本项目根据')}
+        {t('\u672c\u9879\u76ee\u9700\u5728\u9075\u5faa')}{' '}
         <a
-          href='https://github.com/songquanpeng/one-api/blob/v0.5.4/LICENSE'
+          href='https://github.com/QuantumNous/new-api/blob/main/LICENSE'
           target='_blank'
           rel='noopener noreferrer'
           className='!text-semi-color-primary'
         >
-          {t('MIT许可证')}
-        </a>
-        {t('授权，需在遵守')}
-        <a
-          href='https://www.gnu.org/licenses/agpl-3.0.html'
-          target='_blank'
-          rel='noopener noreferrer'
-          className='!text-semi-color-primary'
-        >
-          {t('AGPL v3.0协议')}
-        </a>
-        {t('的前提下使用。')}
+          AGPL v3.0
+        </a>{' '}
+        {t(
+          '\u8bb8\u53ef\u8bc1\u7684\u524d\u63d0\u4e0b\u4f7f\u7528\uff0c\u5e76\u4fdd\u7559\u4e0a\u6e38\u5f00\u6e90\u9879\u76ee\u5f52\u5c5e\u3002',
+        )}
       </p>
     </div>
   );
@@ -135,7 +137,7 @@ const About = () => {
   return (
     <div className='classic-page-fill flex flex-col pt-[60px] px-2'>
       {aboutLoaded && about === '' ? (
-        <div className='flex flex-1 justify-center items-center p-8'>
+        <div className='flex flex-1 items-center justify-center p-8'>
           <Empty
             image={
               <IllustrationConstruction style={{ width: 150, height: 150 }} />
@@ -145,7 +147,9 @@ const About = () => {
                 style={{ width: 150, height: 150 }}
               />
             }
-            description={t('管理员暂时未设置任何关于内容')}
+            description={t(
+              '\u7ba1\u7406\u5458\u6682\u672a\u8bbe\u7f6e\u4efb\u4f55\u5173\u4e8e\u5185\u5bb9',
+            )}
             style={emptyStyle}
           >
             {customDescription}

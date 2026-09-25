@@ -1,6 +1,7 @@
 package model
 
 import (
+	"errors"
 	"github.com/QuantumNous/new-api/common"
 
 	"gorm.io/gorm"
@@ -52,8 +53,32 @@ func (v *Vendor) Delete() error {
 	return DB.Delete(v).Error
 }
 
+func ensureDefaultVendorSeed() error {
+	var vendor Vendor
+	err := DB.Where("name = ?", defaultStarTraceVendorName).First(&vendor).Error
+	if err == nil {
+		return nil
+	}
+	if !errors.Is(err, gorm.ErrRecordNotFound) {
+		return err
+	}
+
+	now := common.GetTimestamp()
+	vendor = Vendor{
+		Name:        defaultStarTraceVendorName,
+		Icon:        defaultStarTraceVendorIcon,
+		Status:      1,
+		CreatedTime: now,
+		UpdatedTime: now,
+	}
+	return DB.Create(&vendor).Error
+}
+
 // GetVendorByID 根据 ID 获取供应商
 func GetVendorByID(id int) (*Vendor, error) {
+	if err := ensureDefaultVendorSeed(); err != nil {
+		return nil, err
+	}
 	var v Vendor
 	err := DB.First(&v, id).Error
 	if err != nil {
@@ -64,6 +89,9 @@ func GetVendorByID(id int) (*Vendor, error) {
 
 // GetAllVendors 获取全部供应商（分页）
 func GetAllVendors(offset int, limit int) ([]*Vendor, error) {
+	if err := ensureDefaultVendorSeed(); err != nil {
+		return nil, err
+	}
 	var vendors []*Vendor
 	err := DB.Offset(offset).Limit(limit).Find(&vendors).Error
 	return vendors, err
@@ -71,6 +99,9 @@ func GetAllVendors(offset int, limit int) ([]*Vendor, error) {
 
 // SearchVendors 按关键字搜索供应商
 func SearchVendors(keyword string, offset int, limit int) ([]*Vendor, int64, error) {
+	if err := ensureDefaultVendorSeed(); err != nil {
+		return nil, 0, err
+	}
 	db := DB.Model(&Vendor{})
 	if keyword != "" {
 		like := "%" + keyword + "%"

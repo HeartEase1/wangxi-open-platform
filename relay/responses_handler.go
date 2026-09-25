@@ -78,6 +78,14 @@ func ResponsesHelper(c *gin.Context, info *relaycommon.RelayInfo) (newAPIError *
 		}
 		requestBody = common.ReaderOnly(storage)
 	} else {
+		if info.ChannelType == appconstant.ChannelTypeOpenAI {
+			if info.ChannelOtherSettings.StripCallerPromptsEnabled {
+				stripOpenAIResponsesCallerPrompts(request)
+			}
+			if info.ChannelOtherSettings.OpenAIPromptFilterEnabled {
+				applyOpenAIResponsesPromptFilter(request)
+			}
+		}
 		convertedRequest, err := adaptor.ConvertOpenAIResponsesRequest(c, info, *request)
 		if err != nil {
 			return types.NewError(err, types.ErrorCodeConvertRequestFailed, types.ErrOptionWithSkipRetry())

@@ -23,11 +23,13 @@ import { useTranslation } from 'react-i18next'
 import { PublicLayout } from '@/components/layout'
 import { RichContent } from '@/components/rich-content'
 import { Skeleton } from '@/components/ui/skeleton'
+import { useStatus } from '@/hooks/use-status'
 import { isHttpUrl, isLikelyHtml } from '@/lib/content-format'
+import { DEFAULT_SYSTEM_NAME } from '@/lib/constants'
 
 import { getAboutContent } from './api'
 
-function EmptyAboutState() {
+function EmptyAboutState(props: { platformName: string }) {
   const { t } = useTranslation()
   const currentYear = new Date().getFullYear()
 
@@ -47,14 +49,14 @@ function EmptyAboutState() {
         </div>
         <div className='space-y-4 text-sm'>
           <p>
-            {t('New API Project Repository:')}{' '}
+            {props.platformName} {t('| Based on')}{' '}
             <a
               href='https://github.com/QuantumNous/new-api'
               target='_blank'
               rel='noopener noreferrer'
               className='text-primary hover:underline'
             >
-              {t('https://github.com/QuantumNous/new-api')}
+              New API
             </a>
           </p>
           <p className='text-muted-foreground'>
@@ -64,9 +66,9 @@ function EmptyAboutState() {
               rel='noopener noreferrer'
               className='text-primary hover:underline'
             >
-              {t('NewAPI')}
+              New API
             </a>{' '}
-            © {currentYear}{' '}
+            (c) {currentYear}{' '}
             <a
               href='https://github.com/QuantumNous'
               target='_blank'
@@ -84,7 +86,7 @@ function EmptyAboutState() {
             >
               {t('One API')}
             </a>{' '}
-            © 2023{' '}
+            (c) 2023{' '}
             <a
               href='https://github.com/songquanpeng'
               target='_blank'
@@ -114,11 +116,13 @@ function EmptyAboutState() {
 
 export function About() {
   const { t } = useTranslation()
+  const { status } = useStatus()
   const { data, isLoading } = useQuery({
     queryKey: ['about-content'],
     queryFn: getAboutContent,
   })
 
+  const platformName = status?.system_name || DEFAULT_SYSTEM_NAME
   const rawContent = data?.data?.trim() ?? ''
   const hasContent = rawContent.length > 0
   const isUrl = hasContent && isHttpUrl(rawContent)
@@ -140,7 +144,7 @@ export function About() {
   if (!hasContent) {
     return (
       <PublicLayout>
-        <EmptyAboutState />
+        <EmptyAboutState platformName={platformName} />
       </PublicLayout>
     )
   }

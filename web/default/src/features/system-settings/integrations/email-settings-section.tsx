@@ -370,7 +370,9 @@ export function EmailSettingsSection({
                 <FormControl>
                   <Input
                     autoComplete='off'
-                    placeholder={t('New API &lt;noreply@example.com&gt;')}
+                    placeholder={t(
+                      '星际和平公司 API 调用平台 &lt;noreply@example.com&gt;'
+                    )}
                     {...field}
                     onChange={(event) => field.onChange(event.target.value)}
                   />

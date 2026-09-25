@@ -24,12 +24,13 @@ import { getFooterHTML, getLogo, getSystemName } from '../../helpers';
 import { StatusContext } from '../../context/Status';
 
 const FooterBar = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [footer, setFooter] = useState(getFooterHTML());
   const systemName = getSystemName();
   const logo = getLogo();
   const [statusState] = useContext(StatusContext);
   const isDemoSiteMode = statusState?.status?.demo_site_enabled || false;
+  const text = (zh, en) => (i18n.language.startsWith('zh') ? zh : t(en));
 
   const loadFooter = () => {
     let footer_html = localStorage.getItem('footer_html');
@@ -39,6 +40,40 @@ const FooterBar = () => {
   };
 
   const currentYear = new Date().getFullYear();
+  const filingLink = (
+    <a
+      href='https://ipc.xilianai.com/ipc/%E6%98%9FIPC%E5%A4%8720266666%E5%8F%B7'
+      target='_blank'
+      rel='noopener noreferrer'
+      className='inline-flex items-center gap-1.5 !text-semi-color-text-1 hover:opacity-90'
+    >
+      <img
+        src='https://ipc.xilianai.com/favicon.png'
+        alt=''
+        aria-hidden='true'
+        width={16}
+        height={16}
+        className='w-4 h-4 rounded-[4px] object-contain'
+      />
+      <span>{'\u661fIPC\u590720266666\u53f7'}</span>
+    </a>
+  );
+  const projectAttribution = (
+    <div className='text-sm flex flex-wrap items-center justify-center gap-1 md:justify-end'>
+      <span className='!text-semi-color-text-1'>{systemName}</span>
+      <span className='!text-semi-color-text-1'>
+        {text('\u57fa\u4e8e\u4e0a\u6e38', 'Based on')}
+      </span>
+      <a
+        href='https://github.com/QuantumNous/new-api'
+        target='_blank'
+        rel='noopener noreferrer'
+        className='!text-semi-color-primary font-medium'
+      >
+        New API
+      </a>
+    </div>
+  );
 
   const customFooter = useMemo(
     () => (
@@ -63,7 +98,7 @@ const FooterBar = () => {
                 </p>
                 <div className='flex flex-col gap-4'>
                   <a
-                    href='https://docs.newapi.pro/wiki/project-introduction/'
+                    href='/about'
                     target='_blank'
                     rel='noopener noreferrer'
                     className='!text-semi-color-text-1'
@@ -71,7 +106,7 @@ const FooterBar = () => {
                     {t('关于项目')}
                   </a>
                   <a
-                    href='https://docs.newapi.pro/support/community-interaction/'
+                    href='/docs#support'
                     target='_blank'
                     rel='noopener noreferrer'
                     className='!text-semi-color-text-1'
@@ -79,7 +114,7 @@ const FooterBar = () => {
                     {t('联系我们')}
                   </a>
                   <a
-                    href='https://docs.newapi.pro/wiki/features-introduction/'
+                    href='/docs#models'
                     target='_blank'
                     rel='noopener noreferrer'
                     className='!text-semi-color-text-1'
@@ -95,7 +130,7 @@ const FooterBar = () => {
                 </p>
                 <div className='flex flex-col gap-4'>
                   <a
-                    href='https://docs.newapi.pro/getting-started/'
+                    href='/docs#quick-start'
                     target='_blank'
                     rel='noopener noreferrer'
                     className='!text-semi-color-text-1'
@@ -103,7 +138,7 @@ const FooterBar = () => {
                     {t('快速开始')}
                   </a>
                   <a
-                    href='https://docs.newapi.pro/installation/'
+                    href='/docs#admin'
                     target='_blank'
                     rel='noopener noreferrer'
                     className='!text-semi-color-text-1'
@@ -111,7 +146,7 @@ const FooterBar = () => {
                     {t('安装指南')}
                   </a>
                   <a
-                    href='https://docs.newapi.pro/api/'
+                    href='/docs#api-reference'
                     target='_blank'
                     rel='noopener noreferrer'
                     className='!text-semi-color-text-1'
@@ -191,27 +226,19 @@ const FooterBar = () => {
         <div className='flex flex-col md:flex-row items-center justify-between w-full max-w-[1110px] gap-6'>
           <div className='flex flex-wrap items-center gap-2'>
             <Typography.Text className='text-sm !text-semi-color-text-1'>
-              © {currentYear} {systemName}. {t('版权所有')}
+              © {currentYear} {systemName}.{' '}
+              {text('\u7248\u6743\u6240\u6709', 'All rights reserved')}
             </Typography.Text>
           </div>
 
-          <div className='text-sm'>
-            <span className='!text-semi-color-text-1'>
-              {t('设计与开发由')}{' '}
-            </span>
-            <a
-              href='https://github.com/QuantumNous/new-api'
-              target='_blank'
-              rel='noopener noreferrer'
-              className='!text-semi-color-primary font-medium'
-            >
-              New API
-            </a>
+          <div className='flex flex-col items-center gap-2 md:items-end'>
+            {projectAttribution}
+            {filingLink}
           </div>
         </div>
       </footer>
     ),
-    [logo, systemName, t, currentYear, isDemoSiteMode],
+    [currentYear, filingLink, isDemoSiteMode, logo, projectAttribution, systemName, t, text],
   );
 
   useEffect(() => {
@@ -227,18 +254,9 @@ const FooterBar = () => {
               className='custom-footer na-cb6feafeb3990c78 text-sm !text-semi-color-text-1'
               dangerouslySetInnerHTML={{ __html: footer }}
             ></div>
-            <div className='text-sm flex-shrink-0'>
-              <span className='!text-semi-color-text-1'>
-                {t('设计与开发由')}{' '}
-              </span>
-              <a
-                href='https://github.com/QuantumNous/new-api'
-                target='_blank'
-                rel='noopener noreferrer'
-                className='!text-semi-color-primary font-medium'
-              >
-                New API
-              </a>
+            <div className='flex flex-col items-center gap-2 text-sm flex-shrink-0 md:items-end'>
+              {projectAttribution}
+              {filingLink}
             </div>
           </div>
         </footer>

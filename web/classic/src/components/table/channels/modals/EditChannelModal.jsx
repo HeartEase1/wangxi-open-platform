@@ -86,7 +86,6 @@ import {
 } from '@douyinfe/semi-icons';
 
 const { Text, Title } = Typography;
-
 const MODEL_MAPPING_EXAMPLE = {
   'gpt-3.5-turbo': 'gpt-3.5-turbo-0125',
 };
@@ -207,6 +206,8 @@ const EditChannelModal = (props) => {
     allow_safety_identifier: false,
     allow_include_obfuscation: false,
     allow_inference_geo: false,
+    strip_caller_prompts_enabled: false,
+    openai_prompt_filter_enabled: false,
     allow_speed: false,
     claude_beta_query: false,
     upstream_model_update_check_enabled: false,
@@ -214,6 +215,14 @@ const EditChannelModal = (props) => {
     upstream_model_update_last_check_time: 0,
     upstream_model_update_last_detected_models: [],
     upstream_model_update_ignored_models: '',
+    astrbot_config_id: '',
+    astrbot_config_name: '',
+    astrbot_selected_provider: '',
+    astrbot_selected_model: '',
+    astrbot_context_mode: 'caller',
+    astrbot_reuse_caller_conversation_id: false,
+    astrbot_require_conversation_id: false,
+    astrbot_disable_prompt_filter: false,
   };
   const [batch, setBatch] = useState(false);
   const [multiToSingle, setMultiToSingle] = useState(false);
@@ -907,6 +916,10 @@ const EditChannelModal = (props) => {
             parsedSettings.allow_include_obfuscation || false;
           data.allow_inference_geo =
             parsedSettings.allow_inference_geo || false;
+          data.strip_caller_prompts_enabled =
+            parsedSettings.strip_caller_prompts_enabled === true;
+          data.openai_prompt_filter_enabled =
+            parsedSettings.openai_prompt_filter_enabled === true;
           data.allow_speed = parsedSettings.allow_speed || false;
           data.claude_beta_query = parsedSettings.claude_beta_query || false;
           data.upstream_model_update_check_enabled =
@@ -925,6 +938,30 @@ const EditChannelModal = (props) => {
           )
             ? parsedSettings.upstream_model_update_ignored_models.join(',')
             : '';
+          data.astrbot_config_id = parsedSettings.astrbot_config_id || '';
+          data.astrbot_config_name = parsedSettings.astrbot_config_name || '';
+          data.astrbot_selected_provider =
+            parsedSettings.astrbot_selected_provider || '';
+          data.astrbot_selected_model =
+            parsedSettings.astrbot_selected_model || '';
+          data.astrbot_context_mode = [
+            'startrace',
+            'astrbot',
+            'framework',
+            'hosted',
+          ].includes(
+            String(parsedSettings.astrbot_context_mode || '')
+              .trim()
+              .toLowerCase(),
+          )
+            ? 'startrace'
+            : 'caller';
+          data.astrbot_reuse_caller_conversation_id =
+            parsedSettings.astrbot_reuse_caller_conversation_id === true;
+          data.astrbot_require_conversation_id =
+            parsedSettings.astrbot_require_conversation_id === true;
+          data.astrbot_disable_prompt_filter =
+            parsedSettings.astrbot_disable_prompt_filter === true;
         } catch (error) {
           console.error('解析其他设置失败:', error);
           data.azure_responses_version = '';
@@ -937,6 +974,8 @@ const EditChannelModal = (props) => {
           data.allow_safety_identifier = false;
           data.allow_include_obfuscation = false;
           data.allow_inference_geo = false;
+          data.strip_caller_prompts_enabled = false;
+          data.openai_prompt_filter_enabled = false;
           data.allow_speed = false;
           data.claude_beta_query = false;
           data.upstream_model_update_check_enabled = false;
@@ -944,6 +983,14 @@ const EditChannelModal = (props) => {
           data.upstream_model_update_last_check_time = 0;
           data.upstream_model_update_last_detected_models = [];
           data.upstream_model_update_ignored_models = '';
+          data.astrbot_config_id = '';
+          data.astrbot_config_name = '';
+          data.astrbot_selected_provider = '';
+          data.astrbot_selected_model = '';
+          data.astrbot_context_mode = 'caller';
+          data.astrbot_reuse_caller_conversation_id = false;
+          data.astrbot_require_conversation_id = false;
+          data.astrbot_disable_prompt_filter = false;
         }
       } else {
         // 兼容历史数据：老渠道没有 settings 时，默认按 json 展示
@@ -955,6 +1002,8 @@ const EditChannelModal = (props) => {
         data.allow_safety_identifier = false;
         data.allow_include_obfuscation = false;
         data.allow_inference_geo = false;
+        data.strip_caller_prompts_enabled = false;
+        data.openai_prompt_filter_enabled = false;
         data.allow_speed = false;
         data.claude_beta_query = false;
         data.upstream_model_update_check_enabled = false;
@@ -962,6 +1011,14 @@ const EditChannelModal = (props) => {
         data.upstream_model_update_last_check_time = 0;
         data.upstream_model_update_last_detected_models = [];
         data.upstream_model_update_ignored_models = '';
+        data.astrbot_config_id = '';
+        data.astrbot_config_name = '';
+        data.astrbot_selected_provider = '';
+        data.astrbot_selected_model = '';
+        data.astrbot_context_mode = 'caller';
+        data.astrbot_reuse_caller_conversation_id = false;
+        data.astrbot_require_conversation_id = false;
+        data.astrbot_disable_prompt_filter = false;
       }
 
       if (
@@ -1035,6 +1092,8 @@ const EditChannelModal = (props) => {
         data.pass_through_body_enabled ||
         data.force_format ||
         data.claude_beta_query ||
+        data.strip_caller_prompts_enabled ||
+        data.openai_prompt_filter_enabled ||
         data.system_prompt_override;
       if (hasAdvancedValues) {
         setAdvancedSettingsOpen(true);
@@ -1653,6 +1712,21 @@ const EditChannelModal = (props) => {
       return;
     }
     if (
+      localInputs.type === 59 &&
+      (!localInputs.base_url || localInputs.base_url.trim() === '')
+    ) {
+      showInfo('请输入 AstrBot Base URL');
+      return;
+    }
+    if (
+      localInputs.type === 59 &&
+      !String(localInputs.astrbot_config_id || '').trim() &&
+      !String(localInputs.astrbot_config_name || '').trim()
+    ) {
+      showInfo('AstrBot 必须填写 Config ID 或 Config Name');
+      return;
+    }
+    if (
       localInputs.type === 45 &&
       (!localInputs.base_url || localInputs.base_url.trim() === '')
     ) {
@@ -1788,12 +1862,42 @@ const EditChannelModal = (props) => {
           localInputs.allow_safety_identifier === true;
         settings.allow_include_obfuscation =
           localInputs.allow_include_obfuscation === true;
+        settings.openai_prompt_filter_enabled =
+          localInputs.openai_prompt_filter_enabled === true;
       }
       if (localInputs.type === 14) {
         settings.allow_inference_geo = localInputs.allow_inference_geo === true;
         settings.allow_speed = localInputs.allow_speed === true;
         settings.claude_beta_query = localInputs.claude_beta_query === true;
       }
+    } else {
+      delete settings.allow_service_tier;
+      delete settings.disable_store;
+      delete settings.allow_safety_identifier;
+      delete settings.allow_include_obfuscation;
+      delete settings.allow_inference_geo;
+      delete settings.openai_prompt_filter_enabled;
+      delete settings.allow_speed;
+      delete settings.claude_beta_query;
+    }
+
+    if (localInputs.type === 1 || localInputs.type === 59) {
+      settings.strip_caller_prompts_enabled =
+        localInputs.strip_caller_prompts_enabled === true;
+    } else {
+      delete settings.strip_caller_prompts_enabled;
+    }
+
+    if (localInputs.type !== 1) {
+      delete settings.disable_store;
+      delete settings.allow_safety_identifier;
+      delete settings.allow_include_obfuscation;
+      delete settings.openai_prompt_filter_enabled;
+    }
+
+    if (localInputs.type !== 14) {
+      delete settings.allow_speed;
+      delete settings.claude_beta_query;
     }
 
     settings.upstream_model_update_check_enabled =
@@ -1819,6 +1923,100 @@ const EditChannelModal = (props) => {
       settings.upstream_model_update_last_check_time = 0;
     }
 
+    if (localInputs.type === 59) {
+      const astrbotConfigID = String(localInputs.astrbot_config_id || '').trim();
+      const astrbotConfigName = String(
+        localInputs.astrbot_config_name || '',
+      ).trim();
+      const astrbotSelectedProvider = String(
+        localInputs.astrbot_selected_provider || '',
+      ).trim();
+      const astrbotSelectedModel = String(
+        localInputs.astrbot_selected_model || '',
+      ).trim();
+      const astrbotContextMode = [
+        'startrace',
+        'astrbot',
+        'framework',
+        'hosted',
+      ].includes(
+        String(localInputs.astrbot_context_mode || '')
+          .trim()
+          .toLowerCase(),
+      )
+        ? 'startrace'
+        : 'caller';
+      const astrbotRequireConversationID =
+        localInputs.astrbot_require_conversation_id === true;
+      const astrbotReuseCallerConversationID =
+        localInputs.astrbot_reuse_caller_conversation_id === true;
+      const astrbotDisablePromptFilter =
+        localInputs.astrbot_disable_prompt_filter === true;
+
+      if (astrbotConfigID) {
+        settings.astrbot_config_id = astrbotConfigID;
+        delete settings.astrbot_config_name;
+      } else {
+        delete settings.astrbot_config_id;
+        if (astrbotConfigName) {
+          settings.astrbot_config_name = astrbotConfigName;
+        } else {
+          delete settings.astrbot_config_name;
+        }
+      }
+
+      if (astrbotSelectedProvider) {
+        settings.astrbot_selected_provider = astrbotSelectedProvider;
+      } else {
+        delete settings.astrbot_selected_provider;
+      }
+
+      if (astrbotSelectedModel) {
+        settings.astrbot_selected_model = astrbotSelectedModel;
+      } else {
+        delete settings.astrbot_selected_model;
+      }
+
+      if (astrbotContextMode === 'startrace') {
+        settings.astrbot_context_mode = 'startrace';
+      } else {
+        delete settings.astrbot_context_mode;
+      }
+
+      if (astrbotReuseCallerConversationID) {
+        settings.astrbot_reuse_caller_conversation_id = true;
+      } else {
+        delete settings.astrbot_reuse_caller_conversation_id;
+      }
+
+      if (astrbotRequireConversationID) {
+        settings.astrbot_require_conversation_id = true;
+      } else {
+        delete settings.astrbot_require_conversation_id;
+      }
+
+      if (astrbotDisablePromptFilter) {
+        settings.astrbot_disable_prompt_filter = true;
+      } else {
+        delete settings.astrbot_disable_prompt_filter;
+      }
+
+      settings.strip_caller_prompts_enabled =
+        localInputs.strip_caller_prompts_enabled === true;
+    } else {
+      delete settings.astrbot_config_id;
+      delete settings.astrbot_config_name;
+      delete settings.astrbot_selected_provider;
+      delete settings.astrbot_selected_model;
+      delete settings.astrbot_context_mode;
+      delete settings.astrbot_reuse_caller_conversation_id;
+      delete settings.astrbot_require_conversation_id;
+      delete settings.astrbot_disable_prompt_filter;
+      if (localInputs.type !== 1) {
+        delete settings.strip_caller_prompts_enabled;
+      }
+    }
+
     localInputs.settings = JSON.stringify(settings);
 
     // 清理不需要发送到后端的字段
@@ -1839,6 +2037,8 @@ const EditChannelModal = (props) => {
     delete localInputs.allow_safety_identifier;
     delete localInputs.allow_include_obfuscation;
     delete localInputs.allow_inference_geo;
+    delete localInputs.strip_caller_prompts_enabled;
+    delete localInputs.openai_prompt_filter_enabled;
     delete localInputs.allow_speed;
     delete localInputs.claude_beta_query;
     delete localInputs.upstream_model_update_check_enabled;
@@ -1846,6 +2046,14 @@ const EditChannelModal = (props) => {
     delete localInputs.upstream_model_update_last_check_time;
     delete localInputs.upstream_model_update_last_detected_models;
     delete localInputs.upstream_model_update_ignored_models;
+    delete localInputs.astrbot_config_id;
+    delete localInputs.astrbot_config_name;
+    delete localInputs.astrbot_selected_provider;
+    delete localInputs.astrbot_selected_model;
+    delete localInputs.astrbot_context_mode;
+    delete localInputs.astrbot_reuse_caller_conversation_id;
+    delete localInputs.astrbot_require_conversation_id;
+    delete localInputs.astrbot_disable_prompt_filter;
 
     let res;
     localInputs.auto_ban = localInputs.auto_ban ? 1 : 0;
@@ -2487,6 +2695,8 @@ const EditChannelModal = (props) => {
                       <Form.Switch field='disable_store' label={t('禁用 store 透传')} checkedText={t('开')} uncheckedText={t('关')} onChange={(value) => handleChannelOtherSettingsChange('disable_store', value)} extraText={t('store 字段用于授权 OpenAI 存储请求数据以评估和优化产品。默认关闭，开启后可能导致 Codex 无法正常使用')} />
                       <Form.Switch field='allow_safety_identifier' label={t('允许 safety_identifier 透传')} checkedText={t('开')} uncheckedText={t('关')} onChange={(value) => handleChannelOtherSettingsChange('allow_safety_identifier', value)} extraText={t('safety_identifier 字段用于帮助 OpenAI 识别可能违反使用政策的应用程序用户。默认关闭以保护用户隐私')} />
                       <Form.Switch field='allow_include_obfuscation' label={t('允许 stream_options.include_obfuscation 透传')} checkedText={t('开')} uncheckedText={t('关')} onChange={(value) => handleChannelOtherSettingsChange('allow_include_obfuscation', value)} extraText={t('include_obfuscation 用于控制 Responses 流混淆字段。默认关闭以避免客户端关闭该安全保护')} />
+                      <Form.Switch field='strip_caller_prompts_enabled' label={t('只保留对话消息 / Strip caller prompts')} checkedText={t('开')} uncheckedText={t('关')} onChange={(value) => handleChannelOtherSettingsChange('strip_caller_prompts_enabled', value)} extraText={t('开启后会在转发前移除调用方传入的 system/developer 消息，以及 prompt/input/instruction/prefix/suffix 等提示字段，只保留 user/assistant 对话消息；启用透传请求体时不生效。默认关闭。')} />
+                      <Form.Switch field='openai_prompt_filter_enabled' label={t('启用提示词安全过滤')} checkedText={t('开')} uncheckedText={t('关')} onChange={(value) => handleChannelOtherSettingsChange('openai_prompt_filter_enabled', value)} extraText={t('开启后会在转发前过滤用户传入的 system/developer 提示、越狱尝试、提示词提取和改人设文本；启用透传请求体时不生效。默认关闭。')} />
                     </>
                   )}
 
@@ -3331,10 +3541,259 @@ const EditChannelModal = (props) => {
                         />
                       )}
 
+                      {/*
+                      {inputs.type === 59 && (
+                        <>
+                          <div>
+                            <Form.Input
+                              field='base_url'
+                              label='AstrBot Base URL'
+                              placeholder='例如：https://astrbot.example.com'
+                              onChange={(value) =>
+                                handleInputChange('base_url', value)
+                              }
+                              showClear
+                              disabled={isIonetLocked}
+                              extraText='平台会自动调用 /api/v1/chat'
+                            />
+                          </div>
+                          <div>
+                            <Form.Input
+                              field='astrbot_config_id'
+                              label='Config ID'
+                              placeholder='例如：assistant-prod'
+                              onChange={(value) =>
+                                handleInputChange('astrbot_config_id', value)
+                              }
+                              showClear
+                              extraText='优先使用 Config ID；若同时填写 Config Name，将以 Config ID 为准'
+                            />
+                          </div>
+                          <div>
+                            <Form.Input
+                              field='astrbot_config_name'
+                              label='Config Name'
+                              placeholder='例如：default'
+                              onChange={(value) =>
+                                handleInputChange('astrbot_config_name', value)
+                              }
+                              showClear
+                              extraText='当没有 Config ID 时可改填 Config Name'
+                            />
+                          </div>
+                          <div>
+                            <Form.Input
+                              field='astrbot_selected_provider'
+                              label='Selected Provider'
+                              placeholder='可选'
+                              onChange={(value) =>
+                                handleInputChange(
+                                  'astrbot_selected_provider',
+                                  value,
+                                )
+                              }
+                              showClear
+                              extraText='可选。只有当上游 AstrBot 内部确实存在这个 provider 名称时才填写。'
+                            />
+                          </div>
+                          <Form.Switch
+                            field='astrbot_require_conversation_id'
+                            label='严格隔离模式'
+                            checkedText='开'
+                            uncheckedText='关'
+                            initValue={inputs.astrbot_require_conversation_id}
+                            onChange={(value) =>
+                              handleInputChange(
+                                'astrbot_require_conversation_id',
+                                value,
+                              )
+                            }
+                            extraText='开启后，未提供稳定会话 ID 的请求会被拒绝。支持 metadata/extra_body/顶层 conversation_id、session_id、chat_id、thread_id，以及对应 X-* headers。'
+                          />
+                          <Banner
+                            type='info'
+                            description='AstrBot 当前仅支持文本聊天与流式输出；模型列表请手动维护'
+                            className='!rounded-lg'
+                          />
+                        </>
+                      )}
+
+                      */}
+
+                      {inputs.type === 59 && (
+                        <>
+                          <div>
+                            <Form.Input
+                              field='base_url'
+                              label='AstrBot Base URL'
+                              placeholder='e.g. https://astrbot.example.com'
+                              onChange={(value) =>
+                                handleInputChange('base_url', value)
+                              }
+                              showClear
+                              disabled={isIonetLocked}
+                              extraText='The platform will call /api/v1/chat automatically.'
+                            />
+                          </div>
+                          <div>
+                            <Form.Input
+                              field='astrbot_config_id'
+                              label='Config ID'
+                              placeholder='e.g. assistant-prod'
+                              onChange={(value) =>
+                                handleInputChange('astrbot_config_id', value)
+                              }
+                              showClear
+                              extraText='Config ID is preferred when both Config ID and Config Name are filled.'
+                            />
+                          </div>
+                          <div>
+                            <Form.Input
+                              field='astrbot_config_name'
+                              label='Config Name'
+                              placeholder='e.g. default'
+                              onChange={(value) =>
+                                handleInputChange('astrbot_config_name', value)
+                              }
+                              showClear
+                              extraText='Fallback configuration name when Config ID is unavailable.'
+                            />
+                          </div>
+                          <div>
+                            <Form.Input
+                              field='astrbot_selected_provider'
+                              label='Selected Provider'
+                              placeholder='Optional provider override'
+                              onChange={(value) =>
+                                handleInputChange(
+                                  'astrbot_selected_provider',
+                                  value,
+                                )
+                              }
+                              showClear
+                              extraText='Optional. Only fill this when the exact provider name exists inside the upstream AstrBot instance.'
+                            />
+                          </div>
+                          <div>
+                            <Form.Input
+                              field='astrbot_selected_model'
+                              label='Selected Model'
+                              placeholder='Optional AstrBot internal model name'
+                              onChange={(value) =>
+                                handleInputChange(
+                                  'astrbot_selected_model',
+                                  value,
+                                )
+                              }
+                              showClear
+                              extraText='Optional. Only fill this with an AstrBot internal model name. Leave empty to omit selected_model and use the default model from the AstrBot config; do not enter public StarTrace model IDs here.'
+                            />
+                          </div>
+                          <Form.Select
+                            field='astrbot_context_mode'
+                            label='Context mode'
+                            placeholder='Select context mode'
+                            optionList={[
+                              {
+                                label:
+                                  'Caller-managed (default, Agent compatible)',
+                                value: 'caller',
+                              },
+                              {
+                                label:
+                                  'StarTrace framework-managed (memory/plugins)',
+                                value: 'startrace',
+                              },
+                            ]}
+                            style={{ width: '100%' }}
+                            onChange={(value) =>
+                              handleInputChange('astrbot_context_mode', value)
+                            }
+                            extraText={
+                              inputs.astrbot_context_mode === 'startrace'
+                                ? 'Uses a stable upstream session for long-term memory, plugins, and role companionship.'
+                                : 'Forwards caller-provided chat history and uses a temporary upstream session. Recommended for Dify, LangChain, OpenWebUI, and public multi-user integrations.'
+                            }
+                          />
+                          <Form.Switch
+                            field='astrbot_reuse_caller_conversation_id'
+                            label='Reuse caller conversation as upstream session'
+                            checkedText='On'
+                            uncheckedText='Off'
+                            initValue={
+                              inputs.astrbot_reuse_caller_conversation_id
+                            }
+                            onChange={(value) =>
+                              handleInputChange(
+                                'astrbot_reuse_caller_conversation_id',
+                                value,
+                              )
+                            }
+                            extraText={
+                              inputs.astrbot_context_mode === 'caller'
+                                ? 'Caller-managed mode only. When the caller provides conversation_id/session_id/chat_id/thread_id, reuse a stable AstrBot session bound to user + channel + config + conversation id. Different users or different conversation ids stay isolated.'
+                                : 'Only takes effect in caller-managed mode. StarTrace framework-managed mode already uses stable sessions and strict isolation controls.'
+                            }
+                          />
+                          <Form.Switch
+                            field='astrbot_require_conversation_id'
+                            label='Strict isolation mode'
+                            checkedText='On'
+                            uncheckedText='Off'
+                            initValue={inputs.astrbot_require_conversation_id}
+                            onChange={(value) =>
+                              handleInputChange(
+                                'astrbot_require_conversation_id',
+                                value,
+                              )
+                            }
+                            extraText={
+                              inputs.astrbot_context_mode === 'startrace'
+                                ? 'In StarTrace framework-managed mode, reject requests without a stable conversation id. Supports metadata/extra_body/top-level conversation_id, session_id, chat_id, thread_id, or matching X-* headers.'
+                                : 'Only takes effect in StarTrace framework-managed mode. Caller-managed mode uses temporary upstream sessions and does not require conversation ids.'
+                            }
+                          />
+                          <Form.Switch
+                            field='astrbot_disable_prompt_filter'
+                            label='Disable prompt filter (not recommended)'
+                            checkedText='On'
+                            uncheckedText='Off'
+                            initValue={inputs.astrbot_disable_prompt_filter}
+                            onChange={(value) =>
+                              handleInputChange(
+                                'astrbot_disable_prompt_filter',
+                                value,
+                              )
+                            }
+                            extraText='Prompt filtering is enabled by default. Turn this on only if you intentionally want to forward system prompts, jailbreak attempts, and persona-changing input to StarTrace.'
+                          />
+                          <Form.Switch
+                            field='strip_caller_prompts_enabled'
+                            label='只保留对话消息 / Strip caller prompts'
+                            checkedText='On'
+                            uncheckedText='Off'
+                            initValue={inputs.strip_caller_prompts_enabled}
+                            onChange={(value) =>
+                              handleInputChange(
+                                'strip_caller_prompts_enabled',
+                                value,
+                              )
+                            }
+                            extraText='开启后，发送到星溯框架前会移除调用方 system/developer 提示和 prompt/input/instruction/prefix/suffix 等提示字段，只保留 user/assistant 对话消息。默认关闭。'
+                          />
+                          <Banner
+                            type='info'
+                            description='AstrBot channels currently support text chat and streaming only. Maintain exposed models manually.'
+                            className='!rounded-lg'
+                          />
+                        </>
+                      )}
+
                       {inputs.type !== 3 &&
                         inputs.type !== 8 &&
                         inputs.type !== 22 &&
                         inputs.type !== 36 &&
+                        inputs.type !== 59 &&
                         (inputs.type !== 45 || doubaoApiEditUnlocked) && (
                           <div>
                             <Form.Input

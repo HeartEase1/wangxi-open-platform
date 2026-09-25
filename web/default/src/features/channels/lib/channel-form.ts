@@ -19,6 +19,7 @@ For commercial licensing, please contact support@quantumnous.com
 import { z } from 'zod'
 
 import {
+  CHANNEL_TYPE_ASTRBOT,
   CHANNEL_STATUS,
   ERROR_MESSAGES,
   MODEL_FETCHABLE_TYPES,
@@ -128,6 +129,15 @@ function addRequiredIssue(
   })
 }
 
+function normalizeAstrBotContextMode(value: unknown): 'caller' | 'startrace' {
+  const mode = String(value || '')
+    .trim()
+    .toLowerCase()
+  return ['startrace', 'astrbot', 'framework', 'hosted'].includes(mode)
+    ? 'startrace'
+    : 'caller'
+}
+
 export const channelFormSchema = z
   .object({
     name: z.string().min(1, ERROR_MESSAGES.REQUIRED_NAME),
@@ -202,6 +212,8 @@ export const channelFormSchema = z
     allow_safety_identifier: z.boolean().optional(), // OpenAI only
     allow_include_obfuscation: z.boolean().optional(), // OpenAI: include usage obfuscation
     allow_inference_geo: z.boolean().optional(), // OpenAI/Anthropic: inference geography
+    strip_caller_prompts_enabled: z.boolean().optional(), // OpenAI/AstrBot: strip caller prompt fields
+    openai_prompt_filter_enabled: z.boolean().optional(), // OpenAI only: prompt safety filter
     allow_speed: z.boolean().optional(), // Anthropic: speed mode control
     claude_beta_query: z.boolean().optional(), // Anthropic: beta query passthrough
     disable_task_polling_sleep: z.boolean().optional(),
@@ -209,6 +221,14 @@ export const channelFormSchema = z
     upstream_model_update_check_enabled: z.boolean().optional(),
     upstream_model_update_auto_sync_enabled: z.boolean().optional(),
     upstream_model_update_ignored_models: z.string().optional(),
+    astrbot_config_id: z.string().optional(),
+    astrbot_config_name: z.string().optional(),
+    astrbot_selected_provider: z.string().optional(),
+    astrbot_selected_model: z.string().optional(),
+    astrbot_context_mode: z.enum(['caller', 'startrace']).optional(),
+    astrbot_reuse_caller_conversation_id: z.boolean().optional(),
+    astrbot_require_conversation_id: z.boolean().optional(),
+    astrbot_disable_prompt_filter: z.boolean().optional(),
   })
   .superRefine((data, ctx) => {
     if ([3, 8, 36, 45].includes(data.type) && !data.base_url?.trim()) {
@@ -246,6 +266,22 @@ export const channelFormSchema = z
         'other',
         'This channel type requires additional configuration'
       )
+    }
+
+    if (data.type === CHANNEL_TYPE_ASTRBOT) {
+      if (!data.base_url?.trim()) {
+        addRequiredIssue(ctx, 'base_url', 'Base URL is required for AstrBot')
+      }
+      if (
+        !data.astrbot_config_id?.trim() &&
+        !data.astrbot_config_name?.trim()
+      ) {
+        addRequiredIssue(
+          ctx,
+          'astrbot_config_id',
+          'Config ID or Config Name is required for AstrBot'
+        )
+      }
     }
 
     if (data.type === 57) {
@@ -342,12 +378,22 @@ export const CHANNEL_FORM_DEFAULT_VALUES: ChannelFormValues = {
   allow_safety_identifier: false,
   allow_include_obfuscation: false,
   allow_inference_geo: false,
+  strip_caller_prompts_enabled: false,
+  openai_prompt_filter_enabled: false,
   allow_speed: false,
   claude_beta_query: false,
   disable_task_polling_sleep: false,
   upstream_model_update_check_enabled: false,
   upstream_model_update_auto_sync_enabled: false,
   upstream_model_update_ignored_models: '',
+  astrbot_config_id: '',
+  astrbot_config_name: '',
+  astrbot_selected_provider: '',
+  astrbot_selected_model: '',
+  astrbot_context_mode: 'caller',
+  astrbot_reuse_caller_conversation_id: false,
+  astrbot_require_conversation_id: false,
+  astrbot_disable_prompt_filter: false,
   advanced_custom: '',
 }
 
@@ -398,12 +444,22 @@ export function transformChannelToFormDefaults(
   let allowSafetyIdentifier = false
   let allowIncludeObfuscation = false
   let allowInferenceGeo = false
+  let stripCallerPromptsEnabled = false
+  let openAIPromptFilterEnabled = false
   let allowSpeed = false
   let claudeBetaQuery = false
   let disableTaskPollingSleep = false
   let upstreamModelUpdateCheckEnabled = false
   let upstreamModelUpdateAutoSyncEnabled = false
   let upstreamModelUpdateIgnoredModels = ''
+  let astrbotConfigID = ''
+  let astrbotConfigName = ''
+  let astrbotSelectedProvider = ''
+  let astrbotSelectedModel = ''
+  let astrbotContextMode: 'caller' | 'startrace' = 'caller'
+  let astrbotReuseCallerConversationID = false
+  let astrbotRequireConversationID = false
+  let astrbotDisablePromptFilter = false
   let advancedCustom = ''
 
   if (channel.settings) {
@@ -418,6 +474,10 @@ export function transformChannelToFormDefaults(
       allowSafetyIdentifier = parsed.allow_safety_identifier === true
       allowIncludeObfuscation = parsed.allow_include_obfuscation === true
       allowInferenceGeo = parsed.allow_inference_geo === true
+      stripCallerPromptsEnabled =
+        parsed.strip_caller_prompts_enabled === true
+      openAIPromptFilterEnabled =
+        parsed.openai_prompt_filter_enabled === true
       allowSpeed = parsed.allow_speed === true
       claudeBetaQuery = parsed.claude_beta_query === true
       disableTaskPollingSleep = parsed.disable_task_polling_sleep === true
@@ -430,6 +490,19 @@ export function transformChannelToFormDefaults(
       )
         ? parsed.upstream_model_update_ignored_models.join(',')
         : ''
+      astrbotConfigID = parsed.astrbot_config_id || ''
+      astrbotConfigName = parsed.astrbot_config_name || ''
+      astrbotSelectedProvider = parsed.astrbot_selected_provider || ''
+      astrbotSelectedModel = parsed.astrbot_selected_model || ''
+      astrbotContextMode = normalizeAstrBotContextMode(
+        parsed.astrbot_context_mode
+      )
+      astrbotReuseCallerConversationID =
+        parsed.astrbot_reuse_caller_conversation_id === true
+      astrbotRequireConversationID =
+        parsed.astrbot_require_conversation_id === true
+      astrbotDisablePromptFilter =
+        parsed.astrbot_disable_prompt_filter === true
       if (parsed.advanced_custom) {
         advancedCustom = stringifyAdvancedCustomConfig(parsed.advanced_custom)
       }
@@ -476,6 +549,8 @@ export function transformChannelToFormDefaults(
     disable_store: disableStore,
     allow_include_obfuscation: allowIncludeObfuscation,
     allow_inference_geo: allowInferenceGeo,
+    strip_caller_prompts_enabled: stripCallerPromptsEnabled,
+    openai_prompt_filter_enabled: openAIPromptFilterEnabled,
     allow_speed: allowSpeed,
     claude_beta_query: claudeBetaQuery,
     disable_task_polling_sleep: disableTaskPollingSleep,
@@ -483,6 +558,14 @@ export function transformChannelToFormDefaults(
     upstream_model_update_check_enabled: upstreamModelUpdateCheckEnabled,
     upstream_model_update_auto_sync_enabled: upstreamModelUpdateAutoSyncEnabled,
     upstream_model_update_ignored_models: upstreamModelUpdateIgnoredModels,
+    astrbot_config_id: astrbotConfigID,
+    astrbot_config_name: astrbotConfigName,
+    astrbot_selected_provider: astrbotSelectedProvider,
+    astrbot_selected_model: astrbotSelectedModel,
+    astrbot_context_mode: astrbotContextMode,
+    astrbot_reuse_caller_conversation_id: astrbotReuseCallerConversationID,
+    astrbot_require_conversation_id: astrbotRequireConversationID,
+    astrbot_disable_prompt_filter: astrbotDisablePromptFilter,
     advanced_custom: advancedCustom,
   }
 }
@@ -562,14 +645,25 @@ function buildSettingsJSON(formData: ChannelFormValues): string {
     settingsObj.allow_include_obfuscation =
       formData.allow_include_obfuscation === true
     settingsObj.allow_inference_geo = formData.allow_inference_geo === true
+    settingsObj.openai_prompt_filter_enabled =
+      formData.openai_prompt_filter_enabled === true
   } else {
     if ('disable_store' in settingsObj) delete settingsObj.disable_store
     if ('allow_safety_identifier' in settingsObj)
       delete settingsObj.allow_safety_identifier
     if ('allow_include_obfuscation' in settingsObj)
       delete settingsObj.allow_include_obfuscation
+    if ('openai_prompt_filter_enabled' in settingsObj)
+      delete settingsObj.openai_prompt_filter_enabled
     if (formData.type !== 14 && 'allow_inference_geo' in settingsObj)
       delete settingsObj.allow_inference_geo
+  }
+
+  if (formData.type === 1 || formData.type === CHANNEL_TYPE_ASTRBOT) {
+    settingsObj.strip_caller_prompts_enabled =
+      formData.strip_caller_prompts_enabled === true
+  } else if ('strip_caller_prompts_enabled' in settingsObj) {
+    delete settingsObj.strip_caller_prompts_enabled
   }
 
   // Anthropic (type 14): claude_beta_query, allow_inference_geo, allow_speed
@@ -608,6 +702,96 @@ function buildSettingsJSON(formData: ChannelFormValues): string {
     }
     if (typeof settingsObj.upstream_model_update_last_check_time !== 'number') {
       settingsObj.upstream_model_update_last_check_time = 0
+    }
+  } else {
+    delete settingsObj.upstream_model_update_check_enabled
+    delete settingsObj.upstream_model_update_auto_sync_enabled
+    delete settingsObj.upstream_model_update_ignored_models
+    delete settingsObj.upstream_model_update_last_detected_models
+    delete settingsObj.upstream_model_update_last_check_time
+  }
+
+  if (formData.type === CHANNEL_TYPE_ASTRBOT) {
+    const astrbotConfigID = String(formData.astrbot_config_id || '').trim()
+    const astrbotConfigName = String(formData.astrbot_config_name || '').trim()
+    const astrbotSelectedProvider = String(
+      formData.astrbot_selected_provider || ''
+    ).trim()
+    const astrbotSelectedModel = String(
+      formData.astrbot_selected_model || ''
+    ).trim()
+    const astrbotContextMode = normalizeAstrBotContextMode(
+      formData.astrbot_context_mode
+    )
+    const astrbotRequireConversationID =
+      formData.astrbot_require_conversation_id === true
+    const astrbotReuseCallerConversationID =
+      formData.astrbot_reuse_caller_conversation_id === true
+    const astrbotDisablePromptFilter =
+      formData.astrbot_disable_prompt_filter === true
+    const stripCallerPromptsEnabled =
+      formData.strip_caller_prompts_enabled === true
+
+    if (astrbotConfigID) {
+      settingsObj.astrbot_config_id = astrbotConfigID
+      delete settingsObj.astrbot_config_name
+    } else {
+      delete settingsObj.astrbot_config_id
+      if (astrbotConfigName) {
+        settingsObj.astrbot_config_name = astrbotConfigName
+      } else {
+        delete settingsObj.astrbot_config_name
+      }
+    }
+
+    if (astrbotSelectedProvider) {
+      settingsObj.astrbot_selected_provider = astrbotSelectedProvider
+    } else {
+      delete settingsObj.astrbot_selected_provider
+    }
+
+    if (astrbotSelectedModel) {
+      settingsObj.astrbot_selected_model = astrbotSelectedModel
+    } else {
+      delete settingsObj.astrbot_selected_model
+    }
+
+    if (astrbotContextMode === 'startrace') {
+      settingsObj.astrbot_context_mode = 'startrace'
+    } else {
+      delete settingsObj.astrbot_context_mode
+    }
+
+    if (astrbotReuseCallerConversationID) {
+      settingsObj.astrbot_reuse_caller_conversation_id = true
+    } else {
+      delete settingsObj.astrbot_reuse_caller_conversation_id
+    }
+
+    if (astrbotRequireConversationID) {
+      settingsObj.astrbot_require_conversation_id = true
+    } else {
+      delete settingsObj.astrbot_require_conversation_id
+    }
+
+    if (astrbotDisablePromptFilter) {
+      settingsObj.astrbot_disable_prompt_filter = true
+    } else {
+      delete settingsObj.astrbot_disable_prompt_filter
+    }
+
+    settingsObj.strip_caller_prompts_enabled = stripCallerPromptsEnabled
+  } else {
+    delete settingsObj.astrbot_config_id
+    delete settingsObj.astrbot_config_name
+    delete settingsObj.astrbot_selected_provider
+    delete settingsObj.astrbot_selected_model
+    delete settingsObj.astrbot_context_mode
+    delete settingsObj.astrbot_reuse_caller_conversation_id
+    delete settingsObj.astrbot_require_conversation_id
+    delete settingsObj.astrbot_disable_prompt_filter
+    if (formData.type !== 1) {
+      delete settingsObj.strip_caller_prompts_enabled
     }
   }
 

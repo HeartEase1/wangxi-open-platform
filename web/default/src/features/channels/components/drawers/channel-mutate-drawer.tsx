@@ -131,6 +131,7 @@ import {
 } from '../../api'
 import {
   ADD_MODE_OPTIONS,
+  CHANNEL_TYPE_ASTRBOT,
   CHANNEL_STATUS_LABELS,
   CHANNEL_TYPE_OPTIONS,
   CHANNEL_TYPE_WARNINGS,
@@ -285,12 +286,22 @@ const SENSITIVE_FORM_FIELDS = [
   'allow_safety_identifier',
   'allow_include_obfuscation',
   'allow_inference_geo',
+  'strip_caller_prompts_enabled',
+  'openai_prompt_filter_enabled',
   'allow_speed',
   'claude_beta_query',
   'disable_task_polling_sleep',
   'upstream_model_update_check_enabled',
   'upstream_model_update_auto_sync_enabled',
   'upstream_model_update_ignored_models',
+  'astrbot_config_id',
+  'astrbot_config_name',
+  'astrbot_selected_provider',
+  'astrbot_selected_model',
+  'astrbot_context_mode',
+  'astrbot_reuse_caller_conversation_id',
+  'astrbot_require_conversation_id',
+  'astrbot_disable_prompt_filter',
 ] satisfies (keyof ChannelFormValues)[]
 
 function readAdvancedSettingsPreference(): boolean {
@@ -333,6 +344,8 @@ function hasAdvancedSettingsValues(values: ChannelFormValues): boolean {
     values.pass_through_body_enabled ||
     values.system_prompt_override ||
     values.claude_beta_query ||
+    values.strip_caller_prompts_enabled ||
+    values.openai_prompt_filter_enabled ||
     values.upstream_model_update_check_enabled ||
     values.upstream_model_update_auto_sync_enabled ||
     values.upstream_model_update_ignored_models?.trim()
@@ -694,6 +707,8 @@ export function ChannelMutateDrawer({
   const keyMode = form.watch('key_mode')
   const currentGroups = form.watch('group')
   const currentType = form.watch('type')
+  const currentAstrBotContextMode =
+    form.watch('astrbot_context_mode') || 'caller'
   const currentStatus = form.watch('status')
   const currentBaseUrl = form.watch('base_url')
   const currentKey = form.watch('key')
@@ -731,6 +746,12 @@ export function ChannelMutateDrawer({
   const currentAllowSafetyIdentifier = form.watch('allow_safety_identifier')
   const currentAllowIncludeObfuscation = form.watch('allow_include_obfuscation')
   const currentAllowInferenceGeo = form.watch('allow_inference_geo')
+  const currentStripCallerPromptsEnabled = form.watch(
+    'strip_caller_prompts_enabled'
+  )
+  const currentOpenAIPromptFilterEnabled = form.watch(
+    'openai_prompt_filter_enabled'
+  )
   const currentAllowSpeed = form.watch('allow_speed')
   const currentClaudeBetaQuery = form.watch('claude_beta_query')
   const currentUpstreamModelUpdateAutoSyncEnabled = form.watch(
@@ -938,7 +959,9 @@ export function ChannelMutateDrawer({
       currentDisableStore ||
       currentAllowSafetyIdentifier ||
       currentAllowIncludeObfuscation ||
-      currentAllowInferenceGeo
+      currentAllowInferenceGeo ||
+      currentStripCallerPromptsEnabled ||
+      currentOpenAIPromptFilterEnabled
     )
   } else if (currentType === 14) {
     fieldPassthroughConfigured = Boolean(
@@ -1220,7 +1243,7 @@ export function ChannelMutateDrawer({
     const timer = setTimeout(() => {
       toast.warning(
         t(
-          'Warning: Base URL should not end with /v1. New API will handle it automatically. This may cause request failures.'
+          'Warning: Base URL should not end with /v1. The platform will handle it automatically. This may cause request failures.'
         ),
         { duration: 5000 }
       )
@@ -2615,8 +2638,317 @@ export function ChannelMutateDrawer({
                               />
                             )}
 
+                            {currentType === CHANNEL_TYPE_ASTRBOT && (
+                              <>
+                                <FormField
+                                  control={form.control}
+                                  name='base_url'
+                                  render={({ field }) => (
+                                    <FormItem>
+                                      <FormLabel>{t('Base URL *')}</FormLabel>
+                                      <FormControl>
+                                        <Input
+                                          placeholder={t(
+                                            'e.g., https://astrbot.example.com'
+                                          )}
+                                          {...field}
+                                        />
+                                      </FormControl>
+                                      <FormDescription>
+                                        {t(
+                                          'AstrBot HTTP API base address. The platform will call /api/v1/chat automatically.'
+                                        )}
+                                      </FormDescription>
+                                      <FormMessage />
+                                    </FormItem>
+                                  )}
+                                />
+                                <FormField
+                                  control={form.control}
+                                  name='astrbot_config_id'
+                                  render={({ field }) => (
+                                    <FormItem>
+                                      <FormLabel>{t('Config ID')}</FormLabel>
+                                      <FormControl>
+                                        <Input
+                                          placeholder={t(
+                                            'e.g., assistant-prod'
+                                          )}
+                                          {...field}
+                                        />
+                                      </FormControl>
+                                      <FormDescription>
+                                        {t(
+                                          'Preferred AstrBot configuration identifier. If both Config ID and Config Name are provided, Config ID wins.'
+                                        )}
+                                      </FormDescription>
+                                      <FormMessage />
+                                    </FormItem>
+                                  )}
+                                />
+                                <FormField
+                                  control={form.control}
+                                  name='astrbot_config_name'
+                                  render={({ field }) => (
+                                    <FormItem>
+                                      <FormLabel>{t('Config Name')}</FormLabel>
+                                      <FormControl>
+                                        <Input
+                                          placeholder={t(
+                                            'e.g., Production Assistant'
+                                          )}
+                                          {...field}
+                                        />
+                                      </FormControl>
+                                      <FormDescription>
+                                        {t(
+                                          'Fallback AstrBot configuration name. Fill this when Config ID is unavailable.'
+                                        )}
+                                      </FormDescription>
+                                      <FormMessage />
+                                    </FormItem>
+                                  )}
+                                />
+                                <FormField
+                                  control={form.control}
+                                  name='astrbot_selected_provider'
+                                  render={({ field }) => (
+                                    <FormItem>
+                                      <FormLabel>
+                                        {t('Selected Provider')}
+                                      </FormLabel>
+                                      <FormControl>
+                                        <Input
+                                          placeholder={t(
+                                            'Optional provider override'
+                                          )}
+                                          {...field}
+                                        />
+                                      </FormControl>
+                                      <FormDescription>
+                                        {t(
+                                          'Optional. Only fill this when the exact provider name exists inside the upstream AstrBot instance.'
+                                        )}
+                                      </FormDescription>
+                                      <FormMessage />
+                                    </FormItem>
+                                  )}
+                                />
+                                <FormField
+                                  control={form.control}
+                                  name='astrbot_selected_model'
+                                  render={({ field }) => (
+                                    <FormItem>
+                                      <FormLabel>{t('Selected Model')}</FormLabel>
+                                      <FormControl>
+                                        <Input
+                                          placeholder={t(
+                                            'Optional AstrBot internal model name'
+                                          )}
+                                          {...field}
+                                        />
+                                      </FormControl>
+                                        <FormDescription>
+                                          {t(
+                                            'Optional. Only fill this with an AstrBot internal model name. Leave empty to omit selected_model and use the default model from the AstrBot config; do not enter public StarTrace model IDs here.'
+                                          )}
+                                        </FormDescription>
+                                      <FormMessage />
+                                    </FormItem>
+                                  )}
+                                />
+                                <FormField
+                                  control={form.control}
+                                  name='astrbot_context_mode'
+                                  render={({ field }) => (
+                                    <FormItem>
+                                      <FormLabel>{t('Context mode')}</FormLabel>
+                                      <Select
+                                        onValueChange={field.onChange}
+                                        value={field.value || 'caller'}
+                                      >
+                                        <FormControl>
+                                          <SelectTrigger>
+                                            <SelectValue />
+                                          </SelectTrigger>
+                                        </FormControl>
+                                        <SelectContent
+                                          alignItemWithTrigger={false}
+                                        >
+                                          <SelectGroup>
+                                            <SelectItem value='caller'>
+                                              {t(
+                                                'Caller-managed (default, Agent compatible)'
+                                              )}
+                                            </SelectItem>
+                                            <SelectItem value='startrace'>
+                                              {t(
+                                                'StarTrace framework-managed (memory/plugins)'
+                                              )}
+                                            </SelectItem>
+                                          </SelectGroup>
+                                        </SelectContent>
+                                      </Select>
+                                      <FormDescription>
+                                        {field.value === 'startrace'
+                                          ? t(
+                                              'StarTrace framework-managed mode uses a stable upstream session for long-term memory, plugins, and role companionship.'
+                                            )
+                                          : t(
+                                              'Caller-managed mode forwards the caller-provided chat history and uses a temporary upstream session, which is safer for Dify, LangChain, OpenWebUI, and public multi-user integrations.'
+                                            )}
+                                      </FormDescription>
+                                      <FormMessage />
+                                    </FormItem>
+                                  )}
+                                />
+                                <FormField
+                                  control={form.control}
+                                  name='astrbot_reuse_caller_conversation_id'
+                                  render={({ field }) => (
+                                    <FormItem>
+                                      <div className='flex items-center justify-between rounded-lg border p-3'>
+                                        <div className='space-y-1'>
+                                          <FormLabel>
+                                            {t(
+                                              'Reuse caller conversation as upstream session'
+                                            )}
+                                          </FormLabel>
+                                          <FormDescription>
+                                            {currentAstrBotContextMode ===
+                                            'caller'
+                                              ? t(
+                                                  'Caller-managed mode only. When metadata/extra_body/top-level/header conversation_id, session_id, chat_id, or thread_id is provided, reuse a stable AstrBot session bound to user + channel + config + conversation id. Different users or different conversation ids stay isolated.'
+                                                )
+                                              : t(
+                                                  'Only takes effect in caller-managed mode. StarTrace framework-managed mode already uses stable sessions and strict isolation controls.'
+                                                )}
+                                          </FormDescription>
+                                        </div>
+                                        <FormControl>
+                                          <Switch
+                                            checked={field.value === true}
+                                            onCheckedChange={field.onChange}
+                                          />
+                                        </FormControl>
+                                      </div>
+                                      <FormMessage />
+                                    </FormItem>
+                                  )}
+                                />
+                                <FormField
+                                  control={form.control}
+                                  name='astrbot_require_conversation_id'
+                                  render={({ field }) => (
+                                    <FormItem>
+                                      <div className='flex items-center justify-between rounded-lg border p-3'>
+                                        <div className='space-y-1'>
+                                          <FormLabel>
+                                            {t('Strict isolation mode')}
+                                          </FormLabel>
+                                          <FormDescription>
+                                            {currentAstrBotContextMode ===
+                                            'startrace'
+                                              ? t(
+                                                  'In StarTrace framework-managed mode, reject requests without a stable conversation id. Supports metadata/extra_body/top-level conversation_id, session_id, chat_id, thread_id, or matching X-* headers.'
+                                                )
+                                              : t(
+                                                  'Only takes effect in StarTrace framework-managed mode. Caller-managed mode uses temporary upstream sessions and does not require conversation ids.'
+                                                )}
+                                          </FormDescription>
+                                        </div>
+                                        <FormControl>
+                                          <Switch
+                                            checked={field.value === true}
+                                            onCheckedChange={field.onChange}
+                                          />
+                                        </FormControl>
+                                      </div>
+                                      <FormMessage />
+                                    </FormItem>
+                                  )}
+                                />
+                                <FormField
+                                  control={form.control}
+                                  name='astrbot_disable_prompt_filter'
+                                  render={({ field }) => (
+                                    <FormItem>
+                                      <div className='flex items-center justify-between rounded-lg border p-3'>
+                                        <div className='space-y-1'>
+                                            <FormLabel>
+                                            {t('Filter user prompt instructions')}
+                                          </FormLabel>
+                                          <FormDescription>
+                                            {t(
+                                              'Enabled by default. Filters system prompts, jailbreak attempts, and persona-changing input before forwarding to StarTrace role models.'
+                                            )}
+                                          </FormDescription>
+                                        </div>
+                                        <FormControl>
+                                          <Switch
+                                            checked={field.value !== true}
+                                            onCheckedChange={(checked) =>
+                                              field.onChange(!checked)
+                                            }
+                                          />
+                                        </FormControl>
+                                      </div>
+                                      <FormMessage />
+                                    </FormItem>
+                                  )}
+                                />
+                                <FormField
+                                  control={form.control}
+                                  name='strip_caller_prompts_enabled'
+                                  render={({ field }) => (
+                                    <FormItem>
+                                      <div className='flex items-center justify-between rounded-lg border p-3'>
+                                        <div className='space-y-1'>
+                                          <FormLabel>
+                                            {t(
+                                              '只保留对话消息 / Strip caller prompts'
+                                            )}
+                                          </FormLabel>
+                                          <FormDescription>
+                                            {t(
+                                              'Remove caller-provided system/developer prompts and prompt/instruction fields before sending to StarTrace framework. User/assistant conversation messages are preserved.'
+                                            )}
+                                          </FormDescription>
+                                        </div>
+                                        <FormControl>
+                                          <Switch
+                                            checked={field.value === true}
+                                            onCheckedChange={field.onChange}
+                                          />
+                                        </FormControl>
+                                      </div>
+                                      <FormMessage />
+                                    </FormItem>
+                                  )}
+                                />
+                                <Alert>
+                                  <AlertCircle className='h-4 w-4' />
+                                  <AlertDescription>
+                                    {t(
+                                      'AstrBot channels only support text chat and streaming in this version. Images, audio, tools, Responses, and Embeddings are not supported.'
+                                    )}
+                                  </AlertDescription>
+                                </Alert>
+                                <Alert>
+                                  <AlertCircle className='h-4 w-4' />
+                                  <AlertDescription>
+                                    {t(
+                                      'AstrBot does not expose a public model list API here. Maintain the exposed model list manually below.'
+                                    )}
+                                  </AlertDescription>
+                                </Alert>
+                              </>
+                            )}
+
                             {/* General base_url for other types */}
-                            {![3, 8, 22, 36, 45].includes(currentType) && (
+                            {![3, 8, 22, 36, 45, CHANNEL_TYPE_ASTRBOT].includes(
+                              currentType
+                            ) && (
                               <FormField
                                 control={form.control}
                                 name='base_url'
@@ -2633,7 +2965,7 @@ export function ChannelMutateDrawer({
                                     </FormControl>
                                     <FormDescription>
                                       {t(
-                                        'Custom API base URL. For official channels, New API has built-in addresses. Only fill this for third-party proxy sites or special endpoints. Do not add /v1 or trailing slash.'
+                                        'Custom API base URL. For official channels, the platform has built-in addresses. Only fill this for third-party proxy sites or special endpoints. Do not add /v1 or trailing slash.'
                                       )}
                                     </FormDescription>
                                     <FormMessage />
@@ -3132,6 +3464,15 @@ export function ChannelMutateDrawer({
                                       copyChipOnClick
                                     />
                                   </FormControl>
+                                  {currentType === CHANNEL_TYPE_ASTRBOT && (
+                                    <Alert className='border-amber-200 bg-amber-50 text-amber-900 dark:border-amber-500/40 dark:bg-amber-500/10 dark:text-amber-50'>
+                                      <AlertDescription>
+                                        {t(
+                                          'AstrBot models are managed manually. Add the model IDs you want this channel to expose to `/v1/models` and `/v1/chat/completions`.'
+                                        )}
+                                      </AlertDescription>
+                                    </Alert>
+                                  )}
                                   {modelMappingGuardrail.exposedTargetModels
                                     .length > 0 && (
                                     <Alert className='border-amber-200 bg-amber-50 text-amber-900 dark:border-amber-500/40 dark:bg-amber-500/10 dark:text-amber-50'>
@@ -4245,6 +4586,58 @@ export function ChannelMutateDrawer({
                                             <FormDescription>
                                               {t(
                                                 'Pass through the inference_geo field for geographic routing'
+                                              )}
+                                            </FormDescription>
+                                          </div>
+                                          <FormControl>
+                                            <Switch
+                                              checked={field.value}
+                                              onCheckedChange={field.onChange}
+                                            />
+                                          </FormControl>
+                                        </FormItem>
+                                      )}
+                                    />
+
+                                    <FormField
+                                      control={form.control}
+                                      name='strip_caller_prompts_enabled'
+                                      render={({ field }) => (
+                                        <FormItem className='flex items-center justify-between gap-3 px-4 py-3'>
+                                          <div className='space-y-0.5'>
+                                            <FormLabel className='text-sm'>
+                                              {t(
+                                                '只保留对话消息 / Strip caller prompts'
+                                              )}
+                                            </FormLabel>
+                                            <FormDescription>
+                                              {t(
+                                                'When enabled, caller-provided system/developer messages and prompt/instruction fields are removed before forwarding; user/assistant conversation messages are kept. It does not apply when request body passthrough is enabled.'
+                                              )}
+                                            </FormDescription>
+                                          </div>
+                                          <FormControl>
+                                            <Switch
+                                              checked={field.value}
+                                              onCheckedChange={field.onChange}
+                                            />
+                                          </FormControl>
+                                        </FormItem>
+                                      )}
+                                    />
+
+                                    <FormField
+                                      control={form.control}
+                                      name='openai_prompt_filter_enabled'
+                                      render={({ field }) => (
+                                        <FormItem className='flex items-center justify-between gap-3 px-4 py-3'>
+                                          <div className='space-y-0.5'>
+                                            <FormLabel className='text-sm'>
+                                              {t('Enable prompt safety filter')}
+                                            </FormLabel>
+                                            <FormDescription>
+                                              {t(
+                                                'When enabled, user system/developer prompts, jailbreak attempts, and persona-changing text are filtered before forwarding. It does not apply when request body passthrough is enabled.'
                                               )}
                                             </FormDescription>
                                           </div>

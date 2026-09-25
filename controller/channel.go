@@ -520,6 +520,10 @@ func validateChannel(channel *model.Channel, isAdd bool) error {
 		}
 	}
 
+	if isAdd && channel.Type == constant.ChannelTypeAstrBot && strings.TrimSpace(channel.Key) == "" {
+		return fmt.Errorf("AstrBot API key cannot be empty")
+	}
+
 	return nil
 }
 

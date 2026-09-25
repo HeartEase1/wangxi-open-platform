@@ -962,6 +962,14 @@ func (channel *Channel) ValidateSettings() error {
 			return err
 		}
 	}
+	if channel.Type == constant.ChannelTypeAstrBot {
+		if strings.TrimSpace(channel.GetBaseURL()) == "" {
+			return fmt.Errorf("base_url is required for AstrBot")
+		}
+		if strings.TrimSpace(channelOtherSettings.AstrBotConfigID) == "" && strings.TrimSpace(channelOtherSettings.AstrBotConfigName) == "" {
+			return fmt.Errorf("astrbot_config_id or astrbot_config_name is required for AstrBot")
+		}
+	}
 	return nil
 }
 

@@ -41,3 +41,15 @@ skills-lock.json
 .local-tests/
 service/relayconvert/chat_responses_live_local_test.go
 service/openaicompat/chat_responses_live_local_test.go
+
+# Local tooling, credentials, and generated artifacts.
+.serena/
+node_modules/
+tmp-*/
+.env.*
+!.env.example
+*.log
+*.tsbuildinfo
+*cookie*.txt
+*.pem
+*.key

@@ -46,12 +46,16 @@ const ADVANCED_SETTINGS_FIELDS = new Set<FieldPath<ChannelFormValues>>([
   'allow_safety_identifier',
   'allow_include_obfuscation',
   'allow_inference_geo',
+  'strip_caller_prompts_enabled',
+  'openai_prompt_filter_enabled',
   'allow_speed',
   'claude_beta_query',
   'disable_task_polling_sleep',
   'upstream_model_update_check_enabled',
   'upstream_model_update_auto_sync_enabled',
   'upstream_model_update_ignored_models',
+  'astrbot_selected_model',
+  'astrbot_reuse_caller_conversation_id',
 ])
 
 export function isAdvancedSettingsField(

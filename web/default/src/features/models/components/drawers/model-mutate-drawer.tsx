@@ -84,7 +84,7 @@ import { safeJsonParse } from '@/features/system-settings/utils/json-parser'
 import { createModel, updateModel, getModel, getVendors } from '../../api'
 import { getNameRuleOptions, ENDPOINT_TEMPLATES } from '../../constants'
 import { modelsQueryKeys, vendorsQueryKeys, parseModelTags } from '../../lib'
-import type { Model } from '../../types'
+import type { Model, Vendor } from '../../types'
 
 // Extended schema for ratio configuration (internal form state only)
 const extendedModelFormSchema = z.object({
@@ -111,6 +111,30 @@ type ExtendedModelFormValues = z.infer<typeof extendedModelFormSchema>
 
 type PricingMode = 'per-token' | 'per-request'
 type PricingSubMode = 'ratio' | 'price'
+
+const STARTRACE_VENDOR_NAME = '\u661f\u6eaf'
+const STARTRACE_VENDOR_ICON = '/logo.png'
+
+function resolveVendorIcon(vendor: Vendor | undefined) {
+  if (!vendor) {
+    return ''
+  }
+
+  const configuredIcon = String(vendor.icon || '').trim()
+  if (configuredIcon) {
+    return configuredIcon
+  }
+
+  const normalizedVendorName = String(vendor.name || '').trim().toLowerCase()
+  if (
+    normalizedVendorName === STARTRACE_VENDOR_NAME ||
+    normalizedVendorName === 'startrace'
+  ) {
+    return STARTRACE_VENDOR_ICON
+  }
+
+  return ''
+}
 
 type ModelMutateDrawerProps = {
   open: boolean
@@ -736,12 +760,12 @@ export function ModelMutateDrawer({
                     <FormLabel>{t('Icon')}</FormLabel>
                     <FormControl>
                       <Input
-                        placeholder={t('OpenAI, Anthropic, etc.')}
+                        placeholder={t('OpenAI, Anthropic, /logo.png, etc.')}
                         {...field}
                       />
                     </FormControl>
                     <FormDescription className='text-xs'>
-                      {t('@lobehub/icons key')}
+                      {t('@lobehub/icons key or local image path')}
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -759,11 +783,27 @@ export function ModelMutateDrawer({
                         value: String(vendor.id),
                         label: vendor.name,
                       }))}
-                      onValueChange={(value) =>
+                      onValueChange={(value) => {
                         field.onChange(
                           value ? Number.parseInt(value) : undefined
                         )
-                      }
+
+                        const vendorInfo = vendors.find(
+                          (vendor) => String(vendor.id) === value
+                        )
+                        const nextIcon = resolveVendorIcon(vendorInfo)
+                        const currentIcon = String(form.getValues('icon') || '').trim()
+                        const shouldFillIcon =
+                          !currentIcon ||
+                          currentIcon === STARTRACE_VENDOR_ICON ||
+                          nextIcon === STARTRACE_VENDOR_ICON
+
+                        if (nextIcon && shouldFillIcon) {
+                          form.setValue('icon', nextIcon, {
+                            shouldDirty: true,
+                          })
+                        }
+                      }}
                       value={field.value ? String(field.value) : undefined}
                     >
                       <FormControl>

@@ -49,6 +49,13 @@ type VendorMutateDialogProps = {
 }
 
 const VENDOR_MUTATE_FORM_ID = 'vendor-mutate-form'
+const STARTRACE_VENDOR_NAME = '\u661f\u6eaf'
+const STARTRACE_VENDOR_ICON = '/logo.png'
+
+function isStarTraceVendorName(value: string | undefined) {
+  const normalized = String(value || '').trim().toLowerCase()
+  return normalized === STARTRACE_VENDOR_NAME || normalized === 'startrace'
+}
 
 export function VendorMutateDialog({
   open,
@@ -69,6 +76,8 @@ export function VendorMutateDialog({
       status: 1,
     },
   })
+  const vendorName = form.watch('name')
+  const vendorIcon = form.watch('icon')
 
   // Load vendor data for editing
   useEffect(() => {
@@ -89,6 +98,19 @@ export function VendorMutateDialog({
       })
     }
   }, [open, isEdit, currentVendor, form])
+
+  useEffect(() => {
+    if (!isStarTraceVendorName(String(vendorName || ''))) {
+      return
+    }
+
+    const currentIcon = String(vendorIcon || '').trim()
+    if (!currentIcon || currentIcon === STARTRACE_VENDOR_ICON) {
+      form.setValue('icon', STARTRACE_VENDOR_ICON, {
+        shouldDirty: currentIcon !== STARTRACE_VENDOR_ICON,
+      })
+    }
+  }, [form, vendorIcon, vendorName])
 
   const onSubmit = async (values: Record<string, unknown>) => {
     setIsSaving(true)
@@ -165,7 +187,7 @@ export function VendorMutateDialog({
                 <FormLabel>{t('Vendor Name *')}</FormLabel>
                 <FormControl>
                   <Input
-                    placeholder={t('OpenAI, Anthropic, etc.')}
+                    placeholder={t('OpenAI, Anthropic, StarTrace, etc.')}
                     {...field}
                   />
                 </FormControl>
@@ -203,12 +225,12 @@ export function VendorMutateDialog({
                 <FormLabel>{t('Icon')}</FormLabel>
                 <FormControl>
                   <Input
-                    placeholder={t('OpenAI, Anthropic, Google, etc.')}
+                    placeholder={t('OpenAI, Claude.Color, /logo.png, etc.')}
                     {...field}
                   />
                 </FormControl>
                 <FormDescription>
-                  {t('@lobehub/icons key name')}
+                  {t('@lobehub/icons key name or local image path')}
                 </FormDescription>
                 <FormMessage />
               </FormItem>

@@ -61,6 +61,16 @@ function parseValue(raw: string | undefined | null): string | number | boolean {
   return v
 }
 
+function isImageIconPath(value: string): boolean {
+  const trimmed = value.trim()
+  return /^(https?:\/\/|\/|\.\/|\.\.\/|data:image\/)/i.test(trimmed)
+}
+
+function isStarTraceIconName(value: string): boolean {
+  const normalized = value.trim().toLowerCase()
+  return normalized === 'startrace' || normalized === 'startrace.color'
+}
+
 /**
  * Get LobeHub icon component by name
  * @param iconName - Icon name/description (e.g., "OpenAI", "OpenAI.Color", "Claude.Avatar")
@@ -96,6 +106,32 @@ export function getLobeIcon(
       >
         ?
       </div>
+    )
+  }
+
+  if (isImageIconPath(trimmedName)) {
+    return (
+      <img
+        src={trimmedName}
+        alt={trimmedName}
+        width={size}
+        height={size}
+        className='bg-muted rounded-full object-contain'
+        style={{ width: size, height: size }}
+      />
+    )
+  }
+
+  if (isStarTraceIconName(trimmedName)) {
+    return (
+      <img
+        src='/startrace.png'
+        alt='StarTrace'
+        width={size}
+        height={size}
+        className='bg-muted rounded-full object-contain'
+        style={{ width: size, height: size }}
+      />
     )
   }
 
