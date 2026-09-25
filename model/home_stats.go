@@ -7,8 +7,8 @@ type UsageOverviewLeaderboardItem struct {
 }
 
 type UsageOverviewPeriod struct {
-	Tokens   int64                        `json:"tokens"`
-	Requests int64                        `json:"requests"`
+	Tokens   int64                          `json:"tokens"`
+	Requests int64                          `json:"requests"`
 	TopUsers []UsageOverviewLeaderboardItem `json:"top_users"`
 }
 

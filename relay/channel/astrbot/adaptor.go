@@ -12,10 +12,10 @@ import (
 	"strings"
 
 	"github.com/QuantumNous/new-api/common"
-	"github.com/QuantumNous/new-api/dto"
 	"github.com/QuantumNous/new-api/relay/channel"
 	relaycommon "github.com/QuantumNous/new-api/relay/common"
-	"github.com/QuantumNous/new-api/types"
+	"github.com/QuantumNous/new-api/relaykit/dto"
+	"github.com/QuantumNous/new-api/relaykit/types"
 
 	"github.com/gin-gonic/gin"
 	"github.com/tidwall/gjson"
@@ -828,5 +828,8 @@ func shouldUseAstrBotStreamResponse(c *gin.Context, info *relaycommon.RelayInfo)
 	if info == nil || info.Request == nil {
 		return info != nil && info.IsStream
 	}
-	return info.Request.IsStream(c)
+	if c == nil {
+		return info.Request.IsStream(nil)
+	}
+	return info.Request.IsStream(c.Request)
 }

@@ -38,5 +38,7 @@ const (
 	APITypeCodex
 	APITypeAdvancedCustom
 	APITypeAstrBot
+	APITypeSub2API
+	APITypeNewAPI
 	APITypeDummy // this one is only for count, do not add any channel after this
 )

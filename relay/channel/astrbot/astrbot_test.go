@@ -6,8 +6,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/QuantumNous/new-api/dto"
 	relaycommon "github.com/QuantumNous/new-api/relay/common"
+	"github.com/QuantumNous/new-api/relaykit/dto"
 
 	"github.com/gin-gonic/gin"
 )
@@ -136,7 +136,7 @@ func TestConvertAstrBotChatRequestCanReuseCallerConversationAsStableSession(t *t
 				ChannelId:         9,
 				UpstreamModelName: "astrbot-model",
 				ChannelOtherSettings: dto.ChannelOtherSettings{
-					AstrBotConfigName:                 "default",
+					AstrBotConfigName:                "default",
 					AstrBotReuseCallerConversationID: true,
 				},
 			},
@@ -336,7 +336,7 @@ func TestConvertAstrBotChatRequestStripCallerPromptsInCallerManagedMode(t *testi
 			ChannelId:         9,
 			UpstreamModelName: "astrbot-model",
 			ChannelOtherSettings: dto.ChannelOtherSettings{
-				AstrBotConfigName:          "default",
+				AstrBotConfigName:         "default",
 				StripCallerPromptsEnabled: true,
 			},
 		},
@@ -375,7 +375,7 @@ func TestConvertAstrBotChatRequestStripCallerPromptsAllowsNonChatPromptFields(t 
 			ChannelId:         9,
 			UpstreamModelName: "astrbot-model",
 			ChannelOtherSettings: dto.ChannelOtherSettings{
-				AstrBotConfigName:          "default",
+				AstrBotConfigName:         "default",
 				StripCallerPromptsEnabled: true,
 			},
 		},
@@ -410,8 +410,8 @@ func TestShouldFilterAstrBotPromptDefaultsEnabled(t *testing.T) {
 
 func TestBuildAstrBotSessionIDUsesTemporaryValueForChannelTest(t *testing.T) {
 	info := &relaycommon.RelayInfo{
-		RequestId: "test-request",
-		UserId:    7,
+		RequestId:     "test-request",
+		UserId:        7,
 		IsChannelTest: true,
 		ChannelMeta: &relaycommon.ChannelMeta{
 			ChannelId: 100,
