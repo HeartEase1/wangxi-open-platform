@@ -22,6 +22,10 @@ import { compareSystemVersions, selectLatestRelease } from '../releases'
 
 describe('system release ordering', () => {
   test.each([
+    ['v1.0.0-rc.40-wangxi.1', 'v1.0.0-rc.40-wangxi.2', -1],
+    ['v1.0.0-rc.40-wangxi.2', 'v1.0.0-rc.41-wangxi.1', -1],
+    ['v1.0.0-wangxi.1', 'v1.0.0-wangxi.2', -1],
+    ['v1.0.0-rc.40-wangxi.1', 'v1.0.0-rc.40-wangxi.1', 0],
     ['v0.13.2', 'v1.0.0-alpha.1', -1],
     ['v1.0.0-alpha.2', 'v1.0.0-beta.1', -1],
     ['v1.0.0-beta.1', 'v1.0.0-rc.1', -1],

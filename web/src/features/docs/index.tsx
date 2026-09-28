@@ -256,7 +256,7 @@ console.log(completion.choices[0]?.message?.content)`
             >
               <div className='via-background dark:via-background rounded-2xl border border-amber-400/30 bg-gradient-to-br from-amber-100/60 to-sky-100/50 p-5 dark:from-amber-500/10 dark:to-sky-500/10'>
                 <p className='text-muted-foreground text-sm leading-7'>
-                  星际和平公司·往昔项目组，捕捉数字星尘中的人影。星溯大模型（StarTrace
+                  往昔开放平台项目组，捕捉数字星尘中的人影。星溯大模型（StarTrace
                   LLM）围绕角色陪伴、人格一致性和多轮对话体验构建，由往昔开放平台提供统一的开发者接入入口。
                 </p>
               </div>

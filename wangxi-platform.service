@@ -1,0 +1,16 @@
+# 安装至 /etc/systemd/system/wangxi-platform.service
+# 先创建 wangxi 用户，并为其授予 /opt/wangxi-open-platform/data 和 logs 的写入权限。
+[Unit]
+Description=Wangxi Open Platform
+After=network.target
+
+[Service]
+User=wangxi
+WorkingDirectory=/opt/wangxi-open-platform/data
+EnvironmentFile=-/opt/wangxi-open-platform/.env
+ExecStart=/opt/wangxi-open-platform/bin/wangxi-api --port 3000 --log-dir /opt/wangxi-open-platform/logs
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

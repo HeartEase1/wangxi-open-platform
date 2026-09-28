@@ -47,8 +47,10 @@ const releaseStages: Record<string, number> = {
 export function parseSystemVersion(
   value: string | null | undefined
 ): SystemVersion | null {
-  const match = value
-    ?.trim()
+  const normalized = value?.trim()
+  const wangxiRevision = normalized?.match(/-wangxi\.(\d+)$/)
+  const match = normalized
+    ?.replace(/-wangxi\.\d+$/, '')
     .match(
       /^v?(\d+(?:\.\d+){2,})(?:-(alpha|beta|rc|patch)(?:\.(\d+))?(?:-i18nfix\.(\d+))?)?(?:\+[\da-zA-Z.-]+)?$/
     )
@@ -61,7 +63,7 @@ export function parseSystemVersion(
     core,
     stage: releaseStages[match[2] ?? 'stable'],
     sequence: BigInt(match[3] ?? '0'),
-    revision: BigInt(match[4] ?? '0'),
+    revision: BigInt(wangxiRevision?.[1] ?? match[4] ?? '0'),
   }
 }
 
@@ -111,5 +113,5 @@ export function selectLatestRelease(payload: unknown): SystemRelease | null {
 }
 
 export function getSystemReleaseUrl(release: SystemRelease): string {
-  return `https://github.com/QuantumNous/new-api/releases/tag/${encodeURIComponent(release.tag_name)}`
+  return `https://github.com/HeartEase1/wangxi-open-platform/releases/tag/${encodeURIComponent(release.tag_name)}`
 }

@@ -1,24 +1,4 @@
+# 兼容旧部署命令，与默认配置共用同一服务和数据目录。
 name: wangxi-open-platform
-
-services:
-  platform:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    image: wangxi-open-platform:local
-    restart: unless-stopped
-    ports:
-      - "127.0.0.1:3000:3000"
-    volumes:
-      - ./data:/data
-      - ./logs:/app/logs
-    command: ["--log-dir", "/app/logs"]
-    environment:
-      TZ: Asia/Shanghai
-      NODE_NAME: wangxi-node-1
-      ERROR_LOG_ENABLED: "true"
-    healthcheck:
-      test: ["CMD", "wget", "-q", "--spider", "http://localhost:3000/api/status"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
+include:
+  - docker-compose.yml

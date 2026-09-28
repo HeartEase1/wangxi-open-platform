@@ -41,11 +41,9 @@ function EmptyAboutState(props: { platformName: string }) {
           <Construction className='text-muted-foreground h-24 w-24' />
         </div>
         <div className='space-y-2'>
-          <h2 className='text-2xl font-bold'>{t('No About Content Set')}</h2>
+          <h2 className='text-2xl font-bold'>{props.platformName}</h2>
           <p className='text-muted-foreground'>
-            {t(
-              'The administrator has not configured any about content yet. You can set it in the settings page, supporting HTML or URL.'
-            )}
+            {t('Unified model access, channel management, and usage tracking.')}
           </p>
         </div>
         <div className='space-y-4 text-sm'>
@@ -100,7 +98,7 @@ function EmptyAboutState(props: { platformName: string }) {
           <p className='text-muted-foreground'>
             {t('This project must be used in compliance with the')}{' '}
             <a
-              href='https://github.com/QuantumNous/new-api/blob/main/LICENSE'
+              href='https://github.com/HeartEase1/wangxi-open-platform/blob/main/LICENSE'
               target='_blank'
               rel='noopener noreferrer'
               className='text-primary hover:underline'

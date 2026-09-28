@@ -1,6 +1,6 @@
-# New API Electron Desktop App
+# 往昔开放平台 Electron Desktop App
 
-This directory contains the Electron wrapper for New API, providing a native desktop application with system tray support for Windows, macOS, and Linux.
+This directory contains the Electron wrapper for 往昔开放平台, providing a native desktop application with system tray support for Windows, macOS, and Linux.
 
 ## Prerequisites
 
@@ -14,7 +14,7 @@ cp ../new-api-macos ../new-api
 ```
 
 **Option B: Build from source (requires Go)**
-TODO
+从本仓库根目录运行 `cd web && bun install --frozen-lockfile && bun run build`，返回根目录后运行 `go build -o new-api .`（Windows 输出 `new-api.exe`）。这里保留桌面包装器的内部二进制名。
 
 ### 2. Electron Dependencies
 ```bash
@@ -76,6 +76,6 @@ const PORT = 3000; // Change to desired port
 ### Database Location
 - **Development**: `../data/new-api.db` (project directory)
 - **Production**:
-  - macOS: `~/Library/Application Support/New API/data/`
-  - Windows: `%APPDATA%/New API/data/`
-  - Linux: `~/.config/New API/data/`
+  - macOS: `~/Library/Application Support/往昔开放平台/data/`
+  - Windows: `%APPDATA%/往昔开放平台/data/`
+  - Linux: `~/.config/往昔开放平台/data/`

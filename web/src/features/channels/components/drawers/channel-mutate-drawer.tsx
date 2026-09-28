@@ -1136,7 +1136,7 @@ export function ChannelMutateDrawer({
     const timer = setTimeout(() => {
       toast.warning(
         t(
-          'Warning: Base URL should not end with /v1. New API will handle it automatically. This may cause request failures.'
+          'Warning: Base URL should not end with /v1. Wangxi Open Platform will handle it automatically. This may cause request failures.'
         ),
         { duration: 5000 }
       )
@@ -3848,12 +3848,12 @@ export function ChannelMutateDrawer({
                 <AlertDescription>
                   {t('Referral link:')}{' '}
                   <a
-                    href='https://cloud.siliconflow.cn/i/hij0YNTZ'
+                    href='https://cloud.siliconflow.cn'
                     target='_blank'
                     rel='noopener noreferrer'
                     className='text-primary underline'
                   >
-                    {t('https://cloud.siliconflow.cn/i/hij0YNTZ')}
+                    {t('https://cloud.siliconflow.cn')}
                   </a>
                 </AlertDescription>
               </Alert>
@@ -4119,7 +4119,7 @@ export function ChannelMutateDrawer({
                     {currentType !== CHANNEL_TYPE_TASK_PLUGIN && (
                       <FormDescription>
                         {t(
-                          'Custom API base URL. For official channels, New API has built-in addresses. Only fill this for third-party proxy sites or special endpoints. Do not add /v1 or trailing slash.'
+                          'Custom API base URL. For official channels, Wangxi Open Platform has built-in addresses. Only fill this for third-party proxy sites or special endpoints. Do not add /v1 or trailing slash.'
                         )}
                       </FormDescription>
                     )}
@@ -4852,9 +4852,7 @@ export function ChannelMutateDrawer({
                     <FormItem>
                       <div className='flex items-center justify-between rounded-lg border p-3'>
                         <div className='space-y-1'>
-                          <FormLabel>
-                            {t('只保留对话消息 / Strip caller prompts')}
-                          </FormLabel>
+                          <FormLabel>{t('Strip caller prompts')}</FormLabel>
                           <FormDescription>
                             {t(
                               'Remove caller-provided system/developer prompts and prompt/instruction fields before sending to StarTrace framework. User/assistant conversation messages are preserved.'
@@ -4941,7 +4939,7 @@ export function ChannelMutateDrawer({
                       <FormItem className='flex items-center justify-between gap-3 px-4 py-3'>
                         <div className='space-y-0.5'>
                           <FormLabel className='text-sm'>
-                            {t('只保留对话消息 / Strip caller prompts')}
+                            {t('Strip caller prompts')}
                           </FormLabel>
                           <FormDescription>
                             {t(

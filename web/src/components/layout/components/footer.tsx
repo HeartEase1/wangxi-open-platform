@@ -143,14 +143,15 @@ function ProjectAttribution(props: { platformName: string; inline?: boolean }) {
   const { t } = useTranslation()
   const content = (
     <span className='text-muted-foreground/45'>
-      {props.platformName} {t('| Based on')}{' '}
+      {props.platformName}
+      {' · '}
       <a
-        href='https://github.com/QuantumNous/new-api'
+        href='https://github.com/HeartEase1/wangxi-open-platform'
         target='_blank'
         rel='noopener noreferrer'
         className='text-foreground/70 hover:text-foreground font-medium transition-colors'
       >
-        New API
+        {t('Source Code')}
       </a>
       .
     </span>
@@ -219,16 +220,16 @@ export function Footer(props: FooterProps) {
         title: t('footer.columns.related.title'),
         links: [
           {
-            text: t('footer.columns.related.links.oneApi'),
-            href: 'https://github.com/songquanpeng/one-api',
+            text: t('Source Code'),
+            href: 'https://github.com/HeartEase1/wangxi-open-platform',
           },
           {
-            text: t('footer.columns.related.links.midjourney'),
-            href: 'https://github.com/novicezk/midjourney-proxy',
+            text: t('Documentation'),
+            href: '/docs',
           },
           {
-            text: t('footer.columns.related.links.newApiKeyTool'),
-            href: 'https://github.com/Calcium-Ion/new-api-key-tool',
+            text: t('Feedback'),
+            href: 'https://github.com/HeartEase1/wangxi-open-platform/issues',
           },
         ],
       },
