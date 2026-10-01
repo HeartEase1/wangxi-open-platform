@@ -31,10 +31,21 @@ export function AuthLayout({ children }: AuthLayoutProps) {
   const { systemName, logo, loading } = useSystemConfig()
 
   return (
-    <div className='bg-background text-foreground relative min-h-svh overflow-hidden'>
+    <div className='bg-background text-foreground relative min-h-svh overflow-x-hidden overflow-y-auto'>
+      <div aria-hidden='true' className='pointer-events-none absolute inset-0'>
+        <img
+          src='/dashboard-banner.png'
+          alt=''
+          className='absolute inset-0 size-full object-cover object-[center_42%]'
+        />
+        <div className='absolute inset-0 bg-slate-950/35 dark:bg-slate-950/55' />
+        <div className='absolute inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(250,204,21,0.18),transparent_34%),radial-gradient(circle_at_82%_72%,rgba(56,189,248,0.2),transparent_38%),linear-gradient(120deg,rgba(15,23,42,0.78),rgba(15,23,42,0.25)_50%,rgba(15,23,42,0.72))]' />
+        <div className='bg-background/10 absolute inset-0 backdrop-blur-[1px]' />
+      </div>
+
       <Link
         to='/'
-        className='absolute top-4 left-4 z-20 flex items-center gap-2 transition-opacity hover:opacity-80 sm:top-8 sm:left-8 lg:top-7 lg:right-8 lg:left-auto'
+        className='bg-background/55 absolute top-4 left-4 z-20 flex items-center gap-2 rounded-full border border-white/25 px-3 py-2 shadow-lg shadow-black/10 backdrop-blur-xl transition-opacity hover:opacity-80 sm:top-7 sm:left-7 lg:top-8 lg:left-8'
       >
         <div className='relative h-8 w-8'>
           {loading ? (
@@ -48,41 +59,25 @@ export function AuthLayout({ children }: AuthLayoutProps) {
           )}
         </div>
         {loading ? (
-          <Skeleton className='h-6 w-24' />
+          <Skeleton className='h-5 w-24' />
         ) : (
-          <h1 className='text-xl font-medium'>{systemName}</h1>
+          <h1 className='text-sm font-semibold tracking-tight'>{systemName}</h1>
         )}
       </Link>
 
-      <div className='grid min-h-svh lg:grid-cols-[minmax(0,1.08fr)_minmax(28rem,0.92fr)]'>
-        <div className='relative hidden overflow-hidden lg:flex'>
-          <img
-            src='/dashboard-banner.png'
-            alt=''
-            aria-hidden='true'
-            className='absolute inset-0 size-full object-cover object-[center_38%]'
-          />
-          <div className='absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/25 to-slate-950/5' />
-          <div className='relative z-10 mt-auto max-w-2xl p-12 xl:p-16'>
-            <p className='text-xs font-semibold tracking-[0.28em] text-white/75 uppercase'>
+      <div className='relative z-10 flex min-h-svh items-center justify-center px-4 pt-24 pb-10 sm:px-8 sm:pt-28 sm:pb-14'>
+        <div className='pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_42%,rgba(255,255,255,0.14),transparent_34%)]' />
+        <div className='relative w-full max-w-[500px]'>
+          <div className='mb-5 px-2 text-center text-white sm:mb-6'>
+            <p className='text-[0.68rem] font-semibold tracking-[0.32em] text-white/70 uppercase'>
               {systemName}
             </p>
-            <h2 className='mt-4 text-3xl font-semibold tracking-tight text-white xl:text-4xl'>
-              {t(
-                'A focused home for keys, balance, routing, and service health.'
-              )}
-            </h2>
-            <p className='mt-4 max-w-lg text-sm leading-7 text-white/70'>
-              {t(
-                'Manage your models, keys, channels, and wheat usage in one place.'
-              )}
+            <p className='mt-2 text-sm text-white/75'>
+              {t('A calm workspace for your AI model journey.')}
             </p>
           </div>
-        </div>
-
-        <div className='relative flex min-h-svh items-center justify-center px-4 pt-20 pb-10 sm:px-8 sm:pt-24 sm:pb-12'>
-          <div className='pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_20%,color-mix(in_oklch,var(--chart-4)_10%,transparent),transparent_48%)]' />
-          <div className='bg-card/90 relative w-full max-w-[480px] rounded-3xl border p-6 shadow-xl shadow-black/5 backdrop-blur-xl sm:p-8 lg:p-10 dark:shadow-black/20'>
+          <div className='bg-background/78 dark:bg-card/68 relative rounded-[2rem] border border-white/35 p-6 shadow-2xl shadow-slate-950/25 backdrop-blur-2xl sm:p-9'>
+            <div className='from-primary/20 pointer-events-none absolute inset-x-10 top-0 h-px bg-gradient-to-r via-sky-300/40 to-transparent' />
             {children}
           </div>
         </div>
