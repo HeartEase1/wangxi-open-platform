@@ -31,10 +31,10 @@ export function AuthLayout({ children }: AuthLayoutProps) {
   const { systemName, logo, loading } = useSystemConfig()
 
   return (
-    <div className='relative grid h-svh max-w-none'>
+    <div className='bg-background text-foreground relative min-h-svh overflow-hidden'>
       <Link
         to='/'
-        className='absolute top-4 left-4 z-10 flex items-center gap-2 transition-opacity hover:opacity-80 sm:top-8 sm:left-8'
+        className='absolute top-4 left-4 z-20 flex items-center gap-2 transition-opacity hover:opacity-80 sm:top-8 sm:left-8 lg:top-7 lg:right-8 lg:left-auto'
       >
         <div className='relative h-8 w-8'>
           {loading ? (
@@ -53,9 +53,38 @@ export function AuthLayout({ children }: AuthLayoutProps) {
           <h1 className='text-xl font-medium'>{systemName}</h1>
         )}
       </Link>
-      <div className='container flex items-center pt-16 sm:pt-0'>
-        <div className='mx-auto flex w-full flex-col justify-center space-y-2 px-4 py-8 sm:w-[480px] sm:p-8'>
-          {children}
+
+      <div className='grid min-h-svh lg:grid-cols-[minmax(0,1.08fr)_minmax(28rem,0.92fr)]'>
+        <div className='relative hidden overflow-hidden lg:flex'>
+          <img
+            src='/dashboard-banner.png'
+            alt=''
+            aria-hidden='true'
+            className='absolute inset-0 size-full object-cover object-[center_38%]'
+          />
+          <div className='absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/25 to-slate-950/5' />
+          <div className='relative z-10 mt-auto max-w-2xl p-12 xl:p-16'>
+            <p className='text-xs font-semibold tracking-[0.28em] text-white/75 uppercase'>
+              {systemName}
+            </p>
+            <h2 className='mt-4 text-3xl font-semibold tracking-tight text-white xl:text-4xl'>
+              {t(
+                'A focused home for keys, balance, routing, and service health.'
+              )}
+            </h2>
+            <p className='mt-4 max-w-lg text-sm leading-7 text-white/70'>
+              {t(
+                'Manage your models, keys, channels, and wheat usage in one place.'
+              )}
+            </p>
+          </div>
+        </div>
+
+        <div className='relative flex min-h-svh items-center justify-center px-4 pt-20 pb-10 sm:px-8 sm:pt-24 sm:pb-12'>
+          <div className='pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_20%,color-mix(in_oklch,var(--chart-4)_10%,transparent),transparent_48%)]' />
+          <div className='bg-card/90 relative w-full max-w-[480px] rounded-3xl border p-6 shadow-xl shadow-black/5 backdrop-blur-xl sm:p-8 lg:p-10 dark:shadow-black/20'>
+            {children}
+          </div>
         </div>
       </div>
     </div>
