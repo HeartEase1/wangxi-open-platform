@@ -107,6 +107,35 @@ export function Hero(props: HeroProps) {
         aria-hidden='true'
         className='pointer-events-none absolute inset-0 -z-20 bg-[linear-gradient(to_right,var(--border)_1px,transparent_1px),linear-gradient(to_bottom,var(--border)_1px,transparent_1px)] [mask-image:linear-gradient(to_bottom,black_0%,transparent_70%)] bg-[size:4rem_4rem] opacity-[0.03]'
       />
+      <div
+        aria-hidden='true'
+        className='pointer-events-none absolute inset-0 -z-[5] overflow-hidden'
+      >
+        <span
+          className='hero-firefly absolute top-[20%] left-[58%] size-1.5 rounded-full bg-amber-100 shadow-[0_0_14px_5px_rgba(250,204,21,0.58)] md:size-2'
+          style={{ animationDelay: '0.2s' }}
+        />
+        <span
+          className='hero-firefly absolute top-[34%] left-[68%] size-1 rounded-full bg-yellow-100 shadow-[0_0_12px_4px_rgba(250,204,21,0.52)] md:size-1.5'
+          style={{ animationDelay: '1.4s' }}
+        />
+        <span
+          className='hero-firefly absolute top-[48%] left-[77%] size-1.5 rounded-full bg-amber-100 shadow-[0_0_16px_5px_rgba(251,191,36,0.56)] md:size-2'
+          style={{ animationDelay: '2.1s' }}
+        />
+        <span
+          className='hero-firefly absolute top-[64%] left-[86%] size-1 rounded-full bg-yellow-100 shadow-[0_0_12px_4px_rgba(250,204,21,0.5)] md:size-1.5'
+          style={{ animationDelay: '0.9s' }}
+        />
+        <span
+          className='hero-firefly absolute top-[72%] left-[62%] size-1 rounded-full bg-amber-50 shadow-[0_0_11px_4px_rgba(251,191,36,0.48)] md:size-1.5'
+          style={{ animationDelay: '2.8s' }}
+        />
+        <span
+          className='hero-firefly absolute top-[28%] left-[90%] size-1 rounded-full bg-yellow-100 shadow-[0_0_12px_4px_rgba(250,204,21,0.5)] md:size-1.5'
+          style={{ animationDelay: '1.8s' }}
+        />
+      </div>
 
       <div className='mx-auto flex w-full max-w-6xl flex-col items-start text-left'>
         <div
