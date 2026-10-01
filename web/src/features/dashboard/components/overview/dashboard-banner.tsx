@@ -30,12 +30,12 @@ export function DashboardBanner() {
 
   return (
     <div className='border-primary/15 relative overflow-hidden rounded-2xl border shadow-sm'>
-      <div className='relative h-[210px] w-full sm:h-[225px] lg:h-[240px]'>
+      <div className='relative h-[160px] w-full sm:h-[175px] lg:h-[190px]'>
         <img
           src='/dashboard-banner.png'
           alt=''
           aria-hidden='true'
-          className='size-full object-cover object-[center_38%]'
+          className='size-full object-cover object-[center_28%]'
           loading='eager'
         />
         <div className='from-background/95 via-background/72 absolute inset-0 bg-gradient-to-r to-transparent' />
@@ -43,11 +43,12 @@ export function DashboardBanner() {
           className='pointer-events-none absolute inset-0 hidden dark:block'
           aria-hidden='true'
         >
-          <span className='absolute top-[22%] left-[57%] size-1 rounded-full bg-amber-200/90 shadow-[0_0_12px_4px_rgba(250,204,21,0.48)] motion-safe:animate-pulse' />
-          <span className='absolute top-[36%] left-[68%] size-1.5 rounded-full bg-yellow-200/80 shadow-[0_0_14px_5px_rgba(250,204,21,0.42)] motion-safe:animate-pulse' />
-          <span className='absolute top-[64%] left-[78%] size-1 rounded-full bg-amber-100/85 shadow-[0_0_11px_4px_rgba(251,191,36,0.46)] motion-safe:animate-pulse' />
-          <span className='absolute top-[74%] left-[61%] size-0.5 rounded-full bg-yellow-100/90 shadow-[0_0_9px_3px_rgba(250,204,21,0.5)] motion-safe:animate-pulse' />
-          <span className='absolute top-[48%] left-[88%] size-0.5 rounded-full bg-amber-200/80 shadow-[0_0_10px_3px_rgba(251,191,36,0.42)] motion-safe:animate-pulse' />
+          <span className='absolute top-[18%] left-[57%] size-2 animate-pulse rounded-full bg-yellow-100 shadow-[0_0_16px_6px_rgba(250,204,21,0.7)]' />
+          <span className='absolute top-[34%] left-[69%] size-1.5 animate-pulse rounded-full bg-amber-200 shadow-[0_0_18px_7px_rgba(250,204,21,0.62)]' />
+          <span className='absolute top-[66%] left-[79%] size-2 animate-pulse rounded-full bg-yellow-100 shadow-[0_0_15px_6px_rgba(251,191,36,0.65)]' />
+          <span className='absolute top-[76%] left-[61%] size-1 animate-pulse rounded-full bg-amber-100 shadow-[0_0_13px_5px_rgba(250,204,21,0.72)]' />
+          <span className='absolute top-[46%] left-[89%] size-1.5 animate-pulse rounded-full bg-yellow-100 shadow-[0_0_14px_5px_rgba(251,191,36,0.6)]' />
+          <span className='absolute top-[58%] left-[51%] size-1 animate-pulse rounded-full bg-amber-100 shadow-[0_0_12px_4px_rgba(250,204,21,0.65)]' />
         </div>
         <div className='absolute inset-y-0 left-0 flex max-w-[72%] flex-col justify-center px-5 py-4 sm:max-w-[52%] sm:px-8 sm:py-5 md:px-10'>
           <p className='text-primary text-xs font-semibold tracking-[0.24em] uppercase'>

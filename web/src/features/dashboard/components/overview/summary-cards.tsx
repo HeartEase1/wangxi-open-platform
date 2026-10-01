@@ -305,30 +305,30 @@ export function SummaryCards() {
               </span>
             </div>
 
-            <div className='font-mono text-xl font-semibold tracking-tight sm:text-2xl'>
+            <div className='text-chart-1 font-mono text-xl font-semibold tracking-tight sm:text-2xl'>
               {formatQuota(remainQuota)}
             </div>
 
             <div className='grid grid-cols-2 gap-2'>
-              <div className='bg-background/60 rounded-lg px-2.5 py-2'>
-                <div className='text-muted-foreground flex items-center gap-1 text-[11px] leading-none font-medium'>
+              <div className='border-chart-2/20 bg-chart-2/10 rounded-lg border px-2.5 py-2'>
+                <div className='text-chart-2 flex items-center gap-1 text-[11px] leading-none font-medium'>
                   <Flame className='size-3 shrink-0' aria-hidden='true' />
                   <span className='truncate'>{t('Last 24h usage')}</span>
                 </div>
-                <div className='text-foreground mt-1.5 truncate text-xs font-semibold tabular-nums'>
+                <div className='text-chart-2 mt-1.5 truncate text-xs font-semibold tabular-nums'>
                   {formatQuota(recentUsage)}
                 </div>
               </div>
-              <div className='bg-background/60 rounded-lg px-2.5 py-2'>
-                <div className='text-muted-foreground flex items-center gap-1 text-[11px] leading-none font-medium'>
+              <div className='border-chart-5/20 bg-chart-5/10 rounded-lg border px-2.5 py-2'>
+                <div className='text-chart-5 flex items-center gap-1 text-[11px] leading-none font-medium'>
                   {runwayDays !== null && runwayDays < 3 ? (
                     <TrendingDown
-                      className='size-3 shrink-0'
+                      className='text-warning size-3 shrink-0'
                       aria-hidden='true'
                     />
                   ) : (
                     <ShieldCheck
-                      className='size-3 shrink-0'
+                      className='text-chart-5 size-3 shrink-0'
                       aria-hidden='true'
                     />
                   )}

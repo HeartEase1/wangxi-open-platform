@@ -745,26 +745,26 @@ For commercial licensing, please contact support@quantumnous.com
 /* 设计理念：昔涟角色（粉发紫衣蓝眼青绿发尾）+ 麦穗银杏 + 高级留白 */
 [data-theme-preset='past-ripples'] {
   /* 白昼模式以麦穗、银杏和天空色为主，紫色只保留为品牌点缀。 */
-  --background: oklch(0.985 0.018 95);
-  --foreground: oklch(0.25 0.035 70);
+  --background: oklch(0.985 0.006 95);
+  --foreground: oklch(0.27 0.03 155);
 
-  --card: oklch(0.995 0.008 92);
-  --card-foreground: oklch(0.25 0.035 70);
-  --popover: oklch(0.998 0.006 92);
-  --popover-foreground: oklch(0.25 0.035 70);
+  --card: oklch(0.998 0.004 100);
+  --card-foreground: oklch(0.27 0.03 155);
+  --popover: oklch(0.999 0.003 100);
+  --popover-foreground: oklch(0.27 0.03 155);
 
   /* 主色 - 麦穗金，适合按钮、余额卡片和关键动作。 */
-  --primary: oklch(0.68 0.14 78);
+  --primary: oklch(0.66 0.13 78);
   --primary-foreground: oklch(0.2 0.03 72);
 
   /* 辅助色 - 桃粉，搭配银杏色保持温柔但不刺眼。 */
   --secondary: oklch(0.82 0.12 35);
   --secondary-foreground: oklch(0.28 0.04 45);
 
-  --muted: oklch(0.955 0.018 90);
-  --muted-foreground: oklch(0.48 0.035 70);
-  --accent: oklch(0.92 0.045 88);
-  --accent-foreground: oklch(0.3 0.045 70);
+  --muted: oklch(0.955 0.012 210);
+  --muted-foreground: oklch(0.48 0.03 175);
+  --accent: oklch(0.93 0.03 165);
+  --accent-foreground: oklch(0.3 0.04 155);
 
   /* 语义色 */
   --destructive: oklch(0.57 0.22 18);
@@ -775,36 +775,36 @@ For commercial licensing, please contact support@quantumnous.com
   --warning-foreground: oklch(0.18 0.01 85);
   --info: oklch(0.66 0.12 235);
   --info-foreground: oklch(1 0 0);
-  --neutral: oklch(0.5 0.035 70);
+  --neutral: oklch(0.5 0.03 170);
   --neutral-foreground: oklch(1 0 0);
 
   /* 边框 - 极淡，保持呼吸感 */
-  --border: oklch(0.89 0.025 85);
-  --input: oklch(0.87 0.03 85);
-  --ring: oklch(0.68 0.14 78);
+  --border: oklch(0.9 0.018 180);
+  --input: oklch(0.88 0.02 180);
+  --ring: oklch(0.66 0.13 78);
 
   /* 图表色板 - 麦穗金、桃粉、天空蓝、昔涟紫、麦青。 */
   --chart-1: oklch(0.74 0.14 82);
-  --chart-2: oklch(0.78 0.12 35);
-  --chart-3: oklch(0.66 0.12 235);
+  --chart-2: oklch(0.66 0.12 235);
+  --chart-3: oklch(0.78 0.12 35);
   --chart-4: oklch(0.62 0.13 295);
   --chart-5: oklch(0.68 0.12 175);
 
   --overview-accent-1: oklch(0.74 0.14 82);
-  --overview-accent-2: oklch(0.78 0.12 35);
-  --overview-accent-3: oklch(0.66 0.12 235);
+  --overview-accent-2: oklch(0.66 0.12 235);
+  --overview-accent-3: oklch(0.68 0.12 175);
 
-  --sidebar: oklch(0.98 0.014 92);
-  --sidebar-foreground: oklch(0.28 0.035 70);
-  --sidebar-primary: oklch(0.68 0.14 78);
+  --sidebar: oklch(0.98 0.008 180);
+  --sidebar-foreground: oklch(0.28 0.03 155);
+  --sidebar-primary: oklch(0.66 0.13 78);
   --sidebar-primary-foreground: oklch(0.2 0.03 72);
-  --sidebar-accent: oklch(0.93 0.035 42);
-  --sidebar-accent-foreground: oklch(0.32 0.045 65);
-  --sidebar-border: oklch(0.9 0.022 85);
-  --sidebar-ring: oklch(0.68 0.14 78);
+  --sidebar-accent: oklch(0.93 0.03 165);
+  --sidebar-accent-foreground: oklch(0.32 0.04 155);
+  --sidebar-border: oklch(0.9 0.016 180);
+  --sidebar-ring: oklch(0.66 0.13 78);
 
-  --skeleton-base: oklch(0.94 0.018 88);
-  --skeleton-highlight: oklch(0.985 0.01 92);
+  --skeleton-base: oklch(0.94 0.012 180);
+  --skeleton-highlight: oklch(0.985 0.006 100);
 
   --radius: 0.85rem;
 }
