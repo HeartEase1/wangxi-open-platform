@@ -529,69 +529,62 @@ For commercial licensing, please contact support@quantumnous.com
   }
 }
 
-@keyframes hero-firefly-twinkle {
+@keyframes hero-firefly-float {
   0%,
   100% {
-    opacity: 0.3;
-    transform: translate3d(0, 0, 0) scale(0.78);
-    filter: brightness(0.86) saturate(0.92);
+    transform: translate3d(0, 0, 0);
   }
-  28% {
-    opacity: 0.48;
-    transform: translate3d(2px, -3px, 0) scale(0.9);
-    filter: brightness(1.05) saturate(1);
+  25% {
+    transform: translate3d(5px, -6px, 0);
+  }
+  50% {
+    transform: translate3d(-3px, -11px, 0);
+  }
+  75% {
+    transform: translate3d(-6px, -4px, 0);
+  }
+}
+
+@keyframes hero-firefly-core-glow {
+  0%,
+  100% {
+    opacity: 0.42;
+    transform: scale(0.84);
+    filter: brightness(0.9) saturate(0.95);
+  }
+  24% {
+    opacity: 0.56;
+    transform: scale(0.94);
+    filter: brightness(1.04) saturate(1);
   }
   46% {
-    opacity: 0.9;
-    transform: translate3d(
-        var(--hero-firefly-dx, 8px),
-        var(--hero-firefly-dy, -10px),
-        0
-      )
-      scale(1.15);
-    filter: brightness(1.55) saturate(1.18);
+    opacity: 0.86;
+    transform: scale(1.1);
+    filter: brightness(1.38) saturate(1.12);
   }
   58% {
-    opacity: 0.78;
-    transform: translate3d(
-        var(--hero-firefly-dx, 8px),
-        var(--hero-firefly-dy, -10px),
-        0
-      )
-      scale(1.08);
-    filter: brightness(1.4) saturate(1.12);
+    opacity: 0.76;
+    transform: scale(1.04);
+    filter: brightness(1.26) saturate(1.08);
   }
-  76% {
-    opacity: 0.42;
-    transform: translate3d(3px, -2px, 0) scale(0.9);
+  78% {
+    opacity: 0.5;
+    transform: scale(0.92);
     filter: brightness(1.02) saturate(1);
   }
 }
 
 .hero-firefly {
-  animation: hero-firefly-twinkle var(--hero-firefly-duration, 5.8s) ease-in-out
-    infinite;
+  animation: hero-firefly-float var(--hero-firefly-float-duration, 15s)
+    ease-in-out infinite;
+  will-change: transform;
+}
+
+.hero-firefly-core {
+  display: block;
+  animation: hero-firefly-core-glow var(--hero-firefly-twinkle-duration, 5.8s)
+    ease-in-out infinite;
   will-change: opacity, transform, filter;
-}
-
-.hero-firefly--a {
-  --hero-firefly-dx: 8px;
-  --hero-firefly-dy: -11px;
-}
-
-.hero-firefly--b {
-  --hero-firefly-dx: -7px;
-  --hero-firefly-dy: -8px;
-}
-
-.hero-firefly--c {
-  --hero-firefly-dx: 11px;
-  --hero-firefly-dy: -5px;
-}
-
-.hero-firefly--d {
-  --hero-firefly-dx: -9px;
-  --hero-firefly-dy: -13px;
 }
 
 .landing-animate-fade-up {
