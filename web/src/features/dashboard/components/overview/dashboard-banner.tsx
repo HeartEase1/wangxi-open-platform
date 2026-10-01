@@ -35,21 +35,10 @@ export function DashboardBanner() {
           src='/dashboard-banner.png'
           alt=''
           aria-hidden='true'
-          className='size-full object-cover object-[center_28%]'
+          className='size-full object-cover object-[center_10%]'
           loading='eager'
         />
         <div className='from-background/95 via-background/72 absolute inset-0 bg-gradient-to-r to-transparent' />
-        <div
-          className='pointer-events-none absolute inset-0 hidden dark:block'
-          aria-hidden='true'
-        >
-          <span className='absolute top-[18%] left-[57%] size-2 animate-pulse rounded-full bg-yellow-100 shadow-[0_0_16px_6px_rgba(250,204,21,0.7)]' />
-          <span className='absolute top-[34%] left-[69%] size-1.5 animate-pulse rounded-full bg-amber-200 shadow-[0_0_18px_7px_rgba(250,204,21,0.62)]' />
-          <span className='absolute top-[66%] left-[79%] size-2 animate-pulse rounded-full bg-yellow-100 shadow-[0_0_15px_6px_rgba(251,191,36,0.65)]' />
-          <span className='absolute top-[76%] left-[61%] size-1 animate-pulse rounded-full bg-amber-100 shadow-[0_0_13px_5px_rgba(250,204,21,0.72)]' />
-          <span className='absolute top-[46%] left-[89%] size-1.5 animate-pulse rounded-full bg-yellow-100 shadow-[0_0_14px_5px_rgba(251,191,36,0.6)]' />
-          <span className='absolute top-[58%] left-[51%] size-1 animate-pulse rounded-full bg-amber-100 shadow-[0_0_12px_4px_rgba(250,204,21,0.65)]' />
-        </div>
         <div className='absolute inset-y-0 left-0 flex max-w-[72%] flex-col justify-center px-5 py-4 sm:max-w-[52%] sm:px-8 sm:py-5 md:px-10'>
           <p className='text-primary text-xs font-semibold tracking-[0.24em] uppercase'>
             {systemName || DEFAULT_SYSTEM_NAME}
