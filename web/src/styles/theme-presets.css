@@ -865,4 +865,24 @@ For commercial licensing, please contact support@quantumnous.com
 
   --skeleton-base: oklch(0.2 0.03 295);
   --skeleton-highlight: oklch(0.26 0.032 298);
+
+  /* 数据表头跟随深色紫蓝卡片，避免默认灰色表头与背景脱节。 */
+  --table-row: var(--background);
+  --table-header: color-mix(in oklch, var(--card) 84%, var(--chart-4) 16%);
+  --table-header-hover: color-mix(
+    in oklch,
+    var(--table-header) 88%,
+    var(--chart-1) 12%
+  );
+  --table-disabled: color-mix(in oklch, var(--background) 92%, var(--chart-4) 8%);
+  --table-disabled-hover: color-mix(
+    in oklch,
+    var(--table-disabled) 88%,
+    var(--chart-1) 12%
+  );
+  --table-disabled-border: color-mix(
+    in oklch,
+    var(--border) 70%,
+    var(--chart-4) 30%
+  );
 }
