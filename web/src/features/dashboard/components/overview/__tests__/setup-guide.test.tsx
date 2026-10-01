@@ -111,6 +111,9 @@ describe('overview setup guide', () => {
     await renderOverview()
 
     const toggle = await screen.findByRole('button', { name: 'Setup guide' })
+    expect(
+      document.querySelector('img[src="/dashboard-banner.png"]')
+    ).toBeInTheDocument()
     expect(toggle).toHaveAttribute('aria-expanded', 'false')
     expect(
       screen.getAllByRole('heading').map((heading) => heading.textContent)

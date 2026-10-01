@@ -77,6 +77,11 @@ export const THEME_PRESETS = [
     name: 'Lavender Dream',
     swatches: ['oklch(0.5709 0.1808 306.89)', 'oklch(0.811 0.0589 201.14)'],
   },
+  {
+    value: 'past-ripples',
+    name: '往昔涟漪',
+    swatches: ['oklch(0.65 0.16 295)', 'oklch(0.78 0.13 350)'],
+  },
 ] as const
 
 export type ThemePreset = (typeof THEME_PRESETS)[number]['value']
@@ -116,7 +121,7 @@ export type ThemeCustomization = {
 }
 
 export const DEFAULT_THEME_CUSTOMIZATION: ThemeCustomization = {
-  preset: 'default',
+  preset: 'past-ripples',
   font: 'default',
   radius: 'default',
   scale: 'default',

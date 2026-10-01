@@ -740,3 +740,122 @@ For commercial licensing, please contact support@quantumnous.com
     width: 100%;
   }
 }
+
+/* ── 往昔涟漪 (Past Ripples) ──────────────────────────────────────────────── */
+/* 设计理念：昔涟角色（粉发紫衣蓝眼青绿发尾）+ 麦穗银杏 + 高级留白 */
+[data-theme-preset='past-ripples'] {
+  /* 高级感浅色 - 接近纯白的底色，留白更多 */
+  --background: oklch(0.992 0.003 300);
+  --foreground: oklch(0.22 0.025 295);
+
+  --card: oklch(0.985 0.004 310);
+  --card-foreground: oklch(0.22 0.025 295);
+  --popover: oklch(0.99 0.003 310);
+  --popover-foreground: oklch(0.22 0.025 295);
+
+  /* 主色 - 优雅紫罗兰（昔涟紫衣） */
+  --primary: oklch(0.65 0.16 295);
+  --primary-foreground: oklch(1 0 0);
+
+  /* 辅助色 - 柔和粉桃（粉发+桃子） */
+  --secondary: oklch(0.78 0.13 350);
+  --secondary-foreground: oklch(0.18 0.01 295);
+
+  /* 高留白的中性色 */
+  --muted: oklch(0.97 0.006 310);
+  --muted-foreground: oklch(0.5 0.025 295);
+  --accent: oklch(0.94 0.018 330);
+  --accent-foreground: oklch(0.28 0.04 295);
+
+  /* 语义色 */
+  --destructive: oklch(0.57 0.22 18);
+  --destructive-foreground: oklch(1 0 0);
+  --success: oklch(0.62 0.13 165);
+  --success-foreground: oklch(1 0 0);
+  --warning: oklch(0.75 0.15 85);
+  --warning-foreground: oklch(0.18 0.01 85);
+  --info: oklch(0.64 0.14 230);
+  --info-foreground: oklch(1 0 0);
+  --neutral: oklch(0.5 0.025 295);
+  --neutral-foreground: oklch(1 0 0);
+
+  /* 边框 - 极淡，保持呼吸感 */
+  --border: oklch(0.92 0.008 315);
+  --input: oklch(0.9 0.01 315);
+  --ring: oklch(0.65 0.16 295);
+
+  /* 图表色板 - 金黄（麦穗）、紫、粉、青蓝、青绿 */
+  --chart-1: oklch(0.75 0.15 85);
+  --chart-2: oklch(0.65 0.16 295);
+  --chart-3: oklch(0.78 0.13 350);
+  --chart-4: oklch(0.64 0.14 230);
+  --chart-5: oklch(0.68 0.12 175);
+
+  --sidebar: oklch(0.988 0.003 310);
+  --sidebar-foreground: oklch(0.26 0.03 295);
+  --sidebar-primary: oklch(0.65 0.16 295);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0.96 0.015 325);
+  --sidebar-accent-foreground: oklch(0.32 0.045 295);
+  --sidebar-border: oklch(0.93 0.008 315);
+  --sidebar-ring: oklch(0.65 0.16 295);
+
+  --skeleton-base: oklch(0.95 0.007 315);
+  --skeleton-highlight: oklch(0.985 0.004 310);
+
+  --radius: 0.85rem;
+}
+
+.dark [data-theme-preset='past-ripples'] {
+  /* 深色模式 - 深邃优雅的紫调黑 */
+  --background: oklch(0.12 0.025 290);
+  --foreground: oklch(0.94 0.012 320);
+
+  --card: oklch(0.16 0.028 295);
+  --card-foreground: oklch(0.94 0.012 320);
+  --popover: oklch(0.17 0.028 295);
+  --popover-foreground: oklch(0.94 0.012 320);
+
+  --primary: oklch(0.7 0.17 295);
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.8 0.14 348);
+  --secondary-foreground: oklch(0.12 0.025 290);
+
+  --muted: oklch(0.22 0.032 295);
+  --muted-foreground: oklch(0.68 0.028 310);
+  --accent: oklch(0.28 0.048 305);
+  --accent-foreground: oklch(0.9 0.035 335);
+
+  --destructive: oklch(0.64 0.22 22);
+  --destructive-foreground: oklch(1 0 0);
+  --success: oklch(0.7 0.14 168);
+  --success-foreground: oklch(0.12 0.025 290);
+  --warning: oklch(0.8 0.15 88);
+  --warning-foreground: oklch(0.12 0.025 290);
+  --info: oklch(0.7 0.14 233);
+  --info-foreground: oklch(1 0 0);
+  --neutral: oklch(0.58 0.028 295);
+  --neutral-foreground: oklch(1 0 0);
+
+  --border: oklch(0.26 0.035 295);
+  --input: oklch(0.24 0.033 295);
+  --ring: oklch(0.7 0.17 295);
+
+  --chart-1: oklch(0.8 0.15 88);
+  --chart-2: oklch(0.7 0.17 295);
+  --chart-3: oklch(0.8 0.14 348);
+  --chart-4: oklch(0.7 0.14 233);
+  --chart-5: oklch(0.72 0.13 178);
+
+  --sidebar: oklch(0.14 0.026 293);
+  --sidebar-foreground: oklch(0.88 0.018 318);
+  --sidebar-primary: oklch(0.7 0.17 295);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0.25 0.042 300);
+  --sidebar-accent-foreground: oklch(0.84 0.042 332);
+  --sidebar-border: oklch(0.23 0.034 295);
+  --sidebar-ring: oklch(0.7 0.17 295);
+
+  --skeleton-base: oklch(0.2 0.03 295);
+  --skeleton-highlight: oklch(0.26 0.032 298);
+}
