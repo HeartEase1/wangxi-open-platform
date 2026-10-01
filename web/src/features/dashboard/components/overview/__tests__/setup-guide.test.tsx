@@ -112,7 +112,7 @@ describe('overview setup guide', () => {
 
     const toggle = await screen.findByRole('button', { name: 'Setup guide' })
     expect(
-      document.querySelector('img[src="/dashboard-banner.png"]')
+      document.querySelector('img[src="/hero-xilian.png"]')
     ).toBeInTheDocument()
     expect(screen.getByText('往昔开放平台')).toBeVisible()
     expect(screen.getByText('Welcome back!')).toBeVisible()

@@ -32,7 +32,7 @@ export function DashboardBanner() {
     <div className='border-primary/15 relative overflow-hidden rounded-2xl border shadow-sm'>
       <div className='relative h-[160px] w-full sm:h-[175px] lg:h-[190px]'>
         <img
-          src='/dashboard-banner.png'
+          src='/hero-xilian.png'
           alt=''
           aria-hidden='true'
           className='size-full object-cover object-[center_10%]'
