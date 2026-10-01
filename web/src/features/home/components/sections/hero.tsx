@@ -164,26 +164,26 @@ export function Hero(props: HeroProps) {
         >
           <p className='text-foreground text-2xl font-medium md:text-3xl'>
             {text(
-              '\u7edf\u4e00 AI \u6a21\u578b\u63a5\u5165',
-              'Unified AI model access'
+              '\u8fd0\u884c\u5e1d\u7687\u6743\u6756\uff0c\u63a5\u5165\u7edf\u4e00\u7b97\u529b',
+              "Run Emperor's Scepter with unified compute"
             )}
           </p>
           <blockquote className='text-muted-foreground max-w-2xl text-lg leading-relaxed md:text-xl'>
             {text(
-              '\u201c\u8ba9 AI \u63a5\u5165\u66f4\u7b80\u5355\u3001\u53ef\u9760\u3002\u201d',
-              '"Simple, reliable AI access for developers."'
+              '\u201c\u5e1d\u7687\u6743\u6756\u7b97\u529b\u652f\u6301\uff0c\u8ba9\u6bcf\u6b21\u8c03\u7528\u90fd\u66f4\u7a33\u5b9a\u3002\u201d',
+              '"Emperor\'s Scepter compute support for every reliable call."'
             )}
           </blockquote>
           <p className='text-muted-foreground/80 max-w-2xl text-base leading-relaxed md:text-lg'>
             {text(
-              '\u2014\u2014\u5f80\u6614\u5f00\u653e\u5e73\u53f0\uff0c\u4e3a\u5f00\u53d1\u8005\u63d0\u4f9b\u7edf\u4e00\u3001\u53ef\u7ba1\u7406\u7684 AI \u63a5\u53e3\u3002',
-              'Wangxi Open Platform provides unified, manageable AI APIs for developers.'
+              '\u2014\u2014\u5f80\u6614\u5f00\u653e\u5e73\u53f0\uff0c\u4e3a\u5f00\u53d1\u8005\u63d0\u4f9b\u7a33\u5b9a\u3001\u53ef\u7ba1\u7406\u7684\u5e1d\u7687\u6743\u6756\u7b97\u529b\u63a5\u53e3\u3002',
+              "Wangxi Open Platform provides stable, manageable Emperor's Scepter compute APIs."
             )}
           </p>
           <div className='border-primary/25 bg-primary/10 text-primary rounded-full border px-5 py-2.5 text-base font-semibold'>
             {text(
-              '\u5f00\u653e\u3001\u53ef\u7ba1\u7406\u7684 AI \u6a21\u578b\u5e73\u53f0',
-              'Open and manageable AI model platform'
+              '\u5e1d\u7687\u6743\u6756\u7b97\u529b\u652f\u6301 \u00b7 \u5f00\u653e\u53ef\u7ba1\u7406',
+              "Emperor's Scepter compute support · Open and manageable"
             )}
           </div>
         </div>

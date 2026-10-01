@@ -27,8 +27,10 @@ type AuthLayoutProps = {
 }
 
 export function AuthLayout({ children }: AuthLayoutProps) {
-  const { t } = useTranslation()
+  const { i18n, t } = useTranslation()
   const { systemName, logo, loading } = useSystemConfig()
+  const text = (zh: string, en: string) =>
+    i18n.language.startsWith('zh') ? zh : t(en)
 
   return (
     <div className='relative min-h-svh overflow-x-hidden overflow-y-auto bg-slate-100 text-slate-900 dark:bg-slate-950 dark:text-white'>
@@ -75,19 +77,29 @@ export function AuthLayout({ children }: AuthLayoutProps) {
               {systemName}
             </div>
             <h2 className='mt-6 text-4xl leading-tight font-semibold tracking-tight text-slate-950 xl:text-5xl dark:text-white'>
-              {t('A calm workspace for your AI model journey.')}
+              {text(
+                '\u8fd0\u884c\u5e1d\u7687\u6743\u6756\uff0c\u8ba9\u6bcf\u4e00\u6b21\u8c03\u7528\u90fd\u6709\u7a33\u5b9a\u7684\u7b97\u529b\u652f\u6301\u3002',
+                "Run Emperor's Scepter with dependable compute support."
+              )}
             </h2>
             <p className='mt-5 max-w-lg text-base leading-8 text-slate-700/85 dark:text-white/70'>
-              {t(
-                'Manage your models, keys, channels, and wheat usage in one place.'
+              {text(
+                '\u7edf\u4e00\u7ba1\u7406\u6a21\u578b\u3001\u5bc6\u94a5\u3001\u6e20\u9053\u4e0e\u9ea6\u5b50\u7528\u91cf\uff0c\u5728\u5f80\u6614\u5e73\u53f0\u4e2d\u4ece\u5bb9\u8c03\u5ea6\u3002',
+                'Manage models, keys, channels, and wheat usage in one calm workspace.'
               )}
             </p>
             <div className='mt-8 flex flex-wrap gap-2 text-sm text-slate-700/80 dark:text-white/70'>
               <span className='rounded-full border border-slate-900/10 bg-white/45 px-3 py-1.5 backdrop-blur dark:border-white/15 dark:bg-white/10'>
-                {t('Model access')}
+                {text(
+                  '\u5e1d\u7687\u6743\u6756\u63a5\u5165',
+                  "Emperor's Scepter access"
+                )}
               </span>
               <span className='rounded-full border border-slate-900/10 bg-white/45 px-3 py-1.5 backdrop-blur dark:border-white/15 dark:bg-white/10'>
-                {t('Usage insights')}
+                {text(
+                  '\u9ea6\u5b50\u7528\u91cf\u6d1e\u5bdf',
+                  'Wheat usage insights'
+                )}
               </span>
             </div>
           </div>
