@@ -29,8 +29,8 @@ export function DashboardBanner() {
   const user = useAuthStore((state) => state.auth.user)
 
   return (
-    <div className='border-primary/15 relative overflow-hidden rounded-3xl border shadow-sm'>
-      <div className='relative aspect-[16/9] w-full'>
+    <div className='border-primary/15 relative overflow-hidden rounded-2xl border shadow-sm'>
+      <div className='relative aspect-[16/6] w-full'>
         <img
           src='/dashboard-banner.png'
           alt=''
@@ -39,17 +39,17 @@ export function DashboardBanner() {
           loading='eager'
         />
         <div className='from-background/95 via-background/72 absolute inset-0 bg-gradient-to-r to-transparent' />
-        <div className='absolute inset-y-0 left-0 flex max-w-[72%] flex-col justify-center px-5 py-6 sm:max-w-[52%] sm:px-8 md:px-10'>
+        <div className='absolute inset-y-0 left-0 flex max-w-[72%] flex-col justify-center px-5 py-4 sm:max-w-[52%] sm:px-8 sm:py-5 md:px-10'>
           <p className='text-primary text-xs font-semibold tracking-[0.24em] uppercase'>
             {systemName || DEFAULT_SYSTEM_NAME}
           </p>
-          <h2 className='text-foreground mt-3 text-2xl font-semibold tracking-tight sm:text-3xl md:text-4xl'>
+          <h2 className='text-foreground mt-2 text-xl font-semibold tracking-tight sm:text-2xl md:text-3xl'>
             {t('Welcome back!')}
           </h2>
-          <p className='text-muted-foreground mt-2 truncate text-sm sm:text-base'>
+          <p className='text-muted-foreground mt-1 truncate text-sm sm:text-base'>
             {user?.display_name || user?.username || t('Developer')}
           </p>
-          <p className='text-muted-foreground/80 mt-4 hidden max-w-sm text-xs leading-relaxed sm:block'>
+          <p className='text-muted-foreground/80 mt-2 hidden max-w-sm text-xs leading-relaxed sm:block'>
             {t(
               'Manage your models, keys, channels, and wheat usage in one place.'
             )}
