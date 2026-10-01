@@ -744,64 +744,67 @@ For commercial licensing, please contact support@quantumnous.com
 /* ── 往昔涟漪 (Past Ripples) ──────────────────────────────────────────────── */
 /* 设计理念：昔涟角色（粉发紫衣蓝眼青绿发尾）+ 麦穗银杏 + 高级留白 */
 [data-theme-preset='past-ripples'] {
-  /* 高级感浅色 - 接近纯白的底色，留白更多 */
-  --background: oklch(0.992 0.003 300);
-  --foreground: oklch(0.22 0.025 295);
+  /* 白昼模式以麦穗、银杏和天空色为主，紫色只保留为品牌点缀。 */
+  --background: oklch(0.985 0.018 95);
+  --foreground: oklch(0.25 0.035 70);
 
-  --card: oklch(0.985 0.004 310);
-  --card-foreground: oklch(0.22 0.025 295);
-  --popover: oklch(0.99 0.003 310);
-  --popover-foreground: oklch(0.22 0.025 295);
+  --card: oklch(0.995 0.008 92);
+  --card-foreground: oklch(0.25 0.035 70);
+  --popover: oklch(0.998 0.006 92);
+  --popover-foreground: oklch(0.25 0.035 70);
 
-  /* 主色 - 优雅紫罗兰（昔涟紫衣） */
-  --primary: oklch(0.65 0.16 295);
-  --primary-foreground: oklch(1 0 0);
+  /* 主色 - 麦穗金，适合按钮、余额卡片和关键动作。 */
+  --primary: oklch(0.68 0.14 78);
+  --primary-foreground: oklch(0.2 0.03 72);
 
-  /* 辅助色 - 柔和粉桃（粉发+桃子） */
-  --secondary: oklch(0.78 0.13 350);
-  --secondary-foreground: oklch(0.18 0.01 295);
+  /* 辅助色 - 桃粉，搭配银杏色保持温柔但不刺眼。 */
+  --secondary: oklch(0.82 0.12 35);
+  --secondary-foreground: oklch(0.28 0.04 45);
 
-  /* 高留白的中性色 */
-  --muted: oklch(0.97 0.006 310);
-  --muted-foreground: oklch(0.5 0.025 295);
-  --accent: oklch(0.94 0.018 330);
-  --accent-foreground: oklch(0.28 0.04 295);
+  --muted: oklch(0.955 0.018 90);
+  --muted-foreground: oklch(0.48 0.035 70);
+  --accent: oklch(0.92 0.045 88);
+  --accent-foreground: oklch(0.3 0.045 70);
 
   /* 语义色 */
   --destructive: oklch(0.57 0.22 18);
   --destructive-foreground: oklch(1 0 0);
-  --success: oklch(0.62 0.13 165);
+  --success: oklch(0.62 0.12 165);
   --success-foreground: oklch(1 0 0);
   --warning: oklch(0.75 0.15 85);
   --warning-foreground: oklch(0.18 0.01 85);
-  --info: oklch(0.64 0.14 230);
+  --info: oklch(0.66 0.12 235);
   --info-foreground: oklch(1 0 0);
-  --neutral: oklch(0.5 0.025 295);
+  --neutral: oklch(0.5 0.035 70);
   --neutral-foreground: oklch(1 0 0);
 
   /* 边框 - 极淡，保持呼吸感 */
-  --border: oklch(0.92 0.008 315);
-  --input: oklch(0.9 0.01 315);
-  --ring: oklch(0.65 0.16 295);
+  --border: oklch(0.89 0.025 85);
+  --input: oklch(0.87 0.03 85);
+  --ring: oklch(0.68 0.14 78);
 
-  /* 图表色板 - 金黄（麦穗）、紫、粉、青蓝、青绿 */
-  --chart-1: oklch(0.75 0.15 85);
-  --chart-2: oklch(0.65 0.16 295);
-  --chart-3: oklch(0.78 0.13 350);
-  --chart-4: oklch(0.64 0.14 230);
+  /* 图表色板 - 麦穗金、桃粉、天空蓝、昔涟紫、麦青。 */
+  --chart-1: oklch(0.74 0.14 82);
+  --chart-2: oklch(0.78 0.12 35);
+  --chart-3: oklch(0.66 0.12 235);
+  --chart-4: oklch(0.62 0.13 295);
   --chart-5: oklch(0.68 0.12 175);
 
-  --sidebar: oklch(0.988 0.003 310);
-  --sidebar-foreground: oklch(0.26 0.03 295);
-  --sidebar-primary: oklch(0.65 0.16 295);
-  --sidebar-primary-foreground: oklch(1 0 0);
-  --sidebar-accent: oklch(0.96 0.015 325);
-  --sidebar-accent-foreground: oklch(0.32 0.045 295);
-  --sidebar-border: oklch(0.93 0.008 315);
-  --sidebar-ring: oklch(0.65 0.16 295);
+  --overview-accent-1: oklch(0.74 0.14 82);
+  --overview-accent-2: oklch(0.78 0.12 35);
+  --overview-accent-3: oklch(0.66 0.12 235);
 
-  --skeleton-base: oklch(0.95 0.007 315);
-  --skeleton-highlight: oklch(0.985 0.004 310);
+  --sidebar: oklch(0.98 0.014 92);
+  --sidebar-foreground: oklch(0.28 0.035 70);
+  --sidebar-primary: oklch(0.68 0.14 78);
+  --sidebar-primary-foreground: oklch(0.2 0.03 72);
+  --sidebar-accent: oklch(0.93 0.035 42);
+  --sidebar-accent-foreground: oklch(0.32 0.045 65);
+  --sidebar-border: oklch(0.9 0.022 85);
+  --sidebar-ring: oklch(0.68 0.14 78);
+
+  --skeleton-base: oklch(0.94 0.018 88);
+  --skeleton-highlight: oklch(0.985 0.01 92);
 
   --radius: 0.85rem;
 }
@@ -846,6 +849,10 @@ For commercial licensing, please contact support@quantumnous.com
   --chart-3: oklch(0.8 0.14 348);
   --chart-4: oklch(0.7 0.14 233);
   --chart-5: oklch(0.72 0.13 178);
+
+  --overview-accent-1: oklch(0.8 0.15 88);
+  --overview-accent-2: oklch(0.7 0.14 233);
+  --overview-accent-3: oklch(0.8 0.14 348);
 
   --sidebar: oklch(0.14 0.026 293);
   --sidebar-foreground: oklch(0.88 0.018 318);

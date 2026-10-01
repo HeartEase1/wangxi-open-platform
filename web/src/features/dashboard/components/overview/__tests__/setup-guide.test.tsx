@@ -114,10 +114,13 @@ describe('overview setup guide', () => {
     expect(
       document.querySelector('img[src="/dashboard-banner.png"]')
     ).toBeInTheDocument()
+    expect(screen.getByText('往昔开放平台')).toBeVisible()
+    expect(screen.getByText('Welcome back!')).toBeVisible()
+    expect(screen.getByText('dashboard-user')).toBeVisible()
     expect(toggle).toHaveAttribute('aria-expanded', 'false')
     expect(
       screen.getAllByRole('heading').map((heading) => heading.textContent)
-    ).toEqual(['Overview', 'Usage at a glance'])
+    ).toEqual(['Overview', 'Welcome back!', 'Usage at a glance'])
     expect(screen.queryByText('Setup guide complete')).not.toBeInTheDocument()
     expect(screen.queryByText('Setup progress: 3/3')).not.toBeInTheDocument()
     for (const name of ['API Keys', 'Channels', 'Usage Logs', 'Pricing']) {

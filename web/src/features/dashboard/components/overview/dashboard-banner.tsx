@@ -17,18 +17,44 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 For commercial licensing, please contact support@quantumnous.com
 */
 
+import { useTranslation } from 'react-i18next'
+
+import { useSystemConfig } from '@/hooks/use-system-config'
+import { DEFAULT_SYSTEM_NAME } from '@/lib/constants'
+import { useAuthStore } from '@/stores/auth-store'
+
 export function DashboardBanner() {
+  const { t } = useTranslation()
+  const { systemName } = useSystemConfig()
+  const user = useAuthStore((state) => state.auth.user)
+
   return (
     <div className='border-primary/15 relative overflow-hidden rounded-3xl border shadow-sm'>
-      <div className='relative aspect-[16/6] w-full sm:aspect-[16/5] lg:aspect-[16/4.5]'>
+      <div className='relative aspect-[16/9] w-full'>
         <img
           src='/dashboard-banner.png'
           alt=''
           aria-hidden='true'
-          className='size-full object-cover object-[center_42%]'
+          className='size-full object-cover object-center'
           loading='eager'
         />
-        <div className='from-background/65 absolute inset-0 bg-gradient-to-t via-transparent to-transparent' />
+        <div className='from-background/95 via-background/72 absolute inset-0 bg-gradient-to-r to-transparent' />
+        <div className='absolute inset-y-0 left-0 flex max-w-[72%] flex-col justify-center px-5 py-6 sm:max-w-[52%] sm:px-8 md:px-10'>
+          <p className='text-primary text-xs font-semibold tracking-[0.24em] uppercase'>
+            {systemName || DEFAULT_SYSTEM_NAME}
+          </p>
+          <h2 className='text-foreground mt-3 text-2xl font-semibold tracking-tight sm:text-3xl md:text-4xl'>
+            {t('Welcome back!')}
+          </h2>
+          <p className='text-muted-foreground mt-2 truncate text-sm sm:text-base'>
+            {user?.display_name || user?.username || t('Developer')}
+          </p>
+          <p className='text-muted-foreground/80 mt-4 hidden max-w-sm text-xs leading-relaxed sm:block'>
+            {t(
+              'Manage your models, keys, channels, and wheat usage in one place.'
+            )}
+          </p>
+        </div>
       </div>
     </div>
   )

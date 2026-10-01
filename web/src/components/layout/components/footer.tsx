@@ -17,7 +17,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 For commercial licensing, please contact support@quantumnous.com
 */
 import { Link } from '@tanstack/react-router'
-import { Fragment, useMemo } from 'react'
+import { Fragment } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { useStatus } from '@/hooks/use-status'
@@ -180,64 +180,7 @@ export function Footer(props: FooterProps) {
   const isDemoSiteMode = Boolean(demoSiteEnabled)
   const currentYear = new Date().getFullYear()
 
-  const fallbackColumns = useMemo<FooterColumnProps[]>(
-    () => [
-      {
-        title: t('footer.columns.about.title'),
-        links: [
-          {
-            text: t('footer.columns.about.links.aboutProject'),
-            href: '/about',
-          },
-          {
-            text: t('footer.columns.about.links.contact'),
-            href: '/docs#support',
-          },
-          {
-            text: t('footer.columns.about.links.features'),
-            href: '/docs#models',
-          },
-        ],
-      },
-      {
-        title: t('footer.columns.docs.title'),
-        links: [
-          {
-            text: t('footer.columns.docs.links.quickStart'),
-            href: '/docs#quick-start',
-          },
-          {
-            text: t('footer.columns.docs.links.installation'),
-            href: '/docs#admin',
-          },
-          {
-            text: t('footer.columns.docs.links.apiDocs'),
-            href: '/docs#api-reference',
-          },
-        ],
-      },
-      {
-        title: t('footer.columns.related.title'),
-        links: [
-          {
-            text: t('Source Code'),
-            href: 'https://github.com/HeartEase1/wangxi-open-platform',
-          },
-          {
-            text: t('Documentation'),
-            href: '/docs',
-          },
-          {
-            text: t('Feedback'),
-            href: 'https://github.com/HeartEase1/wangxi-open-platform/issues',
-          },
-        ],
-      },
-    ],
-    [t]
-  )
-
-  const displayColumns = props.columns ?? fallbackColumns
+  const displayColumns = props.columns ?? []
 
   if (footerHtml) {
     return (
@@ -286,7 +229,7 @@ export function Footer(props: FooterProps) {
             </p>
           </div>
 
-          {isDemoSiteMode && (
+          {isDemoSiteMode && displayColumns.length > 0 && (
             <div className='grid grid-cols-3 gap-8 md:gap-16'>
               {displayColumns.map((column) => (
                 <div key={column.title}>
