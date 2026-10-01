@@ -532,36 +532,66 @@ For commercial licensing, please contact support@quantumnous.com
 @keyframes hero-firefly-twinkle {
   0%,
   100% {
-    opacity: 0.14;
-    transform: scale(0.68);
-    filter: brightness(0.78) saturate(0.88);
+    opacity: 0.3;
+    transform: translate3d(0, 0, 0) scale(0.78);
+    filter: brightness(0.86) saturate(0.92);
   }
   28% {
-    opacity: 0.2;
-    transform: scale(0.76);
-    filter: brightness(0.9) saturate(0.96);
+    opacity: 0.48;
+    transform: translate3d(2px, -3px, 0) scale(0.9);
+    filter: brightness(1.05) saturate(1);
   }
-  45% {
-    opacity: 0.82;
-    transform: scale(1.18);
-    filter: brightness(1.65) saturate(1.2);
-  }
-  52% {
+  46% {
     opacity: 0.9;
-    transform: scale(1.24);
-    filter: brightness(1.78) saturate(1.24);
+    transform: translate3d(
+        var(--hero-firefly-dx, 8px),
+        var(--hero-firefly-dy, -10px),
+        0
+      )
+      scale(1.15);
+    filter: brightness(1.55) saturate(1.18);
   }
-  66% {
-    opacity: 0.26;
-    transform: scale(0.84);
-    filter: brightness(1) saturate(1);
+  58% {
+    opacity: 0.78;
+    transform: translate3d(
+        var(--hero-firefly-dx, 8px),
+        var(--hero-firefly-dy, -10px),
+        0
+      )
+      scale(1.08);
+    filter: brightness(1.4) saturate(1.12);
+  }
+  76% {
+    opacity: 0.42;
+    transform: translate3d(3px, -2px, 0) scale(0.9);
+    filter: brightness(1.02) saturate(1);
   }
 }
 
 .hero-firefly {
-  animation: hero-firefly-twinkle var(--hero-firefly-duration, 6.4s) ease-in-out
+  animation: hero-firefly-twinkle var(--hero-firefly-duration, 5.8s) ease-in-out
     infinite;
   will-change: opacity, transform, filter;
+}
+
+.hero-firefly--a {
+  --hero-firefly-dx: 8px;
+  --hero-firefly-dy: -11px;
+}
+
+.hero-firefly--b {
+  --hero-firefly-dx: -7px;
+  --hero-firefly-dy: -8px;
+}
+
+.hero-firefly--c {
+  --hero-firefly-dx: 11px;
+  --hero-firefly-dy: -5px;
+}
+
+.hero-firefly--d {
+  --hero-firefly-dx: -9px;
+  --hero-firefly-dy: -13px;
 }
 
 .landing-animate-fade-up {

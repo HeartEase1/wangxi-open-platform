@@ -112,28 +112,36 @@ export function Hero(props: HeroProps) {
         className='pointer-events-none absolute inset-0 -z-[5] overflow-hidden'
       >
         <span
-          className='hero-firefly absolute top-[20%] left-[58%] size-2 rounded-full bg-amber-100 shadow-[0_0_18px_6px_rgba(250,204,21,0.72)] md:size-2.5'
-          style={{ animationDelay: '0.2s', animationDuration: '6.2s' }}
+          className='hero-firefly hero-firefly--a absolute top-[20%] left-[72%] size-2 rounded-full bg-amber-100 shadow-[0_0_18px_6px_rgba(250,204,21,0.72)] md:size-2.5'
+          style={{ animationDelay: '0.2s', animationDuration: '5.8s' }}
         />
         <span
-          className='hero-firefly absolute top-[34%] left-[68%] size-1.5 rounded-full bg-yellow-100 shadow-[0_0_15px_5px_rgba(250,204,21,0.68)] md:size-2'
-          style={{ animationDelay: '1.4s', animationDuration: '7.4s' }}
+          className='hero-firefly hero-firefly--b absolute top-[34%] left-[80%] size-1.5 rounded-full bg-yellow-100 shadow-[0_0_15px_5px_rgba(250,204,21,0.68)] md:size-2'
+          style={{ animationDelay: '1.4s', animationDuration: '6.6s' }}
         />
         <span
-          className='hero-firefly absolute top-[48%] left-[77%] size-2 rounded-full bg-amber-100 shadow-[0_0_20px_7px_rgba(251,191,36,0.7)] md:size-2.5'
-          style={{ animationDelay: '2.1s', animationDuration: '6.8s' }}
+          className='hero-firefly hero-firefly--c absolute top-[48%] left-[88%] size-2 rounded-full bg-amber-100 shadow-[0_0_20px_7px_rgba(251,191,36,0.7)] md:size-2.5'
+          style={{ animationDelay: '2.1s', animationDuration: '6.2s' }}
         />
         <span
-          className='hero-firefly absolute top-[64%] left-[86%] size-1.5 rounded-full bg-yellow-100 shadow-[0_0_15px_5px_rgba(250,204,21,0.65)] md:size-2'
-          style={{ animationDelay: '0.9s', animationDuration: '5.8s' }}
+          className='hero-firefly hero-firefly--d absolute top-[64%] left-[94%] size-1.5 rounded-full bg-yellow-100 shadow-[0_0_15px_5px_rgba(250,204,21,0.65)] md:size-2'
+          style={{ animationDelay: '0.9s', animationDuration: '5.4s' }}
         />
         <span
-          className='hero-firefly absolute top-[72%] left-[62%] size-1.5 rounded-full bg-amber-50 shadow-[0_0_14px_5px_rgba(251,191,36,0.62)] md:size-2'
-          style={{ animationDelay: '2.8s', animationDuration: '8.2s' }}
+          className='hero-firefly hero-firefly--b absolute top-[72%] left-[76%] size-1.5 rounded-full bg-orange-100 shadow-[0_0_14px_5px_rgba(251,146,60,0.58)] md:size-2'
+          style={{ animationDelay: '2.8s', animationDuration: '7.2s' }}
         />
         <span
-          className='hero-firefly absolute top-[28%] left-[90%] size-1.5 rounded-full bg-yellow-100 shadow-[0_0_15px_5px_rgba(250,204,21,0.64)] md:size-2'
-          style={{ animationDelay: '1.8s', animationDuration: '7s' }}
+          className='hero-firefly hero-firefly--a absolute top-[28%] left-[96%] size-1.5 rounded-full bg-cyan-100 shadow-[0_0_15px_5px_rgba(103,232,249,0.56)] md:size-2'
+          style={{ animationDelay: '1.8s', animationDuration: '6.8s' }}
+        />
+        <span
+          className='hero-firefly hero-firefly--c absolute top-[42%] left-[67%] size-1.5 rounded-full bg-lime-100 shadow-[0_0_14px_5px_rgba(190,242,100,0.52)] md:size-2'
+          style={{ animationDelay: '3.6s', animationDuration: '6.4s' }}
+        />
+        <span
+          className='hero-firefly hero-firefly--d absolute top-[58%] left-[83%] size-1.5 rounded-full bg-emerald-100 shadow-[0_0_15px_5px_rgba(110,231,183,0.5)] md:size-2'
+          style={{ animationDelay: '4.4s', animationDuration: '7.6s' }}
         />
       </div>
 
