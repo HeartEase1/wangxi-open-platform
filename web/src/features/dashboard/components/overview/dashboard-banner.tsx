@@ -35,7 +35,7 @@ export function DashboardBanner() {
           src='/hero-xilian.png'
           alt=''
           aria-hidden='true'
-          className='size-full object-cover object-[center_10%]'
+          className='size-full object-cover object-[center_30%]'
           loading='eager'
         />
         <div className='from-background/95 via-background/72 absolute inset-0 bg-gradient-to-r to-transparent' />
