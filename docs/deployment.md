@@ -1,5 +1,7 @@
 # 往昔开放平台部署与维护
 
+本地开发环境安装和前端预览请先阅读[本地开发与预览](local-development.md)。
+
 ## 从自己的仓库部署
 
 仓库：https://github.com/HeartEase1/wangxi-open-platform 。私有仓库需要先配置 GitHub SSH 密钥或 Git Credential Manager 等读取凭据，不要把访问令牌写进命令、镜像或配置文件。

@@ -3,7 +3,7 @@
 往昔开放平台提供统一的 AI 模型调用入口、渠道管理、账号管理、API 密钥、用量统计与计费管理，并保留 StarTrace / AstrBot 接入能力。
 
 - 项目仓库：[HeartEase1/wangxi-open-platform](https://github.com/HeartEase1/wangxi-open-platform)
-- [部署与维护](docs/deployment.md) · [升级记录](docs/wangxi-upgrade.md) · [任务插件开发](docs/plugin-api/README.md)
+- [本地开发与预览](docs/local-development.md) · [部署与维护](docs/deployment.md) · [升级记录](docs/wangxi-upgrade.md) · [任务插件开发](docs/plugin-api/README.md)
 - 部署版本以本仓库的 `VERSION` 和发布记录为准。
 
 ## 快速部署
@@ -23,17 +23,7 @@ docker compose logs -f platform
 
 ## 本地开发
 
-前端使用 Bun，后端使用 Go（版本要求见 `go.mod`）。
-
-```sh
-cd web
-bun install --frozen-lockfile
-bun run build
-cd ..
-go run .
-```
-
-前端热更新：另开终端进入 `web/`，运行 `bun run dev`。也可使用 `make dev` 启动本地开发依赖和前端。
+前端使用 Bun，后端使用 Go，默认 SQLite 不需要安装 MySQL 或 Redis。Windows 安装、后端启动、前端热更新和生产包预览请参阅[本地开发与预览](docs/local-development.md)。
 
 ## 反馈与贡献
 
