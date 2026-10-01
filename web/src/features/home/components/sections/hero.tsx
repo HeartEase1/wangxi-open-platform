@@ -139,10 +139,10 @@ export function Hero(props: HeroProps) {
 
       <div className='mx-auto flex w-full max-w-6xl flex-col items-start text-left'>
         <div
-          className='landing-animate-fade-up border-border/60 bg-background/70 text-muted-foreground inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs font-medium opacity-0 shadow-xs backdrop-blur'
+          className='landing-animate-fade-up border-border/60 bg-background/70 text-muted-foreground inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-medium opacity-0 shadow-xs backdrop-blur'
           style={{ animationDelay: '0ms' }}
         >
-          <Wheat className='text-primary size-3.5' aria-hidden='true' />
+          <Wheat className='text-primary size-4' aria-hidden='true' />
           <span>
             {text(
               '\u5f80\u6614\u5f00\u653e\u5e73\u53f0',
@@ -152,35 +152,35 @@ export function Hero(props: HeroProps) {
         </div>
 
         <h1
-          className='landing-animate-fade-up mt-7 max-w-2xl text-4xl leading-tight font-semibold tracking-tight opacity-0 md:text-6xl'
+          className='landing-animate-fade-up mt-7 max-w-3xl text-5xl leading-[1.08] font-semibold tracking-tight opacity-0 md:text-7xl lg:text-[5.25rem]'
           style={{ animationDelay: '60ms' }}
         >
           {text('往昔开放平台', 'Wangxi Open Platform')}
         </h1>
 
         <div
-          className='landing-animate-fade-up mt-5 flex max-w-xl flex-col items-start gap-3 opacity-0'
+          className='landing-animate-fade-up mt-7 flex max-w-2xl flex-col items-start gap-4 opacity-0'
           style={{ animationDelay: '120ms' }}
         >
-          <p className='text-foreground text-xl font-medium md:text-2xl'>
+          <p className='text-foreground text-2xl font-medium md:text-3xl'>
             {text(
               '\u7edf\u4e00 AI \u6a21\u578b\u63a5\u5165',
               'Unified AI model access'
             )}
           </p>
-          <blockquote className='text-muted-foreground max-w-xl text-base leading-relaxed md:text-lg'>
+          <blockquote className='text-muted-foreground max-w-2xl text-lg leading-relaxed md:text-xl'>
             {text(
               '\u201c\u8ba9 AI \u63a5\u5165\u66f4\u7b80\u5355\u3001\u53ef\u9760\u3002\u201d',
               '"Simple, reliable AI access for developers."'
             )}
           </blockquote>
-          <p className='text-muted-foreground/70 max-w-xl text-sm leading-relaxed'>
+          <p className='text-muted-foreground/80 max-w-2xl text-base leading-relaxed md:text-lg'>
             {text(
               '\u2014\u2014\u5f80\u6614\u5f00\u653e\u5e73\u53f0\uff0c\u4e3a\u5f00\u53d1\u8005\u63d0\u4f9b\u7edf\u4e00\u3001\u53ef\u7ba1\u7406\u7684 AI \u63a5\u53e3\u3002',
               'Wangxi Open Platform provides unified, manageable AI APIs for developers.'
             )}
           </p>
-          <div className='border-primary/25 bg-primary/10 text-primary rounded-full border px-4 py-2 text-sm font-semibold'>
+          <div className='border-primary/25 bg-primary/10 text-primary rounded-full border px-5 py-2.5 text-base font-semibold'>
             {text(
               '\u5f00\u653e\u3001\u53ef\u7ba1\u7406\u7684 AI \u6a21\u578b\u5e73\u53f0',
               'Open and manageable AI model platform'
@@ -189,12 +189,12 @@ export function Hero(props: HeroProps) {
         </div>
 
         <div
-          className='landing-animate-fade-up mt-8 flex flex-wrap items-center gap-3 opacity-0'
+          className='landing-animate-fade-up mt-9 flex flex-wrap items-center gap-3 opacity-0'
           style={{ animationDelay: '180ms' }}
         >
           {props.isAuthenticated ? (
             <Button
-              className='group h-10 rounded-lg px-4 text-sm'
+              className='group h-11 rounded-lg px-5 text-base'
               render={<Link to='/dashboard' />}
             >
               {t('Go to Dashboard')}
@@ -202,7 +202,7 @@ export function Hero(props: HeroProps) {
             </Button>
           ) : (
             <Button
-              className='group h-10 rounded-lg px-4 text-sm'
+              className='group h-11 rounded-lg px-5 text-base'
               render={<Link to='/sign-up' />}
             >
               {t('Get Started')}
