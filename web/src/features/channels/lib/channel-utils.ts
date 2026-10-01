@@ -92,7 +92,7 @@ export function getChannelTypeIcon(type: number): string {
     43: 'DeepSeek', // DeepSeek
     48: 'XAI', // xAI
     49: 'Coze', // Coze
-    1001: 'StarTrace', // AstrBot
+    1001: 'AstrBot', // AstrBot
     40: 'SiliconCloud', // SiliconFlow
     44: 'OpenAI', // MokaAI
     20: 'OpenRouter', // OpenRouter

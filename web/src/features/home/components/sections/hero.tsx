@@ -81,7 +81,7 @@ export function Hero(props: HeroProps) {
       )}
     >
       <img
-        src='/startrace.png'
+        src='/logo.png'
         alt=''
         aria-hidden='true'
         className='pointer-events-none absolute top-16 left-1/2 -z-10 size-[22rem] -translate-x-1/2 object-contain opacity-[0.07] md:top-10 md:size-[34rem] dark:opacity-[0.13]'
@@ -103,8 +103,8 @@ export function Hero(props: HeroProps) {
           <span className='bg-foreground size-1.5 rounded-full' />
           <span>
             {text(
-              '\u661f\u9645\u548c\u5e73\u516c\u53f8 \u00b7 \u5f80\u6614\u9879\u76ee\u7ec4',
-              'Interastral Peace Corporation - Echoes Team'
+              '\u5f80\u6614\u5f00\u653e\u5e73\u53f0',
+              'Wangxi Open Platform'
             )}
           </span>
         </div>
@@ -122,26 +122,26 @@ export function Hero(props: HeroProps) {
         >
           <p className='text-foreground text-xl font-medium md:text-2xl'>
             {text(
-              '\u661f\u6eaf\u5927\u6a21\u578b(StarTrace LLM)',
-              'StarTrace LLM'
+              '\u7edf\u4e00 AI \u6a21\u578b\u63a5\u5165',
+              'Unified AI model access'
             )}
           </p>
           <blockquote className='text-muted-foreground max-w-2xl text-base leading-relaxed md:text-lg'>
             {text(
-              '\u201c\u661f\u6eaf\u5927\u6a21\u578b\uff0c\u8ba9\u6bcf\u4e2a\u89d2\u8272\u90fd\u6709\u7075\u9b42\u3002\u201d',
-              '"StarTrace LLM gives every character a soul."'
+              '\u201c\u8ba9 AI \u63a5\u5165\u66f4\u7b80\u5355\u3001\u53ef\u9760\u3002\u201d',
+              '"Simple, reliable AI access for developers."'
             )}
           </blockquote>
           <p className='text-muted-foreground/70 max-w-xl text-sm leading-relaxed'>
             {text(
-              '\u2014\u2014\u661f\u9645\u548c\u5e73\u516c\u53f8\u00b7\u5f80\u6614\u9879\u76ee\u7ec4\uff0c\u6355\u6349\u6570\u5b57\u661f\u5c18\u4e2d\u7684\u4eba\u5f71\u3002',
-              'Echoes Team, Interastral Peace Corporation. Capturing silhouettes in digital stardust.'
+              '\u2014\u2014\u5f80\u6614\u5f00\u653e\u5e73\u53f0\uff0c\u4e3a\u5f00\u53d1\u8005\u63d0\u4f9b\u7edf\u4e00\u3001\u53ef\u7ba1\u7406\u7684 AI \u63a5\u53e3\u3002',
+              'Wangxi Open Platform provides unified, manageable AI APIs for developers.'
             )}
           </p>
           <div className='rounded-full border border-amber-400/40 bg-amber-400/10 px-4 py-2 text-sm font-semibold text-amber-800 dark:text-amber-100'>
             {text(
-              'StarTrace-[\u89d2\u8272\u4ee3\u53f7]-[\u7248\u672c\u53f7]\u7cfb\u5217\u5b8c\u5168\u516c\u76ca\u514d\u8d39',
-              'StarTrace-[RoleCode]-[Version] series is fully public-benefit and free'
+              '\u5f00\u653e\u3001\u53ef\u7ba1\u7406\u7684 AI \u6a21\u578b\u5e73\u53f0',
+              'Open and manageable AI model platform'
             )}
           </div>
         </div>
@@ -184,8 +184,8 @@ export function Hero(props: HeroProps) {
               </div>
               <p className='text-muted-foreground/75 mt-2 max-w-lg text-sm leading-relaxed'>
                 {text(
-                  '\u9002\u914d Cherry Studio\u3001CC Switch \u4e0e OpenAI \u517c\u5bb9\u5ba2\u6237\u7aef\uff0c\u4e5f\u53ef\u4e0e\u661f\u6eaf\u6846\u67b6\u805a\u5408\u94fe\u8def\u914d\u5408\u4f7f\u7528\u3002',
-                  'Works with Cherry Studio, CC Switch, OpenAI-compatible clients, and StarTrace framework aggregation flows.'
+                  '\u517c\u5bb9 Cherry Studio\u3001CC Switch \u4e0e OpenAI \u517c\u5bb9\u5ba2\u6237\u7aef\uff0c\u5e76\u63d0\u4f9b\u7edf\u4e00\u7684 API \u7ba1\u7406\u4e0e\u8c03\u7528\u5165\u53e3\u3002',
+                  'Works with Cherry Studio, CC Switch, and OpenAI-compatible clients through one managed API platform.'
                 )}
               </p>
             </div>

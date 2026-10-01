@@ -163,7 +163,7 @@ export const CHANNEL_TYPE_CONFIGS: Record<number, ChannelTypeConfig> = {
   1001: {
     id: 1001,
     name: CHANNEL_TYPES[1001],
-    icon: 'StarTrace',
+    icon: 'AstrBot',
     hints: {
       baseUrl: 'AstrBot HTTP API base URL, e.g. https://astrbot.example.com',
       key: 'AstrBot HTTP API key sent via X-API-Key',

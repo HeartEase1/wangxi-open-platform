@@ -110,7 +110,7 @@ export const CHANNEL_PROVIDER_PRESENTATION: Partial<
   Record<number, ChannelProviderPresentation>
 > = {
   1001: {
-    descriptionKey: 'AstrBot text chat and streaming with StarTrace models',
+    descriptionKey: 'AstrBot text chat and streaming',
   },
   1: { descriptionKey: 'Connect to the OpenAI API or compatible services' },
   2: { descriptionKey: 'Generate Midjourney images through MjProxy' },

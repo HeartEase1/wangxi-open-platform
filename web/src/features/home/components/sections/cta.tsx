@@ -48,14 +48,14 @@ export function CTA(props: CTAProps) {
       <AnimateInView className='mx-auto flex max-w-3xl flex-col items-center text-center'>
         <h2 className='text-2xl leading-tight font-semibold md:text-4xl'>
           {text(
-            '\u5f00\u59cb\u63a5\u5165\u661f\u6eaf\u5927\u6a21\u578b',
-            'Start building with StarTrace LLM'
+            '\u5f00\u59cb\u4f7f\u7528\u5f80\u6614\u5f00\u653e\u5e73\u53f0',
+            'Start building with Wangxi Open Platform'
           )}
         </h2>
         <p className='text-muted-foreground/80 mx-auto mt-5 max-w-xl text-sm leading-relaxed md:text-base'>
           {text(
-            '\u521b\u5efa API Key \u540e\uff0c\u5373\u53ef\u901a\u8fc7\u517c\u5bb9\u63a5\u53e3\u8bf7\u6c42 StarTrace-[\u89d2\u8272\u4ee3\u53f7]-[\u7248\u672c\u53f7] \u6a21\u578b\u3002',
-            'Create an API key, then request StarTrace-[RoleCode]-[Version] models through the compatible API.'
+            '\u521b\u5efa API Key \u540e\uff0c\u5373\u53ef\u901a\u8fc7 OpenAI \u517c\u5bb9\u63a5\u53e3\u8bf7\u6c42\u53ef\u7528\u6a21\u578b\u3002',
+            'Create an API key, then request available models through the compatible API.'
           )}
         </p>
         <div className='mt-8 flex items-center justify-center'>

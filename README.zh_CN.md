@@ -1,6 +1,6 @@
 # 往昔开放平台
 
-往昔开放平台提供统一的 AI 模型调用入口、渠道管理、账号管理、API 密钥、用量统计与计费管理，并保留 StarTrace / AstrBot 接入能力。
+往昔开放平台提供统一的 AI 模型调用入口、渠道管理、账号管理、API 密钥、用量统计与计费管理，并保留 AstrBot 接入能力。
 
 - 项目仓库：[HeartEase1/wangxi-open-platform](https://github.com/HeartEase1/wangxi-open-platform)
 - [部署与维护](docs/deployment.md) · [升级记录](docs/wangxi-upgrade.md) · [任务插件开发](docs/plugin-api/README.md)

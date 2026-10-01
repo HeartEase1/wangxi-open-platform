@@ -27,9 +27,9 @@ const REQUEST_LINES = [
   '  -H "Authorization: Bearer sk-..." \\',
   '  -H "Content-Type: application/json" \\',
   "  -d '{",
-  '    "model": "StarTrace-Zhongli-v1",',
+  '    "model": "your-model",',
   '    "metadata": {',
-  '      "conversation_id": "startrace-conv-001"',
+  '      "conversation_id": "wangxi-conv-001"',
   '    },',
   '    "messages": [',
   '      { "role": "user", "content": "..." }',
@@ -39,9 +39,9 @@ const REQUEST_LINES = [
 
 const RESPONSE_LINES = [
   '{',
-  '  "model": "StarTrace-Zhongli-v1",',
+  '  "model": "your-model",',
   '  "reply": "\u89d2\u8272\u5316\u56de\u590d\u5df2\u751f\u6210\u3002",',
-  '  "trace": "StarTrace Framework"',
+  '  "trace": "Wangxi Open Platform"',
   '}',
 ]
 
@@ -52,15 +52,15 @@ const ROUTE_STEPS = [
   },
   {
     zh: '\u661f\u6eaf\u5f00\u653e\u5e73\u53f0',
-    en: 'StarTrace platform',
+    en: 'Wangxi platform',
   },
   {
     zh: '\u661f\u6eaf\u6846\u67b6',
-    en: 'StarTrace framework',
+    en: 'API gateway',
   },
   {
     zh: '\u661f\u6eaf\u5927\u6a21\u578b',
-    en: 'StarTrace LLM',
+    en: 'Model service',
   },
   {
     zh: '\u89d2\u8272\u5316\u56de\u590d',
@@ -88,12 +88,12 @@ export function HeroTerminalDemo(props: HeroTerminalDemoProps) {
             <div className='min-w-0'>
               <div className='truncate text-sm font-semibold'>
                 {text(
-                  '\u661f\u6eaf\u8def\u7531\u9884\u89c8',
-                  'StarTrace route preview'
+                  '\u5e73\u53f0\u8c03\u7528\u9884\u89c8',
+                  'Platform request preview'
                 )}
               </div>
               <div className='text-muted-foreground truncate font-mono text-xs'>
-                StarTrace-Zhongli-v1
+                your-model
               </div>
             </div>
           </div>
@@ -138,8 +138,8 @@ export function HeroTerminalDemo(props: HeroTerminalDemoProps) {
                 />
                 <span>
                   {text(
-                    'metadata.conversation_id \u7528\u4e8e\u7a33\u5b9a\u7ed1\u5b9a\u4f1a\u8bdd\u4e0a\u4e0b\u6587\uff1b\u8bf7\u6c42\u7531\u661f\u6eaf\u6846\u67b6\u63a5\u7ba1\u6a21\u578b\u8def\u7531\uff0c\u8fd4\u56de\u89d2\u8272\u5316\u56de\u590d\u3002',
-                    'metadata.conversation_id keeps conversation context stable while the StarTrace framework handles model routing and returns a role-tailored reply.'
+                    'metadata.conversation_id \u7528\u4e8e\u7a33\u5b9a\u533a\u5206\u4f1a\u8bdd\uff0c\u5e73\u53f0\u6839\u636e\u6e20\u9053\u914d\u7f6e\u8def\u7531\u8bf7\u6c42\u5e76\u8fd4\u56de\u6a21\u578b\u54cd\u5e94\u3002',
+                    'metadata.conversation_id keeps conversation context stable while the API gateway handles model routing and returns a role-tailored reply.'
                   )}
                 </span>
               </div>
