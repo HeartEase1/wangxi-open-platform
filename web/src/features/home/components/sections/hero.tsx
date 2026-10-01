@@ -113,27 +113,27 @@ export function Hero(props: HeroProps) {
       >
         <span
           className='hero-firefly absolute top-[20%] left-[58%] size-2 rounded-full bg-amber-100 shadow-[0_0_18px_6px_rgba(250,204,21,0.72)] md:size-2.5'
-          style={{ animationDelay: '0.2s', animationDuration: '2.8s' }}
+          style={{ animationDelay: '0.2s', animationDuration: '6.2s' }}
         />
         <span
           className='hero-firefly absolute top-[34%] left-[68%] size-1.5 rounded-full bg-yellow-100 shadow-[0_0_15px_5px_rgba(250,204,21,0.68)] md:size-2'
-          style={{ animationDelay: '1.4s', animationDuration: '3.4s' }}
+          style={{ animationDelay: '1.4s', animationDuration: '7.4s' }}
         />
         <span
           className='hero-firefly absolute top-[48%] left-[77%] size-2 rounded-full bg-amber-100 shadow-[0_0_20px_7px_rgba(251,191,36,0.7)] md:size-2.5'
-          style={{ animationDelay: '2.1s', animationDuration: '3s' }}
+          style={{ animationDelay: '2.1s', animationDuration: '6.8s' }}
         />
         <span
           className='hero-firefly absolute top-[64%] left-[86%] size-1.5 rounded-full bg-yellow-100 shadow-[0_0_15px_5px_rgba(250,204,21,0.65)] md:size-2'
-          style={{ animationDelay: '0.9s', animationDuration: '2.6s' }}
+          style={{ animationDelay: '0.9s', animationDuration: '5.8s' }}
         />
         <span
           className='hero-firefly absolute top-[72%] left-[62%] size-1.5 rounded-full bg-amber-50 shadow-[0_0_14px_5px_rgba(251,191,36,0.62)] md:size-2'
-          style={{ animationDelay: '2.8s', animationDuration: '3.7s' }}
+          style={{ animationDelay: '2.8s', animationDuration: '8.2s' }}
         />
         <span
           className='hero-firefly absolute top-[28%] left-[90%] size-1.5 rounded-full bg-yellow-100 shadow-[0_0_15px_5px_rgba(250,204,21,0.64)] md:size-2'
-          style={{ animationDelay: '1.8s', animationDuration: '3.2s' }}
+          style={{ animationDelay: '1.8s', animationDuration: '7s' }}
         />
       </div>
 
