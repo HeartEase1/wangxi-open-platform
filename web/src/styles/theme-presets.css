@@ -890,3 +890,38 @@ For commercial licensing, please contact support@quantumnous.com
     var(--chart-4) 30%
   );
 }
+
+/* Past Ripples keeps a deliberately stepped dark surface ladder. The shared
+ * bridge above is useful for most presets, but an 8% primary mix makes this
+ * blue-violet theme too flat on data-heavy screens. */
+.dark [data-theme-preset='past-ripples'] {
+  --background: oklch(0.115 0.022 264);
+  --foreground: oklch(0.93 0.012 320);
+  --card: oklch(0.19 0.03 282);
+  --card-foreground: oklch(0.93 0.012 320);
+  --popover: oklch(0.225 0.034 278);
+  --popover-foreground: oklch(0.95 0.012 320);
+  --muted: oklch(0.255 0.026 264);
+  --muted-foreground: oklch(0.76 0.022 300);
+  --accent: oklch(0.3 0.045 275);
+  --accent-foreground: oklch(0.94 0.025 320);
+  --border: oklch(0.36 0.035 276);
+  --input: oklch(0.31 0.032 268);
+  --ring: oklch(0.72 0.14 288);
+  --sidebar: oklch(0.14 0.024 260);
+  --sidebar-foreground: oklch(0.91 0.014 315);
+  --sidebar-accent: oklch(0.24 0.04 266);
+  --sidebar-accent-foreground: oklch(0.92 0.02 315);
+  --sidebar-border: oklch(0.31 0.03 270);
+  --skeleton-base: oklch(0.205 0.026 270);
+  --skeleton-highlight: oklch(0.29 0.035 278);
+
+  /* Data surfaces: sky-blue headers, quiet blue-black rows, and a restrained
+   * wheat highlight for selected/disabled states. */
+  --table-row: oklch(0.155 0.024 264);
+  --table-header: oklch(0.245 0.045 250);
+  --table-header-hover: oklch(0.285 0.052 250);
+  --table-disabled: oklch(0.19 0.024 270);
+  --table-disabled-hover: oklch(0.235 0.035 270);
+  --table-disabled-border: oklch(0.39 0.045 280);
+}
