@@ -11,7 +11,9 @@ import (
 )
 
 var StartTime = time.Now().Unix() // unit: second
-var Version = "v0.0.0"            // this hard coding will be replaced automatically when building, no need to manually change
+// Keep local development and source builds identifiable. Release builds still
+// replace this value through VERSION or the linker flag in the release workflow.
+var Version = "v1.0.0-rc.40-wangxi.1"
 var SystemName = "往昔开放平台"
 var Footer = ""
 var Logo = "/logo.png"

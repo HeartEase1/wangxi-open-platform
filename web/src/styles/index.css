@@ -183,65 +183,64 @@ For commercial licensing, please contact support@quantumnous.com
   }
 }
 
-/* Channel management keeps a slightly clearer dark table rhythm so long
- * sessions remain readable without relying on harsh white text. */
-.dark .channel-management-surface {
-  --channel-row: color-mix(in oklch, var(--background) 86%, var(--card) 14%);
-  --channel-row-alt: color-mix(
-    in oklch,
-    var(--background) 80%,
-    var(--card) 20%
-  );
-  --channel-line: color-mix(in oklch, var(--border) 82%, var(--chart-2) 18%);
+/* Shared dark surfaces keep data-heavy screens readable without harsh white
+ * text. The data-table card variable preserves disabled and selected states. */
+.dark [data-slot='table-container'] {
+  border-color: color-mix(in oklch, var(--border) 82%, var(--chart-2) 18%);
 }
 
-.dark .channel-management-surface [data-slot='table-container'] {
-  border-color: var(--channel-line);
-}
-
-.dark .channel-management-surface [data-slot='table-header'] {
+.dark [data-slot='table-header'] {
   background-color: var(--table-header) !important;
-  border-color: var(--channel-line);
+  border-color: color-mix(in oklch, var(--border) 82%, var(--chart-2) 18%);
 }
 
-.dark .channel-management-surface [data-slot='table-head'] {
+.dark [data-slot='table-head'] {
   color: color-mix(in oklch, var(--foreground) 92%, var(--chart-2) 8%);
 }
 
-.dark
-  .channel-management-surface
-  [data-slot='table-body']
-  > [data-slot='table-row'] {
-  background-color: var(--data-table-card-bg, var(--channel-row));
-  border-color: var(--channel-line);
+.dark [data-slot='table-body'] > [data-slot='table-row'] {
+  background-color: var(--data-table-card-bg, var(--table-row));
+  border-color: color-mix(in oklch, var(--border) 82%, var(--chart-2) 18%);
 }
 
-.dark
-  .channel-management-surface
-  [data-slot='table-body']
-  > [data-slot='table-row']:nth-child(even) {
-  background-color: var(--data-table-card-bg, var(--channel-row-alt));
+.dark [data-slot='table-body'] > [data-slot='table-row']:nth-child(even) {
+  background-color: var(--data-table-card-bg, var(--card));
 }
 
-.dark
-  .channel-management-surface
-  [data-slot='table-body']
-  > [data-slot='table-row']:hover {
+.dark [data-slot='table-body'] > [data-slot='table-row']:hover {
   background-color: color-mix(
     in oklch,
-    var(--data-table-card-bg, var(--channel-row-alt)) 84%,
+    var(--data-table-card-bg, var(--card)) 86%,
     var(--chart-4) 16%
   );
 }
 
-.dark .channel-management-surface [data-slot='input'] {
+.dark [data-slot='table-cell'] {
+  color: var(--card-foreground);
+}
+
+.dark [data-slot='input'],
+.dark [data-slot='textarea'],
+.dark [data-slot='select-trigger'] {
   background-color: color-mix(in oklch, var(--background) 76%, var(--card) 24%);
-  border-color: var(--channel-line);
+  border-color: color-mix(in oklch, var(--border) 84%, var(--chart-2) 16%);
   color: var(--foreground);
 }
 
-.dark .channel-management-surface [data-slot='input']::placeholder {
+.dark [data-slot='input']::placeholder,
+.dark [data-slot='textarea']::placeholder {
   color: color-mix(in oklch, var(--foreground) 58%, var(--background) 42%);
+}
+
+.dark [data-slot='input']:focus-visible,
+.dark [data-slot='textarea']:focus-visible,
+.dark [data-slot='select-trigger']:focus-visible {
+  border-color: color-mix(in oklch, var(--ring) 74%, var(--chart-2) 26%);
+  box-shadow: 0 0 0 3px color-mix(in oklch, var(--ring) 20%, transparent);
+}
+
+.dark [data-slot='card'] {
+  border-color: color-mix(in oklch, var(--border) 88%, var(--chart-2) 12%);
 }
 
 @utility container {
