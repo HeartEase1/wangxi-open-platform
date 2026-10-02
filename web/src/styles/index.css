@@ -247,9 +247,19 @@ For commercial licensing, please contact support@quantumnous.com
  * cards, nested data blocks, and the page canvas remain easy to separate. */
 .dark [data-theme-preset='past-ripples'] [data-slot='card'] {
   background-color: var(--card);
+  outline: 1px solid color-mix(in oklch, var(--border) 90%, var(--chart-2) 10%);
+  outline-offset: -1px;
   box-shadow:
+    var(--tw-inset-shadow, 0 0 #0000),
+    var(--tw-inset-ring-shadow, 0 0 #0000),
+    var(--tw-ring-offset-shadow, 0 0 #0000),
+    var(--tw-ring-shadow, 0 0 #0000),
     inset 0 1px 0 color-mix(in oklch, var(--foreground) 5%, transparent),
     0 12px 28px -24px oklch(0 0 0 / 75%);
+}
+
+.dark [data-theme-preset='past-ripples'] [class~='bg-card'] {
+  border-color: color-mix(in oklch, var(--border) 90%, var(--chart-2) 10%);
 }
 
 .dark [data-theme-preset='past-ripples'] [data-slot='card-header'],
@@ -260,11 +270,7 @@ For commercial licensing, please contact support@quantumnous.com
 .dark [data-theme-preset='past-ripples'] .model-square-surface,
 .dark [data-theme-preset='past-ripples'] .dashboard-surface,
 .dark [data-theme-preset='past-ripples'] .rankings-surface {
-  background-color: color-mix(
-    in oklch,
-    var(--background) 72%,
-    var(--chart-2) 8%
-  );
+  background-color: var(--background);
 }
 
 .dark [data-theme-preset='past-ripples'] .rankings-panel {
@@ -737,11 +743,21 @@ For commercial licensing, please contact support@quantumnous.com
   @media (min-width: 641px) {
     [data-slot='card']:not([data-card-hover='false']):hover {
       transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgb(0 0 0 / 0.06);
+      box-shadow:
+        var(--tw-inset-shadow, 0 0 #0000),
+        var(--tw-inset-ring-shadow, 0 0 #0000),
+        var(--tw-ring-offset-shadow, 0 0 #0000),
+        var(--tw-ring-shadow, 0 0 #0000),
+        0 4px 12px rgb(0 0 0 / 0.06);
     }
 
     .dark [data-slot='card']:not([data-card-hover='false']):hover {
-      box-shadow: 0 4px 12px rgb(0 0 0 / 0.3);
+      box-shadow:
+        var(--tw-inset-shadow, 0 0 #0000),
+        var(--tw-inset-ring-shadow, 0 0 #0000),
+        var(--tw-ring-offset-shadow, 0 0 #0000),
+        var(--tw-ring-shadow, 0 0 #0000),
+        0 4px 12px rgb(0 0 0 / 0.3);
     }
   }
 

@@ -442,7 +442,7 @@ function ModelBackendQuickStats(props: { model: PricingModel }) {
               {stat.value}
             </span>
             {stat.hint && (
-              <span className='text-muted-foreground/60 truncate text-[10px]'>
+              <span className='text-muted-foreground/75 truncate text-[10px]'>
                 {stat.hint}
               </span>
             )}

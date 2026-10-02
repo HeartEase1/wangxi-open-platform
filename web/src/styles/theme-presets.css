@@ -426,10 +426,14 @@ For commercial licensing, please contact support@quantumnous.com
  *   - `anthropic`: warm cream surfaces are a brand choice, NOT a primary-mix
  *     derivation (the Anthropic system deliberately uses warm neutrals for
  *     cards/borders rather than tinting them with the clay accent).
- *   - `simple-large`: keeps intentionally neutral, high-contrast surfaces. */
+ *   - `simple-large`: keeps intentionally neutral, high-contrast surfaces.
+ *   - `past-ripples`: owns a full surface ladder for its wheat/peach/sky
+ *     palette, so it is excluded from these primary-mix defaults. */
 [data-theme-preset]:not([data-theme-preset='default']):not(
   [data-theme-preset='anthropic']
-):not([data-theme-preset='simple-large']) {
+):not([data-theme-preset='simple-large']):not(
+  [data-theme-preset='past-ripples']
+) {
   --card: color-mix(in oklch, var(--primary) 3%, var(--background));
   --popover: color-mix(in oklch, var(--primary) 5%, var(--background));
   --muted: color-mix(in oklch, var(--primary) 7%, var(--background));
@@ -454,7 +458,9 @@ For commercial licensing, please contact support@quantumnous.com
 .dark
   [data-theme-preset]:not([data-theme-preset='default']):not(
     [data-theme-preset='anthropic']
-  ):not([data-theme-preset='simple-large']) {
+  ):not([data-theme-preset='simple-large']):not(
+    [data-theme-preset='past-ripples']
+  ) {
   --card: color-mix(in oklch, var(--primary) 8%, var(--background));
   --popover: color-mix(in oklch, var(--primary) 12%, var(--background));
   --muted: color-mix(in oklch, var(--primary) 12%, var(--background));
@@ -810,118 +816,66 @@ For commercial licensing, please contact support@quantumnous.com
 }
 
 .dark [data-theme-preset='past-ripples'] {
-  /* 深色模式 - 深邃优雅的紫调黑 */
-  --background: oklch(0.12 0.025 290);
-  --foreground: oklch(0.91 0.012 320);
+  /* 深色模式：墨蓝背景、雾紫卡片，保留麦黄、桃粉、天空蓝和麦青。 */
+  --background: oklch(0.16 0.018 260);
+  --foreground: oklch(0.93 0.012 95);
+  --card: oklch(0.29 0.025 282);
+  --card-foreground: oklch(0.93 0.012 95);
+  --popover: oklch(0.34 0.03 282);
+  --popover-foreground: oklch(0.96 0.01 95);
 
-  --card: oklch(0.16 0.028 295);
-  --card-foreground: oklch(0.91 0.012 320);
-  --popover: oklch(0.17 0.028 295);
-  --popover-foreground: oklch(0.94 0.012 320);
+  --primary: oklch(0.75 0.13 295);
+  --primary-foreground: oklch(0.16 0.02 280);
+  --secondary: oklch(0.78 0.1 350);
+  --secondary-foreground: oklch(0.2 0.03 340);
 
-  --primary: oklch(0.7 0.17 295);
-  --primary-foreground: oklch(1 0 0);
-  --secondary: oklch(0.8 0.14 348);
-  --secondary-foreground: oklch(0.12 0.025 290);
+  --muted: oklch(0.335 0.022 258);
+  --muted-foreground: oklch(0.75 0.018 275);
+  --accent: oklch(0.39 0.04 290);
+  --accent-foreground: oklch(0.95 0.02 95);
 
-  --muted: oklch(0.24 0.032 295);
-  --muted-foreground: oklch(0.74 0.028 310);
-  --accent: oklch(0.28 0.048 305);
-  --accent-foreground: oklch(0.9 0.035 335);
+  --destructive: oklch(0.68 0.16 25);
+  --destructive-foreground: oklch(0.16 0.02 25);
+  --success: oklch(0.72 0.1 165);
+  --success-foreground: oklch(0.15 0.02 165);
+  --warning: oklch(0.8 0.11 88);
+  --warning-foreground: oklch(0.2 0.02 88);
+  --info: oklch(0.76 0.09 235);
+  --info-foreground: oklch(0.15 0.02 235);
+  --neutral: oklch(0.72 0.02 275);
+  --neutral-foreground: oklch(0.16 0.02 275);
 
-  --destructive: oklch(0.64 0.22 22);
-  --destructive-foreground: oklch(1 0 0);
-  --success: oklch(0.7 0.14 168);
-  --success-foreground: oklch(0.12 0.025 290);
-  --warning: oklch(0.8 0.15 88);
-  --warning-foreground: oklch(0.12 0.025 290);
-  --info: oklch(0.7 0.14 233);
-  --info-foreground: oklch(1 0 0);
-  --neutral: oklch(0.66 0.028 295);
-  --neutral-foreground: oklch(1 0 0);
+  --border: oklch(0.43 0.026 272);
+  --input: oklch(0.35 0.022 258);
+  --ring: oklch(0.75 0.13 295);
 
-  --border: oklch(0.3 0.035 295);
-  --input: oklch(0.28 0.033 295);
-  --ring: oklch(0.7 0.17 295);
+  --chart-1: oklch(0.8 0.11 88);
+  --chart-2: oklch(0.76 0.09 235);
+  --chart-3: oklch(0.78 0.1 350);
+  --chart-4: oklch(0.74 0.12 295);
+  --chart-5: oklch(0.72 0.1 165);
 
-  --chart-1: oklch(0.8 0.15 88);
-  --chart-2: oklch(0.7 0.17 295);
-  --chart-3: oklch(0.8 0.14 348);
-  --chart-4: oklch(0.7 0.14 233);
-  --chart-5: oklch(0.72 0.13 178);
+  --overview-accent-1: oklch(0.8 0.11 88);
+  --overview-accent-2: oklch(0.76 0.09 235);
+  --overview-accent-3: oklch(0.72 0.1 165);
 
-  --overview-accent-1: oklch(0.8 0.15 88);
-  --overview-accent-2: oklch(0.7 0.14 233);
-  --overview-accent-3: oklch(0.8 0.14 348);
+  --sidebar: oklch(0.145 0.02 262);
+  --sidebar-foreground: oklch(0.91 0.012 95);
+  --sidebar-primary: oklch(0.75 0.13 295);
+  --sidebar-primary-foreground: oklch(0.16 0.02 280);
+  --sidebar-accent: oklch(0.25 0.03 270);
+  --sidebar-accent-foreground: oklch(0.92 0.015 95);
+  --sidebar-border: oklch(0.35 0.025 270);
+  --sidebar-ring: oklch(0.75 0.13 295);
 
-  --sidebar: oklch(0.14 0.026 293);
-  --sidebar-foreground: oklch(0.88 0.018 318);
-  --sidebar-primary: oklch(0.7 0.17 295);
-  --sidebar-primary-foreground: oklch(1 0 0);
-  --sidebar-accent: oklch(0.25 0.042 300);
-  --sidebar-accent-foreground: oklch(0.84 0.042 332);
-  --sidebar-border: oklch(0.23 0.034 295);
-  --sidebar-ring: oklch(0.7 0.17 295);
-
-  --skeleton-base: oklch(0.2 0.03 295);
-  --skeleton-highlight: oklch(0.26 0.032 298);
+  --skeleton-base: oklch(0.24 0.022 270);
+  --skeleton-highlight: oklch(0.33 0.03 278);
 
   /* 数据表头跟随深色紫蓝卡片，避免默认灰色表头与背景脱节。 */
-  --table-row: color-mix(in oklch, var(--background) 84%, var(--card) 16%);
-  --table-header: color-mix(in oklch, var(--card) 88%, var(--chart-2) 12%);
-  --table-header-hover: color-mix(
-    in oklch,
-    var(--table-header) 88%,
-    var(--chart-1) 12%
-  );
-  --table-disabled: color-mix(
-    in oklch,
-    var(--background) 92%,
-    var(--chart-4) 8%
-  );
-  --table-disabled-hover: color-mix(
-    in oklch,
-    var(--table-disabled) 88%,
-    var(--chart-1) 12%
-  );
-  --table-disabled-border: color-mix(
-    in oklch,
-    var(--border) 70%,
-    var(--chart-4) 30%
-  );
-}
-
-/* Past Ripples keeps a deliberately stepped dark surface ladder. The shared
- * bridge above is useful for most presets, but an 8% primary mix makes this
- * blue-violet theme too flat on data-heavy screens. */
-.dark [data-theme-preset='past-ripples'] {
-  --background: oklch(0.115 0.022 264);
-  --foreground: oklch(0.93 0.012 320);
-  --card: oklch(0.19 0.03 282);
-  --card-foreground: oklch(0.93 0.012 320);
-  --popover: oklch(0.225 0.034 278);
-  --popover-foreground: oklch(0.95 0.012 320);
-  --muted: oklch(0.255 0.026 264);
-  --muted-foreground: oklch(0.76 0.022 300);
-  --accent: oklch(0.3 0.045 275);
-  --accent-foreground: oklch(0.94 0.025 320);
-  --border: oklch(0.36 0.035 276);
-  --input: oklch(0.31 0.032 268);
-  --ring: oklch(0.72 0.14 288);
-  --sidebar: oklch(0.14 0.024 260);
-  --sidebar-foreground: oklch(0.91 0.014 315);
-  --sidebar-accent: oklch(0.24 0.04 266);
-  --sidebar-accent-foreground: oklch(0.92 0.02 315);
-  --sidebar-border: oklch(0.31 0.03 270);
-  --skeleton-base: oklch(0.205 0.026 270);
-  --skeleton-highlight: oklch(0.29 0.035 278);
-
-  /* Data surfaces: sky-blue headers, quiet blue-black rows, and a restrained
-   * wheat highlight for selected/disabled states. */
-  --table-row: oklch(0.155 0.024 264);
-  --table-header: oklch(0.245 0.045 250);
-  --table-header-hover: oklch(0.285 0.052 250);
-  --table-disabled: oklch(0.19 0.024 270);
-  --table-disabled-hover: oklch(0.235 0.035 270);
-  --table-disabled-border: oklch(0.39 0.045 280);
+  --table-row: oklch(0.235 0.022 260);
+  --table-header: oklch(0.335 0.04 250);
+  --table-header-hover: oklch(0.39 0.05 250);
+  --table-disabled: oklch(0.27 0.025 275);
+  --table-disabled-hover: oklch(0.32 0.035 275);
+  --table-disabled-border: oklch(0.45 0.035 280);
 }

@@ -112,7 +112,7 @@ export function PricingToolbar(props: PricingToolbarProps) {
             <span>{props.filteredCount === 1 ? t('model') : t('models')}</span>
             {props.totalCount != null &&
               props.filteredCount !== props.totalCount && (
-                <span className='text-muted-foreground/60 text-xs'>
+                <span className='text-muted-foreground/75 text-xs'>
                   / {props.totalCount.toLocaleString()}
                 </span>
               )}
