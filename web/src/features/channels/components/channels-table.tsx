@@ -414,6 +414,7 @@ export function ChannelsTable() {
     <DataTablePage
       table={table}
       columns={columns}
+      className='channel-management-surface'
       isLoading={isLoading}
       isFetching={isFetching}
       emptyTitle={t('No Channels Found')}
