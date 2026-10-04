@@ -18,7 +18,15 @@ docker compose ps
 docker compose logs -f platform
 ```
 
-默认镜像为 `ghcr.io/heartease1/wangxi-open-platform:latest`。`.github/workflows/docker-build.yml` 会在 `main` 分支推送和版本标签时由 GitHub Actions 构建并发布镜像。若 GHCR 包为私有，服务器先执行 `docker login ghcr.io`；公开包可以匿名拉取。`compose.wangxi.yml` 是默认 Compose 的兼容入口。
+默认镜像为 `ghcr.io/heartease1/wangxi-open-platform:latest`。`.github/workflows/docker-build.yml` 会在 `main` 分支推送和版本标签时由 GitHub Actions 构建并发布镜像。仓库公开不等于 GHCR 容器包公开；如果拉取时返回 `401`，请使用带 `read:packages` 权限的 GitHub PAT 登录：
+
+```sh
+read -r -s GHCR_TOKEN
+printf '%s' "$GHCR_TOKEN" | docker login ghcr.io --username HeartEase1 --password-stdin
+unset GHCR_TOKEN
+```
+
+也可以在 [容器包设置](https://github.com/users/HeartEase1/packages/container/wangxi-open-platform/settings) 中将包设为公开，公开包可以匿名拉取。`compose.wangxi.yml` 是默认 Compose 的兼容入口。
 
 浏览器打开 `http://localhost:3000` 并完成初始化。SQLite 数据位于 `data/one-api.db`（保留兼容文件名），日志位于 `logs/`。不要删除这些目录。`.env` 是可选运行配置，默认 SQLite 不需要外部数据库和 Redis。
 

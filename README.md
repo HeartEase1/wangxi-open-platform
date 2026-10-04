@@ -21,7 +21,7 @@ docker compose logs -f platform
 
 访问 `http://localhost:3000`，按初始化向导创建管理员。默认使用 SQLite，数据保存在 `data/`，日志保存在 `logs/`，端口只绑定本机。公网访问请按[部署文档](docs/deployment.md)配置域名、HTTPS 和反向代理。
 
-默认镜像为 `ghcr.io/heartease1/wangxi-open-platform:latest`，由本仓库的 GitHub Actions 在 `main` 分支更新后自动构建。更新时无需在服务器编译源码，运行 `docker compose pull && docker compose up -d --remove-orphans` 即可。回滚时在 `.env` 设置 `WANGXI_IMAGE_TAG=sha-<提交号>`。如果 GHCR 包尚未设为公开，先执行 `docker login ghcr.io`。
+默认镜像为 `ghcr.io/heartease1/wangxi-open-platform:latest`，由本仓库的 GitHub Actions 在 `main` 分支更新后自动构建。更新时无需在服务器编译源码，运行 `docker compose pull && docker compose up -d --remove-orphans` 即可。回滚时在 `.env` 设置 `WANGXI_IMAGE_TAG=sha-<提交号>`。仓库公开不等于 GHCR 容器包公开；如果拉取时返回 `401`，请使用带 `read:packages` 权限的 GitHub PAT 登录 `ghcr.io`，或在 [容器包设置](https://github.com/users/HeartEase1/packages/container/wangxi-open-platform/settings) 中将包设为公开。
 
 本地需要从源码构建时，使用 `docker-compose.local.yml` 覆盖层：
 
