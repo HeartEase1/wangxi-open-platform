@@ -25,29 +25,40 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
-      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
-      - uses: docker/setup-buildx-action@v3
-      - uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Generate image metadata
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: ghcr.io/${{ github.repository }}
-          tags: |
-            type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' }}
-            type=sha,prefix=sha-
-            type=ref,event=tag
-            type=raw,value=${{ inputs.tag }},enable=${{ github.event_name == 'workflow_dispatch' && inputs.tag != '' }}
+      # The repository currently allows only local HeartEase1 Actions. Use the
+      # GitHub-hosted runner's built-in Git and Docker commands so no external
+      # action permission is needed.
+      - name: Checkout source
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          git clone --no-checkout "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" .
+          git fetch --depth=1 origin "${GITHUB_SHA}"
+          git checkout --detach "${GITHUB_SHA}"
+      - name: Login to GHCR
+        env:
+          CR_PAT: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          printf '%s' "$CR_PAT" | docker login ghcr.io --username "${GITHUB_ACTOR}" --password-stdin
       - name: Build and publish image
-        uses: docker/build-push-action@v6
-        with:
-          context: .
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+        env:
+          EXTRA_TAG: ${{ inputs.tag }}
+        run: |
+          set -euo pipefail
+          IMAGE="ghcr.io/${GITHUB_REPOSITORY,,}"
+          tags=("-t" "$IMAGE:sha-${GITHUB_SHA}")
+          if [ "$GITHUB_REF" = "refs/heads/main" ]; then
+            tags+=("-t" "$IMAGE:latest")
+          fi
+          if [[ "$GITHUB_REF" == refs/tags/v* ]]; then
+            tags+=("-t" "$IMAGE:${GITHUB_REF_NAME}")
+          fi
+          if [ -n "$EXTRA_TAG" ]; then
+            tags+=("-t" "$IMAGE:$EXTRA_TAG")
+          fi
+          docker build "${tags[@]}" .
+          for ((i = 0; i < ${#tags[@]}; i += 2)); do
+            docker push "${tags[i + 1]}"
+          done
