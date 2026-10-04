@@ -33,13 +33,14 @@ go build -ldflags "-X github.com/QuantumNous/new-api/common.Version=v1.0.0-rc.40
 
 Linux 可把输出文件改为 `bin/wangxi-api`。使用 Go 1.25.1 以上版本，独立校验 relaykit 时运行 `cd relaykit && GOWORK=off go build ./...`。
 
-Docker 本地启动：
+Docker 使用 GitHub 构建镜像：
 
 ```sh
-docker compose -f compose.wangxi.yml up -d --build
+docker compose -f compose.wangxi.yml pull
+docker compose -f compose.wangxi.yml up -d --remove-orphans
 ```
 
-该入口从本项目源码构建并使用 SQLite，端口仅绑定本机。`data/`、`logs/`、密钥文件和环境配置不提交到仓库。默认 `docker-compose.yml` 现已统一为往昔源码构建入口，具体配置见 [部署文档](deployment.md)。
+该入口使用 GitHub Actions 发布的往昔镜像并使用 SQLite，端口仅绑定本机。`data/`、`logs/`、密钥文件和环境配置不提交到仓库。默认 `docker-compose.yml` 拉取 `ghcr.io/heartease1/wangxi-open-platform:latest`；需要本地源码构建时使用 `docker-compose.local.yml`，具体配置见 [部署文档](deployment.md)。
 
 已有部署应先备份数据库和配置，在独立环境完成启动与升级验证后再切换流量。此次任务只更新代码和仓库，没有连接生产数据库或更改线上部署。
 
@@ -57,13 +58,13 @@ docker compose -f compose.wangxi.yml up -d --build
 
 完整 `go test ./controller` 未通过；观察到多个上游数据库矩阵/审计测试在 Windows 清理临时 `audit.db` 时因文件占用失败。全项目 `bun run lint` 也有上游未修改文件中的既有错误，不能声称全库 lint 已通过。当前机器没有 Docker、MySQL 和 PostgreSQL 测试服务，三数据库完整升级矩阵及 Docker 镜像构建未验证，不能据此宣称生产数据库升级已经验证。
 
-新仓库的 GitHub Actions 暂停，避免导入时触发上游的镜像发布与机器人工作流；需要配置本项目的 CI 和发布目标后再启用。
+历史记录：导入阶段曾暂停 GitHub Actions，避免触发上游工作流；当前仓库已启用自有 GHCR 容器发布工作流。
 
 ## 2026-09-28：项目说明、部署与中文界面
 
 - README、仓库简介和反馈入口统一为往昔开放平台，清理上游合作伙伴广告；版权和许可来源继续保留。
-- 默认 Compose 改为从本仓库构建；容器与 systemd 二进制使用 `wangxi-api`。新增 [部署与维护文档](deployment.md)，包含域名、HTTPS、已有数据库接入、备份和回退。
-- 替换上游镜像发布任务为本仓库手动 GHCR 构建任务，移除上游分支镜像与 GitCode 同步任务；Actions 仍保持关闭，未发布镜像或部署生产服务。
+- 默认 Compose 改为使用本仓库的容器配置；容器与 systemd 二进制使用 `wangxi-api`。新增 [部署与维护文档](deployment.md)，包含域名、HTTPS、已有数据库接入、备份和回退。
+- 替换上游镜像发布任务为本仓库 GHCR 构建任务，移除上游分支镜像与 GitCode 同步任务；当前工作流会在 `main` 和版本标签更新后发布镜像。
 - 界面首次访问默认简体中文，保留显式语言偏好；补齐账号角色、AstrBot 渠道与安全设置等缺失翻译。更新检查指向自有仓库并识别 `-wangxi.N` 版本。
 - 验证：前端类型检查、生产构建、后端二进制构建通过；相关 29 个测试文件共 367 项，修正旧品牌文案断言后失败文件复验通过；修改文件的格式检查与 lint 通过（保留页脚自定义 HTML 的既有 warning）；部署和发布 YAML 解析通过。
 - 当前机器无 Docker，尚未执行容器构建与容器启动验证。桌面包装器仅检查 JavaScript 语法，未生成桌面安装包。

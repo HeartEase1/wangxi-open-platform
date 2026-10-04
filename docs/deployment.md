@@ -2,22 +2,23 @@
 
 本地开发环境安装和前端预览请先阅读[本地开发与预览](local-development.md)。
 
-## 从自己的仓库部署
+## 从 GitHub 构建镜像并部署
 
 仓库：https://github.com/HeartEase1/wangxi-open-platform 。私有仓库需要先配置 GitHub SSH 密钥或 Git Credential Manager 等读取凭据，不要把访问令牌写进命令、镜像或配置文件。
 
-需要 Docker Engine、Docker Compose v2.24+ 和 Git：
+需要 Docker Engine 和 Docker Compose v2.24+。服务器第一次部署时获取本仓库的 Compose 文件，后续更新只拉取镜像，不需要在服务器安装 Go、Bun 或重新构建源码：
 
 ```sh
 git clone https://github.com/HeartEase1/wangxi-open-platform.git
 cd wangxi-open-platform
 cp .env.example .env
-docker compose up -d --build
+docker compose pull
+docker compose up -d --remove-orphans
 docker compose ps
 docker compose logs -f platform
 ```
 
-默认镜像 `wangxi-open-platform:local` 完全由本仓库构建，不依赖上游应用镜像。基础运行时镜像和依赖仍需联网下载。`compose.wangxi.yml` 是默认 Compose 的兼容入口。
+默认镜像为 `ghcr.io/heartease1/wangxi-open-platform:latest`。`.github/workflows/docker-build.yml` 会在 `main` 分支推送和版本标签时由 GitHub Actions 构建并发布镜像。若 GHCR 包为私有，服务器先执行 `docker login ghcr.io`；公开包可以匿名拉取。`compose.wangxi.yml` 是默认 Compose 的兼容入口。
 
 浏览器打开 `http://localhost:3000` 并完成初始化。SQLite 数据位于 `data/one-api.db`（保留兼容文件名），日志位于 `logs/`。不要删除这些目录。`.env` 是可选运行配置，默认 SQLite 不需要外部数据库和 Redis。
 
@@ -39,16 +40,16 @@ SESSION_COOKIE_TRUSTED_URL=https://api.example.com
 
 已有部署必须沿用原来的数据库连接与数据卷，不能直接把 PostgreSQL/MySQL 部署切换到默认 SQLite。在 `.env` 设置 `SQL_DSN`，需要 Redis 时设置 `REDIS_CONN_STRING`；容器内 `localhost` 指向容器自身。连接独立数据库应使用可达的主机名/地址。
 
-保留原 Compose 管理的数据库服务和数据卷，单独升级应用服务的源码构建配置。不要运行 `docker compose down -v`。修改 Compose 项目名会改变默认命名卷归属，迁移时必须显式连接原数据卷并核对数据。
+保留原 Compose 管理的数据库服务和数据卷，单独升级应用服务的镜像配置。不要运行 `docker compose down -v`。修改 Compose 项目名会改变默认命名卷归属，迁移时必须显式连接原数据卷并核对数据。
 
 ## 更新与回退
 
 1. 保存当前提交号 `git rev-parse HEAD`，备份 `.env`、数据库和持久目录。SQLite 应先停止应用再完整备份 `data/`；外部数据库使用相应数据库备份工具。
 2. 在测试环境验证新版本及数据库迁移。
-3. `git pull --ff-only`，然后 `docker compose up -d --build`。
+3. `docker compose pull`，然后 `docker compose up -d --remove-orphans`。
 4. 检查 `docker compose ps`、`docker compose logs --tail=100 platform` 与 `/api/status`。
 
-回退必须使用旧提交重新构建，并恢复与旧版本配套的数据库备份。仅回退镜像无法撤销数据库迁移。
+回退时在 `.env` 设置 `WANGXI_IMAGE_TAG=sha-<旧提交号>`，再执行 `docker compose pull && docker compose up -d --remove-orphans`，并恢复与旧版本配套的数据库备份。仅回退镜像无法撤销数据库迁移。
 
 浏览器更新检查链接指向本仓库。私有仓库不支持匿名读取 GitHub Releases，检查失败时由维护者通过已登录的 GitHub 或 `git fetch origin` 查看版本；无需向浏览器提供 GitHub 令牌。
 
@@ -71,4 +72,4 @@ Linux systemd 配置见根目录 `wangxi-platform.service`。先创建服务用�
 
 ## 自有发布工作流
 
-手动触发 `Build Wangxi container` 可将当前源码构建到 `ghcr.io/<仓库所有者>/<仓库名>`，使用仓库 `GITHUB_TOKEN`，不依赖其他项目的 Docker Hub 凭据。当前 Actions 仍保持关闭，尚未发布该镜像，因此默认部署始终使用本地源码构建。
+`Build Wangxi container` 会在 `main` 推送、`v*` 标签或手动触发时运行，使用仓库 `GITHUB_TOKEN` 将镜像发布到 `ghcr.io/heartease1/wangxi-open-platform`。主分支发布 `latest` 和 `sha-<提交号>`，版本标签还会发布同名标签。服务器通过 `docker compose pull` 获取新镜像；本地源码构建仅用于开发，可使用 `docker-compose.local.yml` 覆盖层。

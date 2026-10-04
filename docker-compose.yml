@@ -1,12 +1,11 @@
-# 往昔开放平台：从本仓库构建，执行 docker compose up -d --build
+# 往昔开放平台：默认从 GitHub Container Registry 拉取已构建镜像。
+# 更新时执行：docker compose pull && docker compose up -d --remove-orphans
 name: wangxi-open-platform
 
 services:
   platform:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    image: wangxi-open-platform:local
+    image: ${WANGXI_IMAGE:-ghcr.io/heartease1/wangxi-open-platform}:${WANGXI_IMAGE_TAG:-latest}
+    pull_policy: always
     env_file:
       - path: .env
         required: false

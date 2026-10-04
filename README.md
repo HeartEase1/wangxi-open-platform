@@ -8,18 +8,26 @@
 
 ## 快速部署
 
-安装 Git、Docker Engine 和 Docker Compose v2.24+。当前仓库为私有仓库，克隆前请先配置具有仓库读取权限的 GitHub 身份。
+安装 Docker Engine 和 Docker Compose v2.24+。服务器只需保存 Compose 文件、`.env`、`data/` 和 `logs/`，应用镜像由 GitHub Actions 构建并发布到 GHCR。
 
 ```sh
 git clone https://github.com/HeartEase1/wangxi-open-platform.git
 cd wangxi-open-platform
-docker compose up -d --build
+cp .env.example .env
+docker compose pull
+docker compose up -d --remove-orphans
 docker compose logs -f platform
 ```
 
 访问 `http://localhost:3000`，按初始化向导创建管理员。默认使用 SQLite，数据保存在 `data/`，日志保存在 `logs/`，端口只绑定本机。公网访问请按[部署文档](docs/deployment.md)配置域名、HTTPS 和反向代理。
 
-镜像 `wangxi-open-platform:local` 由当前检出的源码构建。更新时运行 `git pull --ff-only` 和 `docker compose up -d --build`。不要使用其他项目的预构建镜像替换本平台，否则会丢失往昔定制功能。
+默认镜像为 `ghcr.io/heartease1/wangxi-open-platform:latest`，由本仓库的 GitHub Actions 在 `main` 分支更新后自动构建。更新时无需在服务器编译源码，运行 `docker compose pull && docker compose up -d --remove-orphans` 即可。回滚时在 `.env` 设置 `WANGXI_IMAGE_TAG=sha-<提交号>`。如果 GHCR 包尚未设为公开，先执行 `docker login ghcr.io`。
+
+本地需要从源码构建时，使用 `docker-compose.local.yml` 覆盖层：
+
+```sh
+docker compose -f docker-compose.yml -f docker-compose.local.yml up -d --build
+```
 
 ## 本地开发
 

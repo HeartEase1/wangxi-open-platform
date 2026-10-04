@@ -1,24 +1,53 @@
 name: Build Wangxi container
+
 on:
+  push:
+    branches:
+      - main
+    tags:
+      - 'v*'
   workflow_dispatch:
+    inputs:
+      tag:
+        description: '额外发布的镜像标签（例如 staging）'
+        required: false
+        type: string
 permissions:
   contents: read
   packages: write
+
+concurrency:
+  group: wangxi-container-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
-      - name: Determine own image name
-        run: echo "IMAGE=ghcr.io/${GITHUB_REPOSITORY,,}" >> "$GITHUB_ENV"
       - uses: docker/setup-buildx-action@v3
       - uses: docker/login-action@v3
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - uses: docker/build-push-action@v6
+      - name: Generate image metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/${{ github.repository }}
+          tags: |
+            type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' }}
+            type=sha,prefix=sha-
+            type=ref,event=tag
+            type=raw,value=${{ inputs.tag }},enable=${{ github.event_name == 'workflow_dispatch' && inputs.tag != '' }}
+      - name: Build and publish image
+        uses: docker/build-push-action@v6
         with:
           context: .
           push: true
-          tags: ${{ env.IMAGE }}:sha-${{ github.sha }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
