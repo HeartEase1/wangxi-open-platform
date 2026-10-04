@@ -21,7 +21,7 @@ cp .env.example .env
 
 如果仓库或 GHCR 包为私有，需要先配置服务器的 GitHub 凭据。不要把访问令牌写入 Compose 文件。
 
-首次启动前编辑 `.env`，至少生成一个随机的 `SESSION_SECRET`。本地 SQLite 模式可以不设置 `SQL_DSN` 和 `REDIS_CONN_STRING`：
+首次启动前编辑 `.env`，至少生成一个随机的 `SESSION_SECRET`、`POSTGRES_PASSWORD` 和 `REDIS_PASSWORD`。生产 Compose 默认会自动创建 PostgreSQL 和 Redis；只有本地 SQLite 模式才可以不设置 `SQL_DSN` 和 `REDIS_CONN_STRING`：
 
 ```bash
 openssl rand -hex 32
@@ -49,7 +49,7 @@ docker compose logs --tail=100 platform
 
 更新不需要 `git pull` 或在服务器重新构建源码。若 GHCR 包为私有，首次拉取前使用带 `read:packages` 权限的 GitHub PAT 执行 `docker login ghcr.io`；也可以把 [容器包](https://github.com/users/HeartEase1/packages/container/wangxi-open-platform/settings) 设为公开。回滚可在 `.env` 设置 `WANGXI_IMAGE_TAG=sha-<提交号>`。
 
-更新前备份 `.env`、`data/` 和 `logs/`。不要执行 `docker compose down -v`，否则可能删除本地数据卷。已有 PostgreSQL/MySQL 部署必须保留原数据库连接配置，不能直接切换到默认 SQLite。
+更新前备份 `.env`、数据库卷、`data/` 和 `logs/`。不要执行 `docker compose down -v`，否则可能删除 PostgreSQL 数据卷。已有 PostgreSQL/MySQL 部署必须保留原数据库连接配置，不能切换到新建的数据库。
 
 ## 数据目录
 

@@ -40,7 +40,7 @@ docker compose -f compose.wangxi.yml pull
 docker compose -f compose.wangxi.yml up -d --remove-orphans
 ```
 
-该入口使用 GitHub Actions 发布的往昔镜像并使用 SQLite，端口仅绑定本机。`data/`、`logs/`、密钥文件和环境配置不提交到仓库。默认 `docker-compose.yml` 拉取 `ghcr.io/heartease1/wangxi-open-platform:latest`；需要本地源码构建时使用 `docker-compose.local.yml`，具体配置见 [部署文档](deployment.md)。
+该入口使用 GitHub Actions 发布的往昔镜像，并由默认 Compose 自动创建 PostgreSQL 与 Redis；端口仅绑定本机。`data/`、`logs/`、数据库卷、密钥文件和环境配置不提交到仓库。默认 `docker-compose.yml` 拉取 `ghcr.io/heartease1/wangxi-open-platform:latest`；需要本地源码构建时使用 `docker-compose.local.yml`，具体配置见 [部署文档](deployment.md)。
 
 已有部署应先备份数据库和配置，在独立环境完成启动与升级验证后再切换流量。此次任务只更新代码和仓库，没有连接生产数据库或更改线上部署。
 

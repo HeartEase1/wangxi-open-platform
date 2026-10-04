@@ -18,7 +18,7 @@ docker compose ps
 docker compose logs -f platform
 ```
 
-默认镜像为 `ghcr.io/heartease1/wangxi-open-platform:latest`。`.github/workflows/docker-build.yml` 会在 `main` 分支推送和版本标签时由 GitHub Actions 构建并发布镜像。仓库公开不等于 GHCR 容器包公开；如果拉取时返回 `401`，请使用带 `read:packages` 权限的 GitHub PAT 登录：
+默认镜像为 `ghcr.io/heartease1/wangxi-open-platform:latest`。生产 Compose 会同时创建 PostgreSQL 和 Redis，并将数据保存到 `postgres_data` 卷；平台默认通过 PostgreSQL 运行。`.github/workflows/docker-build.yml` 会在 `main` 分支推送和版本标签时由 GitHub Actions 构建并发布镜像。仓库公开不等于 GHCR 容器包公开；如果拉取时返回 `401`，请使用带 `read:packages` 权限的 GitHub PAT 登录：
 
 ```sh
 read -r -s GHCR_TOKEN
@@ -28,7 +28,7 @@ unset GHCR_TOKEN
 
 也可以在 [容器包设置](https://github.com/users/HeartEase1/packages/container/wangxi-open-platform/settings) 中将包设为公开，公开包可以匿名拉取。`compose.wangxi.yml` 是默认 Compose 的兼容入口。
 
-浏览器打开 `http://localhost:3000` 并完成初始化。SQLite 数据位于 `data/one-api.db`（保留兼容文件名），日志位于 `logs/`。不要删除这些目录。`.env` 是可选运行配置，默认 SQLite 不需要外部数据库和 Redis。
+浏览器打开 `http://localhost:3000` 并完成初始化。首次部署前请在 `.env` 修改 `POSTGRES_PASSWORD` 和 `REDIS_PASSWORD`；日志位于 `logs/`，PostgreSQL 数据位于 Docker 的 `postgres_data` 卷。不要删除数据卷。`.env` 仍可通过 `SQL_DSN` 和 `REDIS_CONN_STRING` 覆盖为外部服务。
 
 ## 域名和 HTTPS
 
@@ -46,7 +46,7 @@ SESSION_COOKIE_TRUSTED_URL=https://api.example.com
 
 ## 使用已有数据库
 
-已有部署必须沿用原来的数据库连接与数据卷，不能直接把 PostgreSQL/MySQL 部署切换到默认 SQLite。在 `.env` 设置 `SQL_DSN`，需要 Redis 时设置 `REDIS_CONN_STRING`；容器内 `localhost` 指向容器自身。连接独立数据库应使用可达的主机名/地址。
+已有部署必须沿用原来的数据库连接与数据卷，不能直接把 SQLite 或已有 PostgreSQL/MySQL 部署切换到新建的空数据库。在 `.env` 设置 `SQL_DSN`，需要 Redis 时设置 `REDIS_CONN_STRING`；容器内 `localhost` 指向容器自身。连接独立数据库应使用可达的主机名/地址。全新部署才使用 Compose 自动创建的 PostgreSQL 和 Redis。
 
 保留原 Compose 管理的数据库服务和数据卷，单独升级应用服务的镜像配置。不要运行 `docker compose down -v`。修改 Compose 项目名会改变默认命名卷归属，迁移时必须显式连接原数据卷并核对数据。
 
