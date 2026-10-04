@@ -21,6 +21,8 @@ var legacySensitiveLogOtherKeys = []string{
 	"channel_name",
 	"channel_type",
 	"reject_reason",
+	"is_model_mapped",
+	"upstream_model_name",
 }
 
 type logOtherVisibility int
@@ -209,6 +211,38 @@ func normalizeLegacyRejectReason(values map[string]json.RawMessage) bool {
 	return true
 }
 
+// normalizeLegacyModelMapping moves model-routing details written by older
+// versions at the public top level into admin_info. This keeps historical
+// usage logs from leaking the upstream model to ordinary users after the
+// visibility boundary was introduced.
+func normalizeLegacyModelMapping(values map[string]json.RawMessage) bool {
+	adminInfo := make(map[string]json.RawMessage)
+	if rawAdminInfo, exists := values[logOtherAdminInfoKey]; exists {
+		_ = common.Unmarshal(rawAdminInfo, &adminInfo)
+	}
+	changed := false
+	for _, key := range []string{"is_model_mapped", "upstream_model_name", "response_model"} {
+		raw, exists := values[key]
+		if !exists {
+			continue
+		}
+		if _, alreadyScoped := adminInfo[key]; !alreadyScoped {
+			adminInfo[key] = raw
+		}
+		delete(values, key)
+		changed = true
+	}
+	if !changed {
+		return false
+	}
+	encoded, err := common.Marshal(adminInfo)
+	if err != nil {
+		return false
+	}
+	values[logOtherAdminInfoKey] = encoded
+	return true
+}
+
 // formatLogOtherJSON applies the role projection while keeping untouched JSON
 // values as RawMessage. This preserves integers larger than JavaScript's safe
 // range instead of round-tripping them through float64.
@@ -239,8 +273,14 @@ func formatLogOtherJSON(value string, visibility logOtherVisibility) string {
 				changed = true
 			}
 		}
+		if _, exists := values["response_model"]; exists {
+			delete(values, "response_model")
+			changed = true
+		}
 	} else {
-		changed = normalizeLegacyRejectReason(values)
+		legacyRejectChanged := normalizeLegacyRejectReason(values)
+		legacyMappingChanged := normalizeLegacyModelMapping(values)
+		changed = legacyRejectChanged || legacyMappingChanged
 		if visibility == logOtherVisibilityAdmin {
 			if _, exists := values[logOtherRootInfoKey]; exists {
 				delete(values, logOtherRootInfoKey)

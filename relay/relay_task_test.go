@@ -103,6 +103,24 @@ func TestTaskModel2DtoNormalizesLegacyAction(t *testing.T) {
 	assert.Equal(t, "firstTailGenerate", task.Action)
 }
 
+func TestTaskModel2DtoHidesUpstreamModelFromOwner(t *testing.T) {
+	task := &model.Task{Properties: model.Properties{
+		OriginModelName:   "public-model",
+		UpstreamModelName: "provider-secret-model",
+	}}
+
+	ownerDTO := TaskModel2Dto(task)
+	ownerProperties, ok := ownerDTO.Properties.(model.Properties)
+	require.True(t, ok)
+	assert.Equal(t, "public-model", ownerProperties.OriginModelName)
+	assert.Empty(t, ownerProperties.UpstreamModelName)
+
+	adminDTO := TaskModel2DtoForRole(task, common.RoleAdminUser)
+	adminProperties, ok := adminDTO.Properties.(model.Properties)
+	require.True(t, ok)
+	assert.Equal(t, "provider-secret-model", adminProperties.UpstreamModelName)
+}
+
 const mappingOrderSubmitPlugin = `
 export const meta = {apiVersion:1,key:"maporder",name:"Map Order",version:"1.0.0",author:{name:"Test"},models:["declared-model"],fetchMode:"per_task"};
 export function buildSubmitRequest(ctx) {

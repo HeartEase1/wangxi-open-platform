@@ -167,6 +167,38 @@ func TestLegacyLogOtherVisibilityIsRoleSeparated(t *testing.T) {
 	})
 }
 
+func TestModelMappingVisibilityIsAdminOnly(t *testing.T) {
+	other := common.MapToJsonStr(map[string]any{
+		"model_ratio":         1.5,
+		"is_model_mapped":     true,
+		"upstream_model_name": "gemini-3.7-flash-high",
+		"response_model": map[string]string{
+			"requested_model": "gemini-3.7-flash",
+			"upstream_model":  "gemini-3.7-flash-high",
+			"returned_model":  "gemini-3.7-flash-high",
+		},
+	})
+
+	userLogs := []*Log{{Other: other}}
+	formatUserLogs(userLogs, 0)
+	userMap, err := common.StrToMap(userLogs[0].Other)
+	require.NoError(t, err)
+	assert.NotContains(t, userMap, "is_model_mapped")
+	assert.NotContains(t, userMap, "upstream_model_name")
+	assert.NotContains(t, userMap, "response_model")
+	assert.Contains(t, userMap, "model_ratio")
+
+	adminLogs := []*Log{{Other: other}}
+	FormatAdminLogs(adminLogs)
+	adminMap, err := common.StrToMap(adminLogs[0].Other)
+	require.NoError(t, err)
+	adminInfo, ok := adminMap["admin_info"].(map[string]any)
+	require.True(t, ok)
+	assert.Equal(t, true, adminInfo["is_model_mapped"])
+	assert.Equal(t, "gemini-3.7-flash-high", adminInfo["upstream_model_name"])
+	assert.Contains(t, adminInfo, "response_model")
+}
+
 func TestLegacyRejectReasonDoesNotOverrideScopedValue(t *testing.T) {
 	other := common.MapToJsonStr(map[string]any{
 		"reject_reason": "legacy-value",

@@ -146,6 +146,14 @@ export interface LogOtherData {
     }
     // Reject / intercept reason (admin only)
     reject_reason?: string
+    // Model routing details (admin only)
+    is_model_mapped?: boolean
+    upstream_model_name?: string
+    response_model?: {
+      requested_model: string
+      upstream_model: string
+      returned_model: string
+    }
     task_plugin?: TaskPluginInfo
   }
   root_info?: {
@@ -191,19 +199,17 @@ export interface LogOtherData {
   model_price?: number
   group_ratio?: number
   user_group_ratio?: number
-  cache_ratio?: number
-  cache_creation_ratio?: number
-  cache_creation_ratio_5m?: number
-  cache_creation_ratio_1h?: number
-  is_model_mapped?: boolean
-  upstream_model_name?: string
-  // Diagnostic only. Whether the names disagree is derived in the UI via
-  // isResponseModelMismatch so old rows follow the current comparison rule.
+  // Legacy storage shape. The backend moves this into admin_info for admin
+  // responses and strips it from ordinary user responses.
   response_model?: {
     requested_model: string
     upstream_model: string
     returned_model: string
   }
+  cache_ratio?: number
+  cache_creation_ratio?: number
+  cache_creation_ratio_5m?: number
+  cache_creation_ratio_1h?: number
   audio_ratio?: number
   audio_completion_ratio?: number
   frt?: number

@@ -641,7 +641,17 @@ func mapTaskStatusToSimple(status model.TaskStatus) string {
 	}
 }
 
+// TaskModel2Dto returns the owner-safe task projection. Upstream model names
+// are routing details and are omitted from ordinary user/API responses.
 func TaskModel2Dto(task *model.Task) *dto.TaskDto {
+	return TaskModel2DtoForRole(task, common.RoleCommonUser)
+}
+
+func TaskModel2DtoForRole(task *model.Task, viewerRole int) *dto.TaskDto {
+	properties := task.Properties
+	if viewerRole < common.RoleAdminUser {
+		properties.UpstreamModelName = ""
+	}
 	return &dto.TaskDto{
 		ID:         task.ID,
 		CreatedAt:  task.CreatedAt,
@@ -660,7 +670,7 @@ func TaskModel2Dto(task *model.Task) *dto.TaskDto {
 		StartTime:  task.StartTime,
 		FinishTime: task.FinishTime,
 		Progress:   task.Progress,
-		Properties: task.Properties,
+		Properties: properties,
 		Username:   task.Username,
 		Data:       task.Data,
 	}
