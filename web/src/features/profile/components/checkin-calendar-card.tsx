@@ -42,10 +42,12 @@ import {
   TooltipProvider,
 } from '@/components/ui/tooltip'
 import { formatQuotaWithCurrency } from '@/lib/currency'
+import { getSelf } from '@/lib/api'
 import dayjs from '@/lib/dayjs'
 import { handleServerError } from '@/lib/handle-server-error'
 import { createServerError } from '@/lib/server-error-message'
 import { cn } from '@/lib/utils'
+import { useAuthStore, type AuthUser } from '@/stores/auth-store'
 
 import { getCheckinStatus, performCheckin } from '../api'
 import type { CheckinRecord } from '../types'
@@ -54,14 +56,18 @@ interface CheckinCalendarCardProps {
   checkinEnabled: boolean
   turnstileEnabled: boolean
   turnstileSiteKey: string
+  /** Refresh the profile page's local user data after a successful check-in. */
+  onQuotaUpdated?: () => Promise<void> | void
 }
 
 export function CheckinCalendarCard({
   checkinEnabled,
   turnstileEnabled,
   turnstileSiteKey,
+  onQuotaUpdated,
 }: CheckinCalendarCardProps) {
   const { t } = useTranslation()
+  const setUser = useAuthStore((state) => state.auth.setUser)
   const [currentMonth, setCurrentMonth] = useState(() => {
     const now = new Date()
     return new Date(now.getFullYear(), now.getMonth(), 1)
@@ -140,6 +146,21 @@ export function CheckinCalendarCard({
     [turnstileEnabled]
   )
 
+  const refreshUserQuota = useCallback(async () => {
+    try {
+      const self = await getSelf()
+      if (self.success && self.data) {
+        // Keep dashboard, navigation, and other quota displays in sync with
+        // the balance that was just awarded by the check-in request.
+        setUser(self.data as AuthUser)
+      }
+    } catch {
+      // The check-in itself already succeeded. A later normal refresh can
+      // recover the cached user when this best-effort sync is unavailable.
+    }
+    await onQuotaUpdated?.()
+  }, [onQuotaUpdated, setUser])
+
   const doCheckin = useCallback(
     async (token?: string) => {
       setCheckinLoading(true)
@@ -149,7 +170,7 @@ export function CheckinCalendarCard({
           toast.success(
             `${t('Check-in successful! Received')} ${formatQuotaWithCurrency(res.data.quota_awarded)}`
           )
-          refetch()
+          await Promise.all([refetch(), refreshUserQuota()])
           setTurnstileModalVisible(false)
         } else {
           if (!token && shouldTriggerTurnstile(res.message)) {
@@ -171,7 +192,7 @@ export function CheckinCalendarCard({
         setCheckinLoading(false)
       }
     },
-    [refetch, shouldTriggerTurnstile, t, turnstileSiteKey]
+    [refetch, refreshUserQuota, shouldTriggerTurnstile, t, turnstileSiteKey]
   )
 
   const handlePrevMonth = () => {
